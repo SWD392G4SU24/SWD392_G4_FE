@@ -1,10 +1,11 @@
 import Layout from "./component/layout";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./component/login";
-import Background from "./component/background";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store";
+import Register from "./component/register/regis";
+import Login1 from "./component/login/login";
 
 function App() {
   const router = createBrowserRouter([
@@ -18,7 +19,11 @@ function App() {
         },
         {
           path: "/login1",
-          element: <Background />,
+          element: <Login1 />,
+        },
+        {
+          path: "/register",
+          element: <Register />,
         },
       ],
     },
