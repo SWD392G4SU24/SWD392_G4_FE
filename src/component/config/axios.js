@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://68.183.180.21:8080";
+const baseUrl = "https://6627a8d2b625bf088c092e93.mockapi.io";
 //
 const config = {
   baseUrl,
@@ -9,7 +9,7 @@ const api = axios.create(config);
 api.defaults.baseURL = baseUrl;
 const handleBefore = (config) => {
   const token = localStorage.getItem("token")?.replaceAll('"', "");
-  config.headers["Authorization"] = Bearer ${token};
+  config.headers["Authorization"] = `Bearer ${token}`;
   return config;
 };
 const handleError = (error) => {
