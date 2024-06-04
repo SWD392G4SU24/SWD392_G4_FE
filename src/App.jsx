@@ -1,6 +1,5 @@
 import Layout from "./component/layout";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Login from "./component/login";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store";
@@ -13,10 +12,6 @@ function App() {
       path: "/",
       element: <Layout />,
       children: [
-        {
-          path: "/login",
-          element: <Login />,
-        },
         {
           path: "/login1",
           element: <Login1 />,
