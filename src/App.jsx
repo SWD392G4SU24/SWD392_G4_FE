@@ -1,6 +1,5 @@
 import Layout from "./component/layout";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Login from "./component/login";
 import HomePage from "./component/home";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -23,7 +22,7 @@ function App() {
           element: <Register />,
         },
         {
-          path: "/home",
+          path: "/",
           element: <HomePage />,
         },
       ],
