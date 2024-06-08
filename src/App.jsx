@@ -6,6 +6,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store";
 import Register from "./component/register/regis";
 import Login1 from "./component/login/login";
+import ScanBarcode from "./component/scan barcode";
 
 function App() {
   const router = createBrowserRouter([
@@ -24,6 +25,10 @@ function App() {
         {
           path: "/",
           element: <HomePage />,
+        },
+        {
+          path: "/scanbarcode",
+          element: <ScanBarcode />,
         },
       ],
     },
