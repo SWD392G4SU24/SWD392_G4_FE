@@ -14,7 +14,7 @@ function App() {
           element: <Login />,
         },
         {
-          path: "/home",
+          path: "/",
           element: <HomePage />,
         },
       ],
