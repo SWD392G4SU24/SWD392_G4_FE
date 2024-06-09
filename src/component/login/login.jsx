@@ -19,7 +19,6 @@ function Login1() {
     console.log(token);
     console.log(user);
     dispatch(login(result.data));
-
     // call api BE gui token xuong
   };
   const Login = async (e) => {
