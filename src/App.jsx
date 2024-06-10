@@ -4,9 +4,10 @@ import HomePage from "./component/home";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store";
-import Register from "./component/register/regis";
+// import Register from "./component/register/regis";
 import Login1 from "./component/login/login";
 import ScanBarcode from "./component/scan barcode";
+import GoldPrice from "./component/goldPrice";
 
 function App() {
   const router = createBrowserRouter([
@@ -18,11 +19,11 @@ function App() {
           path: "/login1",
           element: <Login1 />,
         },
-        {
-          path: "/",
-          path: "/register",
-          element: <Register />,
-        },
+        // {
+        //   path: "/",
+        //   path: "/register",
+        //   element: <Register />,
+        // },
         {
           path: "/",
           element: <HomePage />,
@@ -30,6 +31,10 @@ function App() {
         {
           path: "/scanbarcode",
           element: <ScanBarcode />,
+        },
+        {
+          path: "/goldprice",
+          element: <GoldPrice />,
         },
       ],
     },
