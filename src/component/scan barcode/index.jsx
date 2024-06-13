@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-no-undef */
 import { Html5QrcodeScanner } from "html5-qrcode";
 import React, { useEffect, useState } from "react";
@@ -24,7 +25,6 @@ function ScanBarcode() {
   return (
     <div className="Scanner flex flex-col justify-center items-center px-5 py-5">
       <h1 className="text-2xl font-serif mb-5">QR Code Scanning in JeWellry</h1>
-
       {scanResult ? (
         <div className="text-green-500">
           Success:{" "}
