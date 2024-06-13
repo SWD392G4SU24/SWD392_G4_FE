@@ -3,7 +3,7 @@ import Carousel from "../carousel";
 
 function HomePage() {
   return (
-    <div>
+    <div className="dark:bg-black/85 dark:text-white">
       <Carousel numOfSlide={1} />
     </div>
   );
