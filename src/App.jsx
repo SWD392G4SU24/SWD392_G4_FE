@@ -8,6 +8,7 @@ import { persistor, store } from "./redux/store";
 import Login1 from "./component/login/login";
 import ScanBarcode from "./component/scan barcode";
 import GoldPrice from "./component/goldPrice";
+import Cart from "./component/cart";
 
 function App() {
   const router = createBrowserRouter([
@@ -35,6 +36,10 @@ function App() {
         {
           path: "/goldprice",
           element: <GoldPrice />,
+        },
+        {
+          path: "/cart",
+          element: <Cart />,
         },
       ],
     },
