@@ -20,11 +20,6 @@ function App() {
           path: "/login1",
           element: <Login1 />,
         },
-        // {
-        //   path: "/",
-        //   path: "/register",
-        //   element: <Register />,
-        // },
         {
           path: "/",
           element: <HomePage />,

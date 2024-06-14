@@ -82,9 +82,23 @@ function Carousel({ numOfSlide, isUseNavigate }) {
                   {pic.content}
                 </h1>
                 <h3>{pic.description}</h3>
-                <button className="py-1 border-2 border-black rounded-md px-3 mt-5 shadow-md shadow-black/30 ">
+                {/* <button className="py-1 border-2 border-black rounded-md px-3 mt-5 shadow-md shadow-black/30 ">
                   {pic.bt_name}
-                </button>
+                </button> */}
+                {pic.id === "3" ? (
+                  <button
+                    className="py-1 border-2 border-black rounded-md px-3 mt-5 shadow-md shadow-black/30"
+                    onClick={() => {
+                      window.location.href = "/GoldPrice";
+                    }}
+                  >
+                    {pic.bt_name}
+                  </button>
+                ) : (
+                  <button className="py-1 border-2 border-black rounded-md px-3 mt-5 shadow-md shadow-black/30">
+                    {pic.bt_name}
+                  </button>
+                )}
               </div>
             </div>
           </SwiperSlide>

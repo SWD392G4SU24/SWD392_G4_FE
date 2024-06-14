@@ -34,7 +34,12 @@ function Header() {
               <span className="group-hover:block hidden transition-all duration-200">
                 Order
               </span>
-              <ShoppingCartOutlined className="text-xl text-white drop-shadow-sm cursor-pointer" />
+              <ShoppingCartOutlined
+                className="text-xl text-white drop-shadow-sm cursor-pointer"
+                onClick={() => {
+                  window.location.href = "/cart";
+                }}
+              />
             </button>
             <div className="flex items-center justify-center w-7 h-7 bg-gradient-to-r from-orange-200 to-orange-400 dark:from-gray-600 dark:text-white dark:bg-orange-300 text-white rounded-full cursor-pointer hover:bg-gray-600 transition-colors duration-300">
               <UserOutlined />

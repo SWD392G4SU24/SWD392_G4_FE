@@ -6,6 +6,7 @@ import { login, logout, selectUser } from "../../redux/features/counterSlice";
 import { UnlockOutlined, UserOutlined } from "@ant-design/icons";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../config/firebase";
+import axios from "axios";
 
 function Login1() {
   const user = useSelector(selectUser);
@@ -20,6 +21,10 @@ function Login1() {
     console.log(user);
     dispatch(login(result.data));
     // call api BE gui token xuong
+    // const response = await axios.get(
+    //   "https://d35f-118-69-182-149.ngrok-free.app/api/User/user/login"
+    // );
+    // console.log(response.data);
   };
   const Login = async (e) => {
     e.preventDefault();
