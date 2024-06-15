@@ -34,7 +34,9 @@ function GoldPrice() {
       className: "column-money",
       dataIndex: "ps_1",
       align: "center",
-      render: (text) => <h3 className="text-green-700 font-semibold">{text}</h3>,
+      render: (text) => (
+        <h3 className="text-green-700 font-semibold">{text}</h3>
+      ),
     },
     {
       title: "Giá mua vào",
@@ -64,7 +66,7 @@ function GoldPrice() {
         columns={columns}
         dataSource={prices}
         bordered
-        className="w-11/12 m-auto"
+        className="gp_tb w-11/12 m-auto"
       />
     </div>
   );
