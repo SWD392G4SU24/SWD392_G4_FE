@@ -1,9 +1,7 @@
 import { CloseOutlined, ShoppingOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Image, Popconfirm, Table } from "antd";
+import { Button, Image, Popconfirm, Table } from "antd";
 import axios from "axios";
-import { count } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { IoTicket } from "react-icons/io5";
 
 function Cart() {
   const [dataSource, setDataSource] = useState([]);
@@ -133,7 +131,7 @@ function Cart() {
         />
       </div>
       <div></div>
-      <div className="py-2 flex justify-between w-full px-40 py-20">
+      <div className="flex justify-between w-full px-40 py-20">
         <h1>Tong Thanh Toan: </h1>
         <button className="rounded-lg bg-black text-white py-1 px-10">
           Mua hàng ({count})
