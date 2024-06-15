@@ -8,6 +8,8 @@ import { persistor, store } from "./redux/store";
 import Login1 from "./component/login/login";
 import ScanBarcode from "./component/scan barcode";
 import GoldPrice from "./component/goldPrice";
+import Cart from "./component/cart";
+import Register from "./component/register/regis";
 
 function App() {
   const router = createBrowserRouter([
@@ -19,11 +21,10 @@ function App() {
           path: "/login1",
           element: <Login1 />,
         },
-        // {
-        //   path: "/",
-        //   path: "/register",
-        //   element: <Register />,
-        // },
+        {
+          path: "/Register",
+          element: <Register />,
+        },
         {
           path: "/",
           element: <HomePage />,
@@ -35,6 +36,10 @@ function App() {
         {
           path: "/goldprice",
           element: <GoldPrice />,
+        },
+        {
+          path: "/cart",
+          element: <Cart />,
         },
       ],
     },
