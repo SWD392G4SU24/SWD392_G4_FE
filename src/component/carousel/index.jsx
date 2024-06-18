@@ -94,8 +94,22 @@ function Carousel({ numOfSlide, isUseNavigate }) {
                   >
                     {pic.bt_name}
                   </button>
+                ) : pic.id === "2" ? (
+                  <button
+                    className="py-1 border-2 border-black rounded-md px-3 mt-5 shadow-md shadow-black/30"
+                    onClick={() => {
+                      window.location.href = "/proall";
+                    }}
+                  >
+                    {pic.bt_name}
+                  </button>
                 ) : (
-                  <button className="py-1 border-2 border-black rounded-md px-3 mt-5 shadow-md shadow-black/30">
+                  <button
+                    className="py-1 border-2 border-black rounded-md px-3 mt-5 shadow-md shadow-black/30"
+                    onClick={() => {
+                      window.location.href = "/aboutus";
+                    }}
+                  >
                     {pic.bt_name}
                   </button>
                 )}

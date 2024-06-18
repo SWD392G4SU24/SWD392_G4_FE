@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import api from "../config/axios";
+import api from "../../config/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout, selectUser } from "../../redux/features/counterSlice";
 import { UnlockOutlined, UserOutlined } from "@ant-design/icons";
 import { signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "../config/firebase";
+import { auth, googleProvider } from "../../config/firebase";
 import axios from "axios";
 
 function Login1() {

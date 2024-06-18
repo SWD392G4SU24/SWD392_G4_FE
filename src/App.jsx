@@ -1,17 +1,19 @@
 import Layout from "./component/layout";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Profile from "./Page/Profile/Profile";
-import HomePage from "./component/home";
+import HomePage from "./Page/home";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store";
 // import Register from "./component/register/regis";
-import Login1 from "./component/login/login";
-import ScanBarcode from "./component/scan barcode";
-import GoldPrice from "./component/goldPrice";
-import Cart from "./component/cart";
-import Register from "./component/register/regis";
-import ProductDetail from "./component/productDetail";
+import Login1 from "./Page/login/login";
+import ScanBarcode from "./Page/scan barcode";
+import GoldPrice from "./Page/goldPrice";
+import Cart from "./Page/cart";
+import Register from "./Page/register/regis";
+import ProductDetail from "./Page/product/productDetail";
+import ProductAll from "./Page/product/all";
+import AboutUs from "./Page/about";
 
 function App() {
   const router = createBrowserRouter([
@@ -50,6 +52,14 @@ function App() {
         {
           path: "/prodetail",
           element: <ProductDetail />,
+        },
+        {
+          path: "/proall",
+          element: <ProductAll />,
+        },
+        {
+          path: "/aboutus",
+          element: <AboutUs />,
         },
       ],
     },
