@@ -11,6 +11,7 @@ import ScanBarcode from "./Page/scan barcode/index";
 import GoldPrice from "./Page/goldPrice/index";
 import Cart from "./Page/cart/index";
 import OrderReview from "./Page/cart/orderreview/index";
+import FillInformationForPurchase from "./Page/purchaseinformation";
 
 function App() {
   const router = createBrowserRouter([
@@ -49,6 +50,10 @@ function App() {
         {
           path: "/orderreview",
           element: <OrderReview />,
+        },
+        {
+          path: "/purchaseinformation",
+          element: <FillInformationForPurchase />,
         },
       ],
     },
