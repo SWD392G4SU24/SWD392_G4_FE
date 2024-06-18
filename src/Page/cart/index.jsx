@@ -142,7 +142,7 @@ function Cart() {
           }}
         >
           Mua hàng ({count})
-        </button>
+          </button>
       </div>
       <div className="py-2">
         <button className="rounded-sm bg-black text-white py-1 px-10">
