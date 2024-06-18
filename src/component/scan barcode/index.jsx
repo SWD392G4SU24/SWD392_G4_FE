@@ -3,6 +3,7 @@
 // import { Html5QrcodeScanner } from "html5-qrcode";
 import React, { useEffect, useState } from "react";
 import { BarcodeScanner } from "react-barcode-scanner";
+import "react-barcode-scanner/polyfill";
 
 function ScanBarcode() {
   // const [scanResult, setScanResult] = useState(null);
