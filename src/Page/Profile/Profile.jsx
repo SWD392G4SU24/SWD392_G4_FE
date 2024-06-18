@@ -4,145 +4,172 @@ import styles from './Profile.module.scss';
 import customStyles from './CustomStyles.module.scss'; 
 import { HeartOutlined, MailOutlined, PhoneOutlined, UserOutlined, WhatsAppOutlined } from "@ant-design/icons";
 import { Flex, Input,ColorPicker } from 'antd';
-//Formik này là để lấy dữ liệu từ ô mình nhập
-import { withFormik,Form} from 'formik';
-//Check validation
-import * as Yup from 'yup';
-function Profile(props) {
+function Profile() {
     const [activeTab, setActiveTab] = useState('Tài Khoản');
     const [isEditing, setIsEditing] = useState(false);
     const [isSidebarHidden, setIsSidebarHidden] = useState(false);
     const contentRef = useRef(null); // Tham chiếu tới phần nội dung
     const [orderFilter, setOrderFilter] = useState('All');
 
-   
+  const [orders, setOrders] = useState([
+    {
+      id: 1,
+      name: "RING OF LEAVES",
+      date: "15.01.2023",
+      price: "200,000 VND",
+      status: "Đã thanh toán",
+      image:
+        "https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg",
+    },
+    {
+      id: 2,
+      name: "SIGNET RING",
+      date: "15.05.2024",
+      price: "100,000 VND",
+      status: "Chưa thanh toán",
+      image:
+        "https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg",
+    },
+  ]);
 
-    const [orders, setOrders] = useState([
-        {
-            id: 1,
-            name: 'RING OF LEAVES',
-            date: '15.01.2023',
-            price: '200,000 VND',
-            status: 'Đã thanh toán',
-            image: 'https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg',
-        },
-        {
-            id: 2,
-            name: 'SIGNET RING',
-            date: '15.05.2024',
-            price: '100,000 VND',
-            status: 'Chưa thanh toán',
-            image: 'https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg',
-        },
-    ]);
-    
+  const { TextArea } = Input;
+  const onChange = (e) => {
+    console.log("Change:", e.target.value);
+  };
 
-    const { TextArea } = Input;
-    const onChange = (e) => {
-        console.log('Change:', e.target.value);
-      };
- 
+  const openEditForm = () => {
+    setIsEditing(true);
+    setIsSidebarHidden(true);
+  };
 
-    const openEditForm = () => {
-        setIsEditing(true);
-        setIsSidebarHidden(true);
-    };
-
-    const closeEditForm = () => {
-        setIsEditing(false);
-        setIsSidebarHidden(false);
-        if (contentRef.current) {
-          // Cuộn trang đến vị trí nội dung sau khi đóng form chỉnh sửa
-          contentRef.current.scrollIntoView({ behavior: 'smooth' });
-      }
-    };
-    
-  
-
-    const renderContent = () => {
-        switch(activeTab) {
-            case 'Tài Khoản':
-                return (
-                    <div className={styles.infoSection} ref={contentRef}>
-                        <h2 style={{color:'#B18165'}}>Accumulated Points</h2>
-                        <label className={styles.fontstyle}>Preferred Name</label>
-                        <div className={styles.infoItem}>
-                            <p className={styles.infoItem_p}>
-                                 <span className={styles.infoItem_span}><UserOutlined/></span>
-                                 Scarlett Fitzgerald Smith
-                             </p>
-                        </div>
-                        <label className={styles.fontstyle}>Email</label>
-                        <div className={styles.infoItem}>
-                            <p className={styles.infoItem_p} >
-                                <span className={styles.infoItem_span}><MailOutlined/></span> 
-                                Scarlett.smith@gmail.com
-                            </p>
-                        </div>
-                        <label className={styles.fontstyle}>Phone number</label>
-                        <div className={styles.infoItem}>
-                            <p  className={styles.infoItem_p}>
-                                 <span className={styles.infoItem_span}><WhatsAppOutlined/></span>
-                                 0123465987
-                           </p>
-                        </div>
-                        <div className={styles.buttonPosition}>
-                            <button className={styles.editButton} onClick={openEditForm}>Chỉnh sửa thông tin</button>
-                        </div>
-                    </div>
-                );
-                case 'Yêu Thích':
-                return (
-                    <div className={styles.favoritesSection}>
-                        <h1>Sản phẩm yêu thích</h1>
-                        <div className={styles.favoriteItem}>
-                            <img className={styles.favoriteItem_Img} style={{width:'200px',height:'170px'}} src="https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg" alt="ảnh" />
-                            
-                            <div className={styles.favoriteItem_Name_Item} >
-                            <img style={{marginBottom:'75px'}} src="./img/imgProfile/icon/ph_heart-thin.svg" alt="Heart icon" />
-                             
-                            <p > 
-                                LEAFY CHAIN 
-                                <br/>
-                                <span>$80.00</span>
-                                </p>
-                            </div>
-                            
-                            <div className={styles.favoriteItem_Info}>
-                                <button className={styles.favoriteButton}>Mua ngay</button>
-                            </div>
-                        </div>
-                                    
-                    </div>
-                );
-            case 'Đơn hàng':
-                
-                    return (
-                        <div className={styles.orderHistorySection}>
-                            <h1>Order History</h1>
-                            <div className={styles.orderFilter}>
-                                <div style={{width:100, height:50 , marginRight:'10px'}}>
-                                    <button className={orderFilter === 'All' ? styles.active : ''} onClick={() => setOrderFilter('All')}>All</button>
-                                </div>
-                                <div style={{width:100, height:50 , marginRight:'70px'}}>
-                                <button  className={orderFilter === 'Processing' ? styles.active : ''} onClick={() => setOrderFilter('Processing')}>Processing</button>
-                                </div>
-                                <div style={{width:100, height:50 , marginRight:'70px'}}>
-                                <button className={orderFilter === 'Completed' ? styles.active : ''} onClick={() => setOrderFilter('Completed')}>Completed</button>
-                                </div>
-                                
-                                
-                            </div>
-                            {renderOrderContent()}
-                        </div>
-                    );
-            case 'Khuyến mãi':
-                return <div>Promotions content</div>;
-            
-            default:
-                return null;
-        }
+  const closeEditForm = () => {
+    setIsEditing(false);
+    setIsSidebarHidden(false);
+    if (contentRef.current) {
+      // Cuộn trang đến vị trí nội dung sau khi đóng form chỉnh sửa
+      contentRef.current.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "Tài Khoản":
+        return (
+          <div className={styles.infoSection} ref={contentRef}>
+            <h2 style={{ color: "#B18165" }}>Accumulated Points</h2>
+            <label className={styles.fontstyle}>Preferred Name</label>
+            <div className={styles.infoItem}>
+              <p className={styles.infoItem_p}>
+                <span className={styles.infoItem_span}>
+                  <UserOutlined />
+                </span>
+                Scarlett Fitzgerald Smith
+              </p>
+            </div>
+            <label className={styles.fontstyle}>Email</label>
+            <div className={styles.infoItem}>
+              <p className={styles.infoItem_p}>
+                <span className={styles.infoItem_span}>
+                  <MailOutlined />
+                </span>
+                Scarlett.smith@gmail.com
+              </p>
+            </div>
+            <label className={styles.fontstyle}>Phone number</label>
+            <div className={styles.infoItem}>
+              <p className={styles.infoItem_p}>
+                <span className={styles.infoItem_span}>
+                  <WhatsAppOutlined />
+                </span>
+                0123465987
+              </p>
+            </div>
+            <div className={styles.buttonPosition}>
+              <button className={styles.editButton} onClick={openEditForm}>
+                Chỉnh sửa thông tin
+              </button>
+            </div>
+          </div>
+        );
+      case "Yêu Thích":
+        return (
+          <div className={styles.favoritesSection}>
+            <h1>Sản phẩm yêu thích</h1>
+            <div className={styles.favoriteItem}>
+              <img
+                className={styles.favoriteItem_Img}
+                style={{ width: "200px", height: "170px" }}
+                src="https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg"
+                alt="ảnh"
+              />
+
+              <div className={styles.favoriteItem_Name_Item}>
+                <img
+                  style={{ marginBottom: "75px" }}
+                  src="./img/imgProfile/icon/ph_heart-thin.svg"
+                  alt="Heart icon"
+                />
+
+                <p>
+                  LEAFY CHAIN
+                  <br />
+                  <span>$80.00</span>
+                </p>
+              </div>
+
+              <div className={styles.favoriteItem_Info}>
+                <button
+                  className={styles.favoriteButton}
+                  onClick={() => {
+                    window.location.href = "/orderreview";
+                  }}
+                >
+                  Mua ngay
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      case "Đơn hàng":
+        return (
+          <div className={styles.orderHistorySection}>
+            <h1>Order History</h1>
+            <div className={styles.orderFilter}>
+              <div style={{ width: 100, height: 50, marginRight: "10px" }}>
+                <button
+                  className={orderFilter === "All" ? styles.active : ""}
+                  onClick={() => setOrderFilter("All")}
+                >
+                  All
+                </button>
+              </div>
+              <div style={{ width: 100, height: 50, marginRight: "70px" }}>
+                <button
+                  className={orderFilter === "Processing" ? styles.active : ""}
+                  onClick={() => setOrderFilter("Processing")}
+                >
+                  Processing
+                </button>
+              </div>
+              <div style={{ width: 100, height: 50, marginRight: "70px" }}>
+                <button
+                  className={orderFilter === "Completed" ? styles.active : ""}
+                  onClick={() => setOrderFilter("Completed")}
+                >
+                  Completed
+                </button>
+              </div>
+            </div>
+            {renderOrderContent()}
+          </div>
+        );
+      case "Khuyến mãi":
+        return <div>Promotions content</div>;
+
+      default:
+        return null;
+    }
+  };
 
     const renderEditForm = () => {
         return (
@@ -154,7 +181,7 @@ function Profile(props) {
                             <label className={styles.fontstyle}>Preferred Name</label>
                         </div>
                         <div>
-                            <Input prefix={<UserOutlined/>}     type='text'   className={customStyles.customInput} showCount maxLength={50} onChange={onChange} />
+                            <Input prefix={<UserOutlined/>}   type='text'   className={customStyles.customInput} showCount maxLength={50} onChange={onChange} />
                         </div>
                     </div>
                     <div className={styles.infoItem}>
@@ -162,7 +189,7 @@ function Profile(props) {
                             <label className={styles.fontstyle}>Email</label>
                         </div>
                         <div>
-                          <Input prefix={<MailOutlined />} name='email' placeholder="Email" type='text' className={customStyles.customInput} showCount maxLength={64} onChange={onChange} />
+                          <Input prefix={<MailOutlined />} type='text' className={customStyles.customInput} showCount maxLength={64} onChange={onChange} />
                         </div>
                     </div>
                     <div className={styles.infoItem}>
@@ -170,7 +197,7 @@ function Profile(props) {
                             <label className={styles.fontstyle}>Phone number</label>
                         </div>
                         <div>
-                        <Input prefix={<WhatsAppOutlined />} name='phone' placeholder='Password' type='text' className={customStyles.customInput}  showCount maxLength={11} onChange={onChange} />
+                        <Input prefix={<WhatsAppOutlined />} type='text' className={customStyles.customInput}  showCount maxLength={11} onChange={onChange} />
                         </div>
                     </div>
                     <div className={styles.buttonPosition}>
@@ -182,27 +209,31 @@ function Profile(props) {
         );
     }
 
-    const renderOrderContent = () => {
-        const orders = [
-            {
-                id: 1,
-                name: 'RING OF LEAVES',
-                date: '15.01.2023',
-                price: '200,000 VND',
-                status: 'Completed',
-                image: 'https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg',
-            },
-            {
-                id: 2,
-                name: 'SIGNET RING',
-                date: '15.05.2024',
-                price: '100,000 VND',
-                status: 'Processing',
-                image: 'https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg',
-            },
-        ];
+  const renderOrderContent = () => {
+    const orders = [
+      {
+        id: 1,
+        name: "RING OF LEAVES",
+        date: "15.01.2023",
+        price: "200,000 VND",
+        status: "Completed",
+        image:
+          "https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg",
+      },
+      {
+        id: 2,
+        name: "SIGNET RING",
+        date: "15.05.2024",
+        price: "100,000 VND",
+        status: "Processing",
+        image:
+          "https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg",
+      },
+    ];
 
-        const filteredOrders = orders.filter(order => orderFilter === 'All' || order.status === orderFilter);
+    const filteredOrders = orders.filter(
+      (order) => orderFilter === "All" || order.status === orderFilter
+    );
 
         return (
             <div className={styles.ordersList}>
@@ -221,61 +252,49 @@ function Profile(props) {
         );
     };
 
-
-     
-    
     
 
-    return (
-        <div className={styles.container}>
-            <h1 className={styles.thongtin} style={{ display: isSidebarHidden ? 'none' : 'block' }}>Thông tin của tôi</h1>
-            <div className={styles.row}>
-                <div className={styles.sidebar} style={{ display: isSidebarHidden ? 'none' : 'block' }}>  
-                    <ul className={styles.listGroup}>
-                        {['Tài Khoản', 'Yêu Thích', 'Đơn hàng', 'Khuyến mãi'].map(tab => (
-                            <li
-                                key={tab}
-                                className={`${styles.listHover} ${styles.customList} ${activeTab === tab ? styles.active : ''}`}
-                                onClick={() => setActiveTab(tab)}
-                            >
-                                {tab}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-                
-                <div className={styles.divider} style={{ display: isSidebarHidden ? 'none' : 'block' }}></div>
-                <div className={styles.content}>
-                    {isEditing ? renderEditForm() : renderContent()}
-                </div>
-            </div>
+  return (
+    <div className={styles.container}>
+      <h1
+        className={styles.thongtin}
+        style={{ display: isSidebarHidden ? "none" : "block" }}
+      >
+        Thông tin của tôi
+      </h1>
+      <div className={styles.row}>
+        <div
+          className={styles.sidebar}
+          style={{ display: isSidebarHidden ? "none" : "block" }}
+        >
+          <ul className={styles.listGroup}>
+            {["Tài Khoản", "Yêu Thích", "Đơn hàng", "Khuyến mãi"].map((tab) => (
+              <li
+                key={tab}
+                className={`${styles.listHover} ${styles.customList} ${
+                  activeTab === tab ? styles.active : ""
+                }`}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab}
+              </li>
+            ))}
+          </ul>
         </div>
-    );
+
+        <div
+          className={styles.divider}
+          style={{ display: isSidebarHidden ? "none" : "block" }}
+        ></div>
+        <div className={styles.content}>
+          {isEditing ? renderEditForm() : renderContent()}
+        </div>
+      </div>
+    </div>
+  );
 }
 
-
-//Validate bắt lỗi 
-const ProfileWithFormik = withFormik({
-    //lấy dữ liệu dựa trên value
-    mapPropsToValues: () => ({ 
-        email: '',
-        password:''
-     }), 
-     validationSchema:Yup.object().shape({
-        email:Yup.string().required('Email is required!').email('Email không hợp lệ'), //có thể thay email = test( patternđịnh danh email,'ghi chú gì dós')
-        password:Yup.string().min(6,'Password must have min 6 characters').max(32,'max là 32 kí tự')//min  là 6 kí tự
-       
-    }),
-     //Lầy dữ liệu ra từ form khi mình submit
-    handleSubmit: (values, { props,setSubmitting }) => {
-        
-      console.log(values)
-    },
-  
-    displayName: 'Profile',
-  })(Profile);
-
-export default (Profile)(ProfileWithFormik);
+export default Profile;
 
 
 
