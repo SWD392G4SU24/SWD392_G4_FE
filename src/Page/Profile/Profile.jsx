@@ -4,12 +4,18 @@ import styles from './Profile.module.scss';
 import customStyles from './CustomStyles.module.scss'; 
 import { HeartOutlined, MailOutlined, PhoneOutlined, UserOutlined, WhatsAppOutlined } from "@ant-design/icons";
 import { Flex, Input,ColorPicker } from 'antd';
-function Profile() {
+//Formik này là để lấy dữ liệu từ ô mình nhập
+import { withFormik,Form} from 'formik';
+//Check validation
+import * as Yup from 'yup';
+function Profile(props) {
     const [activeTab, setActiveTab] = useState('Tài Khoản');
     const [isEditing, setIsEditing] = useState(false);
     const [isSidebarHidden, setIsSidebarHidden] = useState(false);
     const contentRef = useRef(null); // Tham chiếu tới phần nội dung
     const [orderFilter, setOrderFilter] = useState('All');
+
+   
 
     const [orders, setOrders] = useState([
         {
@@ -148,7 +154,7 @@ function Profile() {
                             <label className={styles.fontstyle}>Preferred Name</label>
                         </div>
                         <div>
-                            <Input prefix={<UserOutlined/>}   type='text'   className={customStyles.customInput} showCount maxLength={50} onChange={onChange} />
+                            <Input prefix={<UserOutlined/>}     type='text'   className={customStyles.customInput} showCount maxLength={50} onChange={onChange} />
                         </div>
                     </div>
                     <div className={styles.infoItem}>
@@ -156,7 +162,7 @@ function Profile() {
                             <label className={styles.fontstyle}>Email</label>
                         </div>
                         <div>
-                          <Input prefix={<MailOutlined />} type='text' className={customStyles.customInput} showCount maxLength={64} onChange={onChange} />
+                          <Input prefix={<MailOutlined />} name='email' placeholder="Email" type='text' className={customStyles.customInput} showCount maxLength={64} onChange={onChange} />
                         </div>
                     </div>
                     <div className={styles.infoItem}>
@@ -164,7 +170,7 @@ function Profile() {
                             <label className={styles.fontstyle}>Phone number</label>
                         </div>
                         <div>
-                        <Input prefix={<WhatsAppOutlined />} type='text' className={customStyles.customInput}  showCount maxLength={11} onChange={onChange} />
+                        <Input prefix={<WhatsAppOutlined />} name='phone' placeholder='Password' type='text' className={customStyles.customInput}  showCount maxLength={11} onChange={onChange} />
                         </div>
                     </div>
                     <div className={styles.buttonPosition}>
@@ -215,6 +221,9 @@ function Profile() {
         );
     };
 
+
+     
+    
     
 
     return (
@@ -244,7 +253,29 @@ function Profile() {
     );
 }
 
-export default Profile;
+
+//Validate bắt lỗi 
+const ProfileWithFormik = withFormik({
+    //lấy dữ liệu dựa trên value
+    mapPropsToValues: () => ({ 
+        email: '',
+        password:''
+     }), 
+     validationSchema:Yup.object().shape({
+        email:Yup.string().required('Email is required!').email('Email không hợp lệ'), //có thể thay email = test( patternđịnh danh email,'ghi chú gì dós')
+        password:Yup.string().min(6,'Password must have min 6 characters').max(32,'max là 32 kí tự')//min  là 6 kí tự
+       
+    }),
+     //Lầy dữ liệu ra từ form khi mình submit
+    handleSubmit: (values, { props,setSubmitting }) => {
+        
+      console.log(values)
+    },
+  
+    displayName: 'Profile',
+  })(Profile);
+
+export default (Profile)(ProfileWithFormik);
 
 
 
