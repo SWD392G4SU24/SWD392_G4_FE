@@ -133,7 +133,12 @@ function Cart() {
       <div></div>
       <div className="flex justify-between w-full px-40 py-20">
         <h1>Tong Thanh Toan: </h1>
-        <button className="rounded-lg bg-black text-white py-1 px-10">
+        <button
+          className="rounded-lg bg-black text-white py-1 px-10"
+          onClick={() => {
+            window.location.href = "/orderreview";
+          }}
+        >
           Mua hàng ({count})
         </button>
       </div>
