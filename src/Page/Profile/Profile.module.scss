@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css?family=Flamenco');
+
+.container {
+    // font-family: 'Flamenco', sans-serif;
+    padding-top: 50px;
+    padding-left: 100px;
+    margin-bottom: 80px;
+}
+
+.thongtin {
+    font-family: none;
+    font-size: 50px;
+    margin: 0;
+    position: relative;
+    font-weight: 400;
+    text-shadow: 1px 0 0 #000, 0 1px 0 #000, -1px 0 0 #000, 0 -1px 0 #000;
+    margin-left: 50px;
+    margin-bottom: 50px;
+    padding-top: 5px;
+}
+
+.row {
+    display: flex;
+}
+
+.sidebar {
+    flex: 1;
+}
+
+.listGroup {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+
+   
+}
+
+.customList {
+    font-size: 1.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 2rem
+    
+}
+
+.listHover:hover {
+    color: #B18165;
+    font-weight: 500;
+
+}
+
+.customList.active {
+    background-color: #f8f9fa;
+    color: #B18165;
+}
+
+.divider {
+    width: 1px;
+    background-color: #000;
+    margin: 0 10px 0 0; 
+}
+
+.content {
+    flex: 3;
+}
+
+.infoSection, .favoritesSection {
+    padding: 20px;
+    margin-left: 50px;
+}
+
+.infoItem {
+    margin-top: 10px;
+    margin-bottom: 25px;
+    margin-left: 50px;
+}
+
+.infoItem_p{
+    border-bottom: 1px solid;
+    width: 400px;
+    height: 35px;
+    font-size: 22px;
+}
+
+.infoItem_span {
+    margin-right: 20px;
+}
+
+.fontstyle {
+    font-size: 25px;
+    font-weight: 1000;
+    color: #B18165;
+    margin-bottom: 50px;
+}
+
+
+
+
+.buttonPosition {
+    display: flex;
+    justify-content: center;  /* Center the button horizontally */
+    align-items: center;  /* Center the button vertically (if necessary) */
+    margin-top: 20px;  /* Optional: Add margin to the top for spacing */
+}
+
+.editButton {
+  font-family: none;
+  font-size: 20px;
+  background-color: #A0522D; /* Darker shade for more intensity */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 10px; /* Round the button */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+  margin-right: 10px;
+}
+
+.editButton:hover {
+  background-color: #8B4513; /* Darker shade for hover state */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+
+.editButton:hover {
+    background-color: #9e8478; /* Change background color on hover */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.cancelButton {
+    font-family: none;
+    font-size: 20px;
+    background-color: #8B0000; /* Màu đỏ đậm hơn và trầm */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 10px; 
+    transition: background-color 0.3s ease; 
+    margin-left: 200px; /* Khoảng cách giữa các nút */
+}
+
+.cancelButton:hover {
+    background-color: #9e8478;
+    color: #8B0000; /* Màu chữ là màu đỏ đậm hơn và trầm hơn */
+}
+.favoriteItem {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between // cách đều 2 bên màn hình nhe
+}
+.favoriteItem_Img {
+    
+}
+.favoriteItem_Name_Item{
+    // margin-top: 145px;
+    // margin-right: 300px;
+    // margin-bottom: 10px;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 400px;
+
+}
+.favoriteItem_Name_Item_P{
+    display: flex;
+}
+
+.favoriteItem_Info{
+    margin-right: 90px;
+}
+
+.favoriteButton {
+    background-color: #B18165;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 10px; /* Round the button */
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+    margin-top: 100px;
+}
+
+.favoriteButton:hover {
+    background-color: #9e8478; /* Change background color on hover */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+
+.likeIcon {
+    cursor: pointer;
+}
+
+
+.orderHistorySection {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+.orderFilter {
+    display: flex;
+    margin-bottom: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+.orderFilter button {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-right: 10px;
+    border-radius: 8px;
+}
+
+.orderFilter button:not(.active):hover {
+    background-color: #dac4b7;
+    font-weight: bold; 
+    font-size: 20px;
+}
+.orderFilter .active  {
+    background-color: #B18165;
+    color: white;
+    
+}
+
+
+.ordersList {
+    display: flex;
+    flex-direction: column;
+}
+
+.orderDetails {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.orderImage {
+    width: 200px;
+    height: 170px;
+    margin-right: 20px;
+}
