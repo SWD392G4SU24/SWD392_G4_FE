@@ -1,4 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store";
@@ -12,6 +13,7 @@ import GoldPrice from "./Page/goldPrice/index";
 import Cart from "./Page/cart/index";
 import OrderReview from "./Page/cart/orderreview/index";
 import FillInformationForPurchase from "./Page/purchaseinformation";
+
 
 function App() {
   const router = createBrowserRouter([
@@ -50,6 +52,17 @@ function App() {
         {
           path: "/orderreview",
           element: <OrderReview />,
+
+          path: "/prodetail",
+          element: <ProductDetail />,
+        },
+        {
+          path: "/proall",
+          element: <ProductAll />,
+        },
+        {
+          path: "/aboutus",
+          element: <AboutUs />,
         },
         {
           path: "/purchaseinformation",

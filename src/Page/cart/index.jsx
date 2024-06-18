@@ -17,6 +17,7 @@ function Cart() {
     const listAfterDelete = dataSource.filter((movie) => movie.id !== id);
     setDataSource(listAfterDelete);
   };
+
   const handleQuantityChange = (id, quantity) => {
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
@@ -31,6 +32,7 @@ function Cart() {
     },
     {
       title: "Hinh anh mo ta",
+      title: "Poster",
       dataIndex: "poster_path",
       key: "poster_path",
       align: "center",
@@ -91,6 +93,7 @@ function Cart() {
     console.log(response.data);
     setDataSource(response.data);
 
+
     const initialQuantities = {};
     response.data.forEach((movie) => {
       initialQuantities[movie.id] = 1;
@@ -100,6 +103,7 @@ function Cart() {
   useEffect(function () {
     fetchProducts();
   }, []);
+
 
   const count = selectedRowKeys.reduce(
     (total, key) => total + quantities[key],
@@ -117,7 +121,9 @@ function Cart() {
           <CloseOutlined className="px-5" />
         </div>
       </div>
+
       <div className="py-1 w-full">
+
         <Table
           columns={columns}
           dataSource={dataSource}
@@ -140,6 +146,11 @@ function Cart() {
           }}
         >
           Mua hàng ({count})
+        />
+      </div>
+      <div className="py-2">
+        <button className="rounded-sm bg-black text-white py-1 px-10">
+          Thanh Toan
         </button>
       </div>
     </div>
