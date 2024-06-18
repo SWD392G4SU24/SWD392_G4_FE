@@ -55,7 +55,7 @@ function GoldPrice() {
   ];
 
   return (
-    <div>
+    <div className="dark:bg-black/85 dark:text-white">
       <h1 className="text-center text-3xl mt-5 font-serif text-amber-700">
         Bảng giá vàng
       </h1>
