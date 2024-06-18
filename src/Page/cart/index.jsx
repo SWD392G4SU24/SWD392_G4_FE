@@ -32,7 +32,6 @@ function Cart() {
     },
     {
       title: "Hinh anh mo ta",
-      title: "Poster",
       dataIndex: "poster_path",
       key: "poster_path",
       align: "center",
@@ -93,7 +92,6 @@ function Cart() {
     console.log(response.data);
     setDataSource(response.data);
 
-
     const initialQuantities = {};
     response.data.forEach((movie) => {
       initialQuantities[movie.id] = 1;
@@ -103,7 +101,6 @@ function Cart() {
   useEffect(function () {
     fetchProducts();
   }, []);
-
 
   const count = selectedRowKeys.reduce(
     (total, key) => total + quantities[key],
@@ -123,7 +120,6 @@ function Cart() {
       </div>
 
       <div className="py-1 w-full">
-
         <Table
           columns={columns}
           dataSource={dataSource}
@@ -146,7 +142,7 @@ function Cart() {
           }}
         >
           Mua hàng ({count})
-        />
+        </button>
       </div>
       <div className="py-2">
         <button className="rounded-sm bg-black text-white py-1 px-10">

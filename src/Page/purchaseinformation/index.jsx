@@ -1,4 +1,4 @@
-import { Input, Radio } from "antd";
+import { Radio } from "antd";
 import React from "react";
 
 function FillInformationForPurchase() {
@@ -9,12 +9,12 @@ function FillInformationForPurchase() {
         <div className="flex flex-col items-center">
           <h1 className="py-3">Phiếu Điền Thông Tin</h1>
           <hr />
-          <Input type="text" placeholder=" Email" />
-          <Input type="text" placeholder=" Số Điện Thoại" />
-          <Input type="text" placeholder=" Địa chỉ" />
+          <input type="text" placeholder=" Email" />
+          <input type="text" placeholder=" Số Điện Thoại" />
+          <input type="text" placeholder=" Địa chỉ" />
           <div>
-            <Input type="text" placeholder="Quận" />
-            <Input type="text" placeholder="Thành phố" />
+            <input type="text" placeholder="Quận" />
+            <input type="text" placeholder="Thành phố" />
           </div>
           <div>
             <Radio>Tiền mặt</Radio>
@@ -25,7 +25,7 @@ function FillInformationForPurchase() {
           <h1>Order Total</h1>
           <div>
             <h2>Mã khuyến mãi(nếu có)</h2>
-            <Input type="text" placeholder="Nhập mã khuyến mãi"></Input>
+            <input type="text" placeholder="Nhập mã khuyến mãi"></input>
           </div>
           <hr />
           <div>

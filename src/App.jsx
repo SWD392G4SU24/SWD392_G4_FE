@@ -1,5 +1,4 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store";
@@ -13,7 +12,9 @@ import GoldPrice from "./Page/goldPrice/index";
 import Cart from "./Page/cart/index";
 import OrderReview from "./Page/cart/orderreview/index";
 import FillInformationForPurchase from "./Page/purchaseinformation";
-
+import ProductAll from "./Page/product/all";
+import AboutUs from "./Page/about";
+import ProductDetail from "./Page/product/productDetail";
 
 function App() {
   const router = createBrowserRouter([
@@ -52,7 +53,8 @@ function App() {
         {
           path: "/orderreview",
           element: <OrderReview />,
-
+        },
+        {
           path: "/prodetail",
           element: <ProductDetail />,
         },
