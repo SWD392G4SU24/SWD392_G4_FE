@@ -32,7 +32,7 @@ function Cart() {
     },
     {
       title: "Hinh anh mo ta",
-      title: "Poster",
+      // title: "Poster",
       dataIndex: "poster_path",
       key: "poster_path",
       align: "center",
@@ -146,7 +146,7 @@ function Cart() {
           }}
         >
           Mua hàng ({count})
-        />
+          </button>
       </div>
       <div className="py-2">
         <button className="rounded-sm bg-black text-white py-1 px-10">

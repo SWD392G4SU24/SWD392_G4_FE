@@ -59,7 +59,7 @@ function ProductDetail() {
   };
 
   return (
-    <div className="mt-14 mb-14 w-full h-full justify-between flex dark:bg-black/85 dark:text-white">
+    <div className="pt-14 pb-14 w-full h-full justify-between flex dark:bg-black/85 dark:text-white">
       {filteredProduct && (
         <div key={filteredProduct.id} className="flex justify-center">
           <div className="img_pd">
@@ -108,7 +108,7 @@ function ProductDetail() {
               </Space>
             </div>
 
-            <div className="mt-12 w-96">
+            <div className="mt-12 w-96 dark:bg-gray-400/25">
               <Collapse
                 bordered={false}
                 items={items}

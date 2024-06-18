@@ -1,22 +1,4 @@
 .gp_tb{
-.ant-table-thead .ant-table-cell{
-    background-color: #971517 !important;
-    text-align: center;
-}
-
-.ant-table-cell:hover{
-    text-align: center;
-    color: chocolate;
-}
-
-th.ant-table-cell{
-    text-align: center !important;
-    font-size: 20px;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    color: #e9a71d !important;
-}
-
-.gp_tb{
     .ant-table-thead .ant-table-cell{
         background-color: #971517 !important;
         text-align: center;
@@ -32,5 +14,24 @@ th.ant-table-cell{
         font-size: 20px;
         font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
         color: #e9a71d !important;
+    }
+
+    .gp_tb{
+        .ant-table-thead .ant-table-cell{
+            background-color: #971517 !important;
+            text-align: center;
+        }
+
+        .ant-table-cell:hover{
+            text-align: center;
+            color: chocolate;
+        }
+
+        th.ant-table-cell{
+            text-align: center !important;
+            font-size: 20px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            color: #e9a71d !important;
+        }
     }
 }

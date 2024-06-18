@@ -1,0 +1,31 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap');
+
+.pic_au{
+    img{
+        // position: relative;
+    }
+
+
+    h1{
+        position: absolute;
+        left: 50px;
+        top: 200px;
+        font-family: 'Times New Roman', Times, serif;
+        font-family: Playfair Display SC;
+        color: #fff;
+    }
+
+    h3{
+        position: absolute;
+        top: 280px;
+        width: 45%;
+        left: 50px;
+        color: #fff;
+    }
+    .playfair-display-sc-bold {
+        font-family: "Playfair Display SC", serif;
+        font-weight: 700;
+        font-style: normal;
+      }
+}

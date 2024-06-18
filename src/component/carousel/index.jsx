@@ -78,7 +78,7 @@ function Carousel({ numOfSlide, isUseNavigate }) {
                 className="absolute bottom-10 w-full left-44 scale-125"
               />
               <div className="relative left-24">
-                <h1 className="text-5xl py-5 text-white font-serif mt-40">
+                <h1 className="text-5xl py-5 text-white mt-40">
                   {pic.content}
                 </h1>
                 <h3>{pic.description}</h3>
