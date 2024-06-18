@@ -24,7 +24,14 @@ function OrderReview() {
               <div className="flex flex-col font-mono pr-64">
                 <h1 className="">Sample Item</h1>
                 <h3 className=" text-gray-500">Quantity</h3>
-                <h2 className="pt-28 text-amber-700">EDIT ORDER</h2>
+                <button
+                  className="pt-28 text-amber-700"
+                  onClick={() => {
+                    window.location.href = "/";
+                  }}
+                >
+                  EDIT ORDER
+                </button>
               </div>
               <div>$100.000</div>
             </div>
