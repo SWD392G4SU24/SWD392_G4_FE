@@ -130,6 +130,9 @@ function Carousel({ numOfSlide, isUseNavigate }) {
         <h1 className="text-center text-3xl mt-10 font-serif">
           Sản phẩm bán chạy
         </h1>
+        <h3 className="text-center mt-2 mb-10">
+          Sản phẩm bán chạy trong mùa xuân
+        </h3>
         <Swiper
           slidesPerView={4}
           spaceBetween={10}

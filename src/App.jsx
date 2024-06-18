@@ -10,6 +10,7 @@ import ScanBarcode from "./component/scan barcode";
 import GoldPrice from "./component/goldPrice";
 import Cart from "./component/cart";
 import Register from "./component/register/regis";
+import ProductDetail from "./component/productDetail";
 
 function App() {
   const router = createBrowserRouter([
@@ -40,6 +41,10 @@ function App() {
         {
           path: "/cart",
           element: <Cart />,
+        },
+        {
+          path: "/prodetail",
+          element: <ProductDetail />,
         },
       ],
     },
