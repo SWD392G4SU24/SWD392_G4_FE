@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "https://6627a8d2b625bf088c092e93.mockapi.io";
+const baseUrl = "https://dassie-living-bonefish.ngrok-free.app";
 //
 const config = {
   baseUrl,
