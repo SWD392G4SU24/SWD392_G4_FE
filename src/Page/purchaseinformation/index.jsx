@@ -4,35 +4,110 @@ import React from "react";
 function FillInformationForPurchase() {
   return (
     <div>
-      <button className="py-5 px-5 text-gray-500">Quay về</button>
-      <div className="flex justify-between items-center">
-        <div className="flex flex-col items-center">
-          <h1 className="py-3">Phiếu Điền Thông Tin</h1>
-          <hr />
-          <input type="text" placeholder=" Email" />
-          <input type="text" placeholder=" Số Điện Thoại" />
-          <input type="text" placeholder=" Địa chỉ" />
-          <div>
-            <input type="text" placeholder="Quận" />
-            <input type="text" placeholder="Thành phố" />
-          </div>
-          <div>
-            <Radio>Tiền mặt</Radio>
-            <Radio>VN Pay</Radio>
+      <button
+        className="py-5 px-5 text-gray-500"
+        onClick={() => {
+          window.location.href = "/orderreview";
+        }}
+      >
+        Quay về
+      </button>
+      <div className="flex justify-between">
+        <div className="w-3/5 h-screen">
+          <div className="p-10">
+            <h1 className="py-4 text-2xl">Phiếu Điền Thông Tin</h1>
+            <hr className="py-2" />
+            <div className="py-3">
+              <input
+                type="email"
+                placeholder=" Email"
+                className="py-1 border border-gray-300 px-2"
+                style={{ width: "100%" }}
+              />
+            </div>
+            <div className="py-3">
+              <input
+                type="text"
+                placeholder=" Số Điện Thoại"
+                className="py-1 border border-gray-300 px-2"
+                style={{ width: "100%" }}
+              />
+            </div>
+            <div className="py-3">
+              <input
+                type="text"
+                placeholder=" Địa chỉ"
+                className="py-1 border border-gray-300 px-2"
+                style={{ width: "100%" }}
+              />
+            </div>
+            <div className="py-3 flex ">
+              <div className="pr-2">
+                <input
+                  type="text"
+                  placeholder="Quận"
+                  className="border border-gray-300 py-1 px-2"
+                  style={{ width: "85%" }}
+                />
+              </div>
+              <div style={{ flex: 1 }}>
+                <input
+                  type="text"
+                  placeholder="Thành phố"
+                  className="border border-gray-300 py-1 px-2"
+                  style={{ width: "100%" }}
+                />
+              </div>
+            </div>
+            <div className="py-3 flex justify-around">
+              <div className="flex items-center ">
+                <input
+                  type="radio"
+                  id="tienMat"
+                  name="paymentMethod"
+                  className="pr-2"
+                />
+                <label htmlFor="tienMat" className="pl-2">
+                  Tiền mặt
+                </label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  type="radio"
+                  id="vnPay"
+                  name="paymentMethod"
+                  className="pr-2"
+                />
+                <label htmlFor="vnPay" className="pl-2">
+                  VN Pay
+                </label>
+              </div>
+            </div>
           </div>
         </div>
-        <div>
-          <h1>Order Total</h1>
-          <div>
-            <h2>Mã khuyến mãi(nếu có)</h2>
-            <input type="text" placeholder="Nhập mã khuyến mãi"></input>
+        <div className="px-28 w-5/12 pt-16">
+          <div className="border border-gray-400 shadow-md flex flex-col p-4">
+            <h1 className="px-32 pb-7 font-serif">Order Total</h1>
+            <div className="pt-5 pb-12">
+              <h2 className="pb-2">Mã khuyến mãi (nếu có)</h2>
+              <input
+                type="text"
+                placeholder="Nhập mã khuyến mãi"
+                className="border border-gray-300 py-2 px-2"
+                style={{ width: "100%" }}
+              ></input>
+            </div>
+            <hr className="py-3" />
+            <div className="flex justify-between py-3">
+              <h2>Total</h2>
+              <h2>100.000 VND</h2>
+            </div>
+            <div className="py-5">
+              <div className="flex flex-col border bg-black text-white font-serif">
+                <button className="py-2">Thanh Toán</button>
+              </div>
+            </div>
           </div>
-          <hr />
-          <div>
-            <h2>Total</h2>
-            <h2>100.000 VND</h2>
-          </div>
-          <button>Thanh Toán</button>
         </div>
       </div>
     </div>
