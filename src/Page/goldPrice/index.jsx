@@ -55,8 +55,8 @@ function GoldPrice() {
   ];
 
   return (
-    <div>
-      <h1 className="text-center text-3xl mt-5 font-serif text-amber-700">
+    <div className="dark:bg-black/85 dark:text-white">
+      <h1 className="text-center text-3xl pt-6 font-serif text-amber-700">
         Bảng giá vàng
       </h1>
       <h3 className="text-center mb-5 mt-2 text-gray-400">
@@ -66,7 +66,8 @@ function GoldPrice() {
         columns={columns}
         dataSource={prices}
         bordered
-        className="gp_tb w-11/12 m-auto"
+        pagination={false}
+        className="gp_tb w-11/12 m-auto pb-20"
       />
     </div>
   );

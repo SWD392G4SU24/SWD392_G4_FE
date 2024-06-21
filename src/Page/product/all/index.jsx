@@ -1,7 +1,7 @@
 import React from "react";
 
-function ProductDetail() {
+function ProductAll() {
   return <div>index</div>;
 }
 
-export default ProductDetail;
+export default ProductAll;

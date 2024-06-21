@@ -1,0 +1,30 @@
+.btn_cart:hover{
+    .ant-btn:hover{
+        color: #000;
+        background-color: #B18165;
+        border: 0;
+    }
+
+    .heart_icon:hover{
+        color: #B18165;
+    }
+}
+
+.btn_cart{
+    .ant-btn{
+        border: 0;
+    }
+}
+
+.img_pd{
+    img{
+        height: 450px;
+    }
+}
+
+// div.ant-collapse-header{
+//     .ant-collapse-header-text{
+//         color: #fff;
+//     }
+// }
+
