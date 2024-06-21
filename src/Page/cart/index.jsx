@@ -17,6 +17,7 @@ function Cart() {
     const listAfterDelete = dataSource.filter((movie) => movie.id !== id);
     setDataSource(listAfterDelete);
   };
+
   const handleQuantityChange = (id, quantity) => {
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
@@ -117,6 +118,7 @@ function Cart() {
           <CloseOutlined className="px-5" />
         </div>
       </div>
+
       <div className="py-1 w-full">
         <Table
           columns={columns}
@@ -140,6 +142,11 @@ function Cart() {
           }}
         >
           Mua hàng ({count})
+          </button>
+      </div>
+      <div className="py-2">
+        <button className="rounded-sm bg-black text-white py-1 px-10">
+          Thanh Toan
         </button>
       </div>
     </div>

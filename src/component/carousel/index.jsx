@@ -78,7 +78,7 @@ function Carousel({ numOfSlide, isUseNavigate }) {
                 className="absolute bottom-10 w-full left-44 scale-125"
               />
               <div className="relative left-24">
-                <h1 className="text-5xl py-5 text-white font-serif mt-40">
+                <h1 className="text-5xl py-5 text-white mt-40">
                   {pic.content}
                 </h1>
                 <h3>{pic.description}</h3>
@@ -94,8 +94,22 @@ function Carousel({ numOfSlide, isUseNavigate }) {
                   >
                     {pic.bt_name}
                   </button>
+                ) : pic.id === "2" ? (
+                  <button
+                    className="py-1 border-2 border-black rounded-md px-3 mt-5 shadow-md shadow-black/30"
+                    onClick={() => {
+                      window.location.href = "/proall";
+                    }}
+                  >
+                    {pic.bt_name}
+                  </button>
                 ) : (
-                  <button className="py-1 border-2 border-black rounded-md px-3 mt-5 shadow-md shadow-black/30">
+                  <button
+                    className="py-1 border-2 border-black rounded-md px-3 mt-5 shadow-md shadow-black/30"
+                    onClick={() => {
+                      window.location.href = "/aboutus";
+                    }}
+                  >
                     {pic.bt_name}
                   </button>
                 )}
@@ -130,6 +144,9 @@ function Carousel({ numOfSlide, isUseNavigate }) {
         <h1 className="text-center text-3xl mt-10 font-serif">
           Sản phẩm bán chạy
         </h1>
+        <h3 className="text-center mt-2 mb-10">
+          Sản phẩm bán chạy trong mùa xuân
+        </h3>
         <Swiper
           slidesPerView={4}
           spaceBetween={10}
