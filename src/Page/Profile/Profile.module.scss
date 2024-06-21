@@ -213,6 +213,7 @@
     margin-bottom: 40px;
     justify-content: center;
     align-items: center;
+    
 }
 
 .orderFilter button {
@@ -228,6 +229,7 @@
     background-color: #dac4b7;
     font-weight: bold; 
     font-size: 20px;
+    transition-duration: 0.2s;
 }
 
 .orderFilter .active {

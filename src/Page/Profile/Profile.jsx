@@ -133,7 +133,7 @@ function Profile(props) {
                                     All
                                 </button>
                             </div>
-                            <div style={{ width: 100, height: 50, marginRight: "70px" }}>
+                            <div style={{ width: 100, height: 50, marginRight: "70px"}}>
                                 <button
                                     className={orderFilter === "Processing" ? styles.active : ""}
                                     onClick={() => setOrderFilter("Processing")}
@@ -141,7 +141,7 @@ function Profile(props) {
                                     Processing
                                 </button>
                             </div>
-                            <div style={{ width: 100, height: 50, marginRight: "70px" }}>
+                            <div style={{ width: 100, height: 50, marginRight: "70px"}}>
                                 <button
                                     className={orderFilter === "Completed" ? styles.active : ""}
                                     onClick={() => setOrderFilter("Completed")}
@@ -149,6 +149,16 @@ function Profile(props) {
                                     Completed
                                 </button>
                             </div>
+
+                            <div style={{ width: 100, height: 50, marginRight: "70px"}}>
+                                <button
+                                    className={orderFilter === "Cancel" ? styles.active : ""}
+                                    onClick={() => setOrderFilter("Cancel")}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                            
                         </div>
                         {renderOrderContent()}
                     </div>
@@ -303,7 +313,7 @@ function Profile(props) {
 
         return (
             <div>
-                <div className={styles.ordersList}>
+               <div className={styles.ordersList}>
             {currentOrders.map(order => (
                 <div key={order.id} className={styles.orderDetails}>
                     <img src={order.image} alt={order.name} className={styles.orderImage} />
@@ -314,7 +324,7 @@ function Profile(props) {
                             <p>Giá: {order.price}</p>
                         </div>
                         <div className={styles.statusContainer}>
-                            <p className={order.status === 'Completed' ? styles.completed : styles.processing}>{`Trạng thái: ${order.status}`}</p>
+                            <p className={styles.status}>{order.status}</p>
                         </div>
                     </div>
                 </div>
