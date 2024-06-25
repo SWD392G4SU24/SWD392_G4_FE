@@ -2,7 +2,7 @@
 
 .container {
     // font-family: 'Flamenco', sans-serif;
-    padding-top: 50px;
+    padding-top: 20px;
     padding-left: 100px;
     margin-bottom: 80px;
 }
@@ -69,8 +69,23 @@
 .infoSection, .favoritesSection {
     padding: 20px;
     margin-left: 50px;
+   
 }
 
+.containerFormEdit{
+    position: fixed;
+    top: 50%; /* Đưa container lên trên 50% của viewport */
+    left: 50%; /* Đưa container sang bên trái 50% của viewport */
+    transform: translate(-50%, -50%); /* Dịch container ngược lại 50% của kích thước của chính nó */
+    background-color: white; /* Màu nền của container */
+    padding: 20px; /* Khoảng cách nội dung với biên của container */
+    z-index: 1000; /* Chỉ số z để đảm bảo nó nằm trên các phần tử khác */
+    max-width: 80%; /* Độ rộng tối đa của container */
+    width: 600px; /* Độ rộng cố định của container */
+    border: 1px solid #ccc; /* Viền của container */
+    border-radius: 10px; /* Bo tròn các góc của container */
+
+}
 
 .infoItem {
     margin-top: 10px;
@@ -78,9 +93,12 @@
     margin-left: 50px;
 }
 .infoItemEditItem{
+    
+    justify-content: center;  /* Center the button horizontally */
+    align-items: center;  /* Center the button vertically (if necessary) */
     margin-top: 10px;
     margin-bottom: 25px;
-    margin-left: 460px;
+    margin-left: 400px;
 }
 
 .infoItem_p{
@@ -250,36 +268,77 @@
 }
 
 .orderInfo {
-    flex: 1;
+    flex: 2;
+    padding-bottom: 30px;
 }
 
+
+.containerOrder{
+    border: 10px;
+}
 .orderImage {
     width: 120px; /* Adjust the width as per your design */
-    height: 100px; /* Adjust the height as per your design */
+    height: 120px; /* Adjust the height as per your design */
     margin-right: 20px;
     object-fit: cover; /* Ensure the image covers the specified dimensions */
     border-radius: 5px; /* Optional: Add rounded corners */
+   
+}
+
+.orderName{
+    font-weight:400;
+    font-size: 20px;
+}
+.orderDate{
+    font-size: 14px;
+    color: #000000; /* Màu chữ cho ngày */
+    margin-bottom: 60px;
+}
+.orderQuantity{
+    font-weight:300;
+}
+.orderPrice{
+    font-weight:300;
+}
+.orderTotalPrice{
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.containerDateAndStatus{
+    display: flex;
+    justify-content: flex-end; /* Canh phải các phần tử bên trong */
+    align-items: center; /* Canh giữa theo chiều dọc */
+    gap: 50px; /* Khoảng cách giữa ngày và trạng thái */
 }
 
 .statusContainer {
     position: absolute;
-    bottom: 0;
-    right: 0;
+    display: inline-block; /* Chỉ bao quanh nội dung */
+    padding: 5px 10px; /* Thêm padding xung quanh văn bản */
+    border-radius: 5px;
 }
+
 
 .status {
     font-size: 14px;
-    font-weight: bold;
-    color: #000; /* Default color for status text */
+    font-weight:500;;
+    color: #FFFFFF; /* Default color for status text */
 }
 
-.status.completed {
-    color: #28a745; /* Green color for completed */
+.statusContainer.completed {
+    background-color: #28a745; /* Green for completed */
+   
 }
 
-.status.processing {
-    color: #ffc107; /* Yellow color for processing */
+.statusContainer.processing {
+    background-color: #ffc107; /* Yellow for processing */
 }
+
+.statusContainer.cancelled {
+    background-color: #dc3545; /* Màu nền cho trạng thái "Cancelled" */
+}
+
 
 .pagination {
     display: flex;

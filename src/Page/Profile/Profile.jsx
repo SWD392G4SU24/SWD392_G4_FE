@@ -1,23 +1,4 @@
 
-/* eslint-disable no-unused-vars */
-
-import React, { useState, useRef } from "react";
-import styles from "./Profile.module.scss";
-import customStyles from "./CustomStyles.module.scss";
-import {
-  HeartOutlined,
-  MailOutlined,
-  PhoneOutlined,
-  UserOutlined,
-  WhatsAppOutlined,
-} from "@ant-design/icons";
-import { Flex, Input, ColorPicker } from "antd";
-function Profile() {
-  const [activeTab, setActiveTab] = useState("Tài Khoản");
-  const [isEditing, setIsEditing] = useState(false);
-  const [isSidebarHidden, setIsSidebarHidden] = useState(false);
-  const contentRef = useRef(null); // Tham chiếu tới phần nội dung
-  const [orderFilter, setOrderFilter] = useState("All");
 
 
 /* eslint-disable react/prop-types */
@@ -31,6 +12,7 @@ import { Input } from 'antd';
 import { withFormik, Form } from 'formik';
 // Check validation
 import * as Yup from 'yup';
+import { display } from '@mui/system';
 
 function Profile(props) {
     const [activeTab, setActiveTab] = useState('Tài Khoản');
@@ -143,7 +125,6 @@ function Profile(props) {
             case "Đơn hàng":
                 return (
                     <div className={styles.orderHistorySection}>
-                        <h1>Order History</h1>
                         <div className={styles.orderFilter}>
                             <div style={{ width: 100, height: 50, marginRight: "10px" }}>
                                 <button
@@ -313,7 +294,7 @@ function Profile(props) {
         name: "SIGNET RING",
         date: "15.05.2024",
         price: "100,000 VND",
-        status: "Processing",
+        status: "Cancel",
         image:
             "https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg",
     },
@@ -335,19 +316,25 @@ function Profile(props) {
             <div>
                <div className={styles.ordersList}>
             {currentOrders.map(order => (
+
                 <div key={order.id} className={styles.orderDetails}>
-                    <img src={order.image} alt={order.name} className={styles.orderImage} />
-                    <div className={styles.orderInfo}>
-                        <div>
-                            <h2>{order.name}</h2>
-                            <p>Ngày: {order.date}</p>
-                            <p>Giá: {order.price}</p>
+                        <img src={order.image} alt={order.name} className={styles.orderImage} />
+                        <div className={styles.orderInfo}>
+                            <div>
+                                <h2 className={styles.orderName}>{order.name}</h2>
+                                <p className={styles.orderQuantity}>Số Lượng: 1 </p>
+                                <p className={styles.orderPrice}>Giá: {order.price}</p>
+                                <p className={styles.orderTotalPrice}>Tổng tiền: {order.price}</p>
+                            </div>
                         </div>
-                        <div className={styles.statusContainer}>
-                            <p className={styles.status}>{order.status}</p>
+                        <div className={styles.containerDateAndStatus}>
+                            <p className={styles.orderDate}>Ngày: {order.date}</p>
+                            <div className={`${styles.statusContainer} ${order.status === 'Completed' ? styles.completed : ''} ${order.status === 'Processing' ? styles.processing : ''} ${order.status === 'Cancel' ? styles.cancelled : ''}`}>
+                                <p className={styles.status}>{order.status}</p>
+                            </div>
                         </div>
-                    </div>
                 </div>
+
             ))}
         </div>
                 <div className={styles.pagination}>
@@ -405,7 +392,34 @@ function Profile(props) {
     );
 }
 
-export default Profile;
+const ProfileWithFormik = withFormik({
+    mapPropsToValues: () => ({
+        preferredName: '',
+        email: '',
+        phoneNumber: '',
+    }),
+    validationSchema: Yup.object().shape({
+        preferredName: Yup.string().required('Yêu cầu phải có biệt danh !').max(50, 'Biệt danh phải ít hơn 50 kí tự.'),
+        email: Yup.string().required('Yêu cầu phải có email !').email('Email không hợp lệ!'),
+        phoneNumber: Yup.string()
+            .required('Yêu cầu phải có số điện thoại !')
+            .matches(/^[0-9]*$/, 'Yêu cầu số điện thoại chỉ chứa chữ số.')
+            .min(10, 'Số điện thoại phải có ít nhất 10 chữ số.')
+            .max(11, 'Số điện thoại phải có tối đa 11 chữ số.'),
+    }),
+    handleSubmit: (values, { props, setSubmitting }) => {
+        console.log(values);
+    },
+    validateOnChange: true,
+    validateOnBlur: true,
+    displayName: 'ProfileForm',
+})(Profile);
+
+export default ProfileWithFormik;
+
+
+
+
 // ========
 // import React, { useState, useRef } from 'react';
 // import styles from './Profile.module.scss';
@@ -647,28 +661,6 @@ export default Profile;
 
 // export default Profile;
 
-=======
-const ProfileWithFormik = withFormik({
-    mapPropsToValues: () => ({
-        preferredName: '',
-        email: '',
-        phoneNumber: '',
-    }),
-    validationSchema: Yup.object().shape({
-        preferredName: Yup.string().required('Yêu cầu phải có biệt danh !').max(50, 'Biệt danh phải ít hơn 50 kí tự.'),
-        email: Yup.string().required('Yêu cầu phải có email !').email('Email không hợp lệ!'),
-        phoneNumber: Yup.string()
-            .required('Yêu cầu phải có số điện thoại !')
-            .matches(/^[0-9]*$/, 'Yêu cầu số điện thoại chỉ chứa chữ số.')
-            .min(10, 'Số điện thoại phải có ít nhất 10 chữ số.')
-            .max(11, 'Số điện thoại phải có tối đa 11 chữ số.'),
-    }),
-    handleSubmit: (values, { props, setSubmitting }) => {
-        console.log(values);
-    },
-    validateOnChange: true,
-    validateOnBlur: true,
-    displayName: 'ProfileForm',
-})(Profile);
 
-export default ProfileWithFormik;
+
+ 
