@@ -146,7 +146,7 @@ function Cart() {
       </div>
       <div className="py-2">
         <button className="rounded-sm bg-black text-white py-1 px-10">
-          Thanh Toan
+          Thanh Toán
         </button>
       </div>
     </div>

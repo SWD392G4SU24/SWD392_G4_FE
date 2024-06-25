@@ -15,9 +15,6 @@ import ProductDetail from "./Page/product/productDetail";
 import ProductAll from "./Page/product/all";
 import AboutUs from "./Page/about";
 import FillInformationForPurchase from "./Page/purchaseinformation";
-import ProductAll from "./Page/product/all";
-import AboutUs from "./Page/about";
-import ProductDetail from "./Page/product/productDetail";
 
 function App() {
   const router = createBrowserRouter([
