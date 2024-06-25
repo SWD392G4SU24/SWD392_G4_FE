@@ -77,7 +77,15 @@ function OrderReview() {
               <h1>$100.000</h1>
             </div>
             <div className="rounded-sm bg-black text-white py-1 px-28 flex justify-center items-center">
-              <button>Điền Thông Tin</button>
+              <div>
+                <button
+                  onClick={() => {
+                    window.location.href = "/purchaseinformation";
+                  }}
+                >
+                  Điền Thông Tin
+                </button>
+              </div>
             </div>
           </div>
         </div>

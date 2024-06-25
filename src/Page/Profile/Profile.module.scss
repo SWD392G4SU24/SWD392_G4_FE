@@ -71,10 +71,16 @@
     margin-left: 50px;
 }
 
+
 .infoItem {
     margin-top: 10px;
     margin-bottom: 25px;
     margin-left: 50px;
+}
+.infoItemEditItem{
+    margin-top: 10px;
+    margin-bottom: 25px;
+    margin-left: 460px;
 }
 
 .infoItem_p{
@@ -102,7 +108,7 @@
     display: flex;
     justify-content: center;  /* Center the button horizontally */
     align-items: center;  /* Center the button vertically (if necessary) */
-    margin-top: 20px;  /* Optional: Add margin to the top for spacing */
+    margin-top: 50px;  /* Optional: Add margin to the top for spacing */
 }
 
 .editButton {
@@ -210,7 +216,7 @@
 }
 
 .orderFilter button {
-    background-color: #fff;
+    background-color: #f0f0f0;
     border: 1px solid #ccc;
     padding: 10px 20px;
     cursor: pointer;
@@ -223,12 +229,11 @@
     font-weight: bold; 
     font-size: 20px;
 }
-.orderFilter .active  {
-    background-color: #B18165;
-    color: white;
-    
-}
 
+.orderFilter .active {
+    background-color: #b18165;
+    color: white;
+}
 
 .ordersList {
     display: flex;
@@ -237,11 +242,68 @@
 
 .orderDetails {
     display: flex;
+    align-items: center;
     margin-bottom: 20px;
+    position: relative; /* Ensure positioning context for absolute positioning */
+}
+
+.orderInfo {
+    flex: 1;
 }
 
 .orderImage {
-    width: 200px;
-    height: 170px;
+    width: 120px; /* Adjust the width as per your design */
+    height: 100px; /* Adjust the height as per your design */
     margin-right: 20px;
+    object-fit: cover; /* Ensure the image covers the specified dimensions */
+    border-radius: 5px; /* Optional: Add rounded corners */
+}
+
+.statusContainer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.status {
+    font-size: 14px;
+    font-weight: bold;
+    color: #000; /* Default color for status text */
+}
+
+.status.completed {
+    color: #28a745; /* Green color for completed */
+}
+
+.status.processing {
+    color: #ffc107; /* Yellow color for processing */
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    margin: 0 5px;
+    padding: 8px 16px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.pagination button:hover {
+    background-color: #e0e0e0;
+}
+
+.pagination button.active {
+    background-color: #b18165;
+    color: #fff;
+    border-color: transparent;
+}
+
+.pagination button:disabled {
+    cursor: default;
+    opacity: 0.6;
 }
