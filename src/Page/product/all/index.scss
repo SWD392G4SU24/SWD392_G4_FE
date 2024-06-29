@@ -20,3 +20,12 @@ h1.title_3{
     align-items: center;
     justify-content: space-between;
 }
+
+
+.btn_prod:hover{
+    .ant-btn:hover{
+        color: #fff;
+        background-color: #B18165;
+        border-color: #7c7c7c;
+    }
+}

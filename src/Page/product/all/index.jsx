@@ -60,15 +60,15 @@ function ProductAll() {
 
       <div>
         <div>
-          <div className="flex w-3/4 m-auto">
+          <div className="flex w-3/4 m-auto btn_prod">
             <div className="flex">
-              <h1 className="title_3 text-4xl pr-10">Vòng cổ</h1>
-              <h3>Khám phá vòng cổ bạc và vàng cho mọi dịp.</h3>
+              <h1 className="title_3 text-4xl pr-10">Dây chuyền</h1>
+              <h3>Khám phá dây chuyền bạc và vàng cho mọi dịp.</h3>
             </div>
             <Button className="pt-5 pb-5 pl-10 pr-10">XEM THÊM</Button>
           </div>
 
-          <div className="pt-10 flex justify-evenly">
+          <div className="pt-10 pb-10 flex justify-evenly">
             <Row
               gutter={[
                 {
@@ -83,39 +83,117 @@ function ProductAll() {
               {filterDC.map((dc) => (
                 <Col
                   key={dc.id}
-                  className="gutter-row justify-center flex"
+                  className="gutter-row justify-center flex flex-col w-32"
                   span={6}
                 >
-                  <img src={dc.ImageURL} className="w-24 h-36" />
+                  <img src={dc.ImageURL} className="w-24 h-40" />
+                  <h3>{dc.Name}</h3>
+                  <h3>{dc.Cost}</h3>
                 </Col>
               ))}
             </Row>
           </div>
         </div>
 
-        <div className="flex w-3/4 m-auto">
-          <div className="flex">
-            <h1 className="title_3 text-4xl pr-10">Hoa tai</h1>
-            <h3>Khám phá bông tai bạc và vàng cho mọi dịp.</h3>
+        <div>
+          <div className="flex w-3/4 m-auto btn_prod">
+            <div className="flex">
+              <h1 className="title_3 text-4xl pr-10">Hoa tai</h1>
+              <h3>Khám phá hoa tai bạc và vàng cho mọi dịp.</h3>
+            </div>
+            <Button className="pt-5 pb-5 pl-10 pr-10">XEM THÊM</Button>
           </div>
-          <Button className="pt-5 pb-5 pl-10 pr-10">XEM THÊM</Button>
+
+          <div className="pt-10 pb-10 flex justify-evenly">
+            <Row
+              gutter={[
+                {
+                  xs: 8,
+                  sm: 16,
+                  md: 24,
+                  lg: 32,
+                },
+                32,
+              ]}
+            >
+              {filterHT.map((ht) => (
+                <Col
+                  key={ht.id}
+                  className="gutter-row justify-center flex"
+                  span={6}
+                >
+                  <img src={ht.ImageURL} className="w-40 h-40" />
+                </Col>
+              ))}
+            </Row>
+          </div>
         </div>
 
-        <div className="flex w-3/4 m-auto">
-          <div className="flex">
-            <h1 className="title_3 text-4xl pr-10">Vòng tay</h1>
-            <h3>Khám phá vòng tay bạc và vàng cho mọi dịp.</h3>
+        <div>
+          <div className="flex w-3/4 m-auto btn_prod">
+            <div className="flex">
+              <h1 className="title_3 text-4xl pr-10">Vòng tay</h1>
+              <h3>Khám phá vòng tay bạc và vàng cho mọi dịp.</h3>
+            </div>
+            <Button className="pt-5 pb-5 pl-10 pr-10">XEM THÊM</Button>
           </div>
-          <Button className="pt-5 pb-5 pl-10 pr-10">XEM THÊM</Button>
+          <div className="pt-10 pb-10 flex justify-evenly">
+            <Row
+              gutter={[
+                {
+                  xs: 8,
+                  sm: 16,
+                  md: 24,
+                  lg: 32,
+                },
+                32,
+              ]}
+            >
+              {filterVT.map((vt) => (
+                <Col
+                  key={vt.id}
+                  className="gutter-row justify-center flex"
+                  span={6}
+                >
+                  <img src={vt.ImageURL} className="w-40 h-40" />
+                </Col>
+              ))}
+            </Row>
+          </div>
         </div>
 
-        <div className="flex w-3/4 m-auto">
-          <div className="flex">
-            <h1 className="title_3 text-4xl pr-10">Dây chuyền</h1>
-            <h3>Khám phá dây chuyền bạc và vàng cho mọi dịp.</h3>
+        <div>
+          <div className="flex w-3/4 m-auto btn_prod">
+            <div className="flex">
+              <h1 className="title_3 text-4xl pr-10">Nhẫn</h1>
+              <h3>Khám phá nhẫn bạc và vàng cho mọi dịp.</h3>
+            </div>
+            <Button className="pt-5 pb-5 pl-10 pr-10">XEM THÊM</Button>
           </div>
 
-          <Button className="pt-5 pb-5 pl-10 pr-10">XEM THÊM</Button>
+          <div className="pt-10 pb-10 flex justify-evenly">
+            <Row
+              gutter={[
+                {
+                  xs: 8,
+                  sm: 16,
+                  md: 24,
+                  lg: 32,
+                },
+                32,
+              ]}
+            >
+              {filterNh.map((n) => (
+                <Col
+                  key={n.id}
+                  className="gutter-row justify-center flex"
+                  span={6}
+                >
+                  <img src={n.ImageURL} className="w-40 h-40" />
+                </Col>
+              ))}
+            </Row>
+          </div>
         </div>
       </div>
     </div>
