@@ -160,7 +160,8 @@ function Profile(props) {
             {renderOrderContent()}
           </div>
         );
-      case "Khuyến mãi":
+
+case "Khuyến mãi":
         return <div>Promotions content</div>;
       default:
         return null;
@@ -426,6 +427,46 @@ function Profile(props) {
             ))}
           </ul>
         </div>
+        <div
+          className={styles.divider}
+          style={{ display: isSidebarHidden ? "none" : "block" }}
+        ></div>
+        <div className={styles.content}>
+          {isEditing ? renderEditForm() : renderContent()}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const ProfileWithFormik = withFormik({
+  mapPropsToValues: () => ({
+    preferredName: "",
+    email: "",
+    phoneNumber: "",
+  }),
+  validationSchema: Yup.object().shape({
+    preferredName: Yup.string()
+      .required("Yêu cầu phải có biệt danh !")
+      .max(50, "Biệt danh phải ít hơn 50 kí tự."),
+    email: Yup.string()
+      .required("Yêu cầu phải có email !")
+      .email("Email không hợp lệ!"),
+    phoneNumber: Yup.string()
+      .required("Yêu cầu phải có số điện thoại !")
+      .matches(/^[0-9]*$/, "Yêu cầu số điện thoại chỉ chứa chữ số.")
+      .min(10, "Số điện thoại phải có ít nhất 10 chữ số.")
+      .max(11, "Số điện thoại phải có tối đa 11 chữ số."),
+  }),
+  handleSubmit: (values, { props, setSubmitting }) => {
+    console.log(values);
+  },
+  validateOnChange: true,
+  validateOnBlur: true,
+  displayName: "ProfileForm",
+})(Profile);
+
+export default ProfileWithFormik;
 
         <div
           className={styles.divider}

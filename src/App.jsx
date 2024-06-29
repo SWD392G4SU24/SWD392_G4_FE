@@ -15,6 +15,7 @@ import ProductDetail from "./Page/product/productDetail";
 import ProductAll from "./Page/product/all";
 import AboutUs from "./Page/about";
 import FillInformationForPurchase from "./Page/purchaseinformation";
+import Payment from "./Page/cart/payment";
 
 function App() {
   const router = createBrowserRouter([
@@ -69,6 +70,10 @@ function App() {
         {
           path: "/purchaseinformation",
           element: <FillInformationForPurchase />,
+        },
+        {
+          path: "/payment",
+          element: <Payment />,
         },
       ],
     },
