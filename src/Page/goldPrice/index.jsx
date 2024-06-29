@@ -22,17 +22,17 @@ function GoldPrice() {
   const columns = [
     {
       title: "Loại vàng",
-      dataIndex: "n_1",
+      dataIndex: "name",
     },
     {
       title: "Hàm lượng",
-      dataIndex: "h_1",
+      dataIndex: "goldContent",
       align: "center",
     },
     {
       title: "Giá bán ra",
       className: "column-money",
-      dataIndex: "ps_1",
+      dataIndex: "sellCost",
       align: "center",
       render: (text) => (
         <h3 className="text-green-700 font-semibold">{text}</h3>
@@ -41,17 +41,17 @@ function GoldPrice() {
     {
       title: "Giá mua vào",
       className: "column-money",
-      dataIndex: "pb_1",
+      dataIndex: "buyCost",
       align: "center",
       render: (text) => <h3 className="text-red-600 font-semibold">{text}</h3>,
     },
-    {
-      title: "Giá thế giới",
-      className: "column-money",
-      dataIndex: "pt_1",
-      align: "center",
-      render: (text) => <h3 className="font-semibold">{text}</h3>,
-    },
+    // {
+    //   title: "Giá thế giới",
+    //   className: "column-money",
+    //   dataIndex: "pt_1",
+    //   align: "center",
+    //   render: (text) => <h3 className="font-semibold">{text}</h3>,
+    // },
   ];
 
   return (
@@ -60,7 +60,7 @@ function GoldPrice() {
         Bảng giá vàng
       </h1>
       <h3 className="text-center mb-5 mt-2 text-gray-400">
-        Ngày cập nhật: {prices[1]?.d_1}
+        Ngày cập nhật: {prices[1]?.date}
       </h3>
       <Table
         columns={columns}
