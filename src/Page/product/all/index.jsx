@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import "./index.scss";
 import { Button, Col, Row } from "antd";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation } from "swiper/modules";
+
 function ProductAll() {
   const [pics, setPic] = useState([]);
   const [products, setProduct] = useState([]);
@@ -43,10 +46,10 @@ function ProductAll() {
   console.log(filterNh.map((ht) => ht.Name));
 
   return (
-    <div>
+    <div className="dark:bg-black/85 dark:text-white">
       <img
         src={filterPic?.avatar}
-        className="poster w-full bottom-80 relative"
+        className="poster w-full bottom-8 relative"
       />
       <div className="absolute top-32 w-3/4 left-44 text-white">
         <h1 className="title text-center text-2xl pt-5 text-yellow-400">
@@ -65,34 +68,37 @@ function ProductAll() {
               <h1 className="title_3 text-4xl pr-10">Dây chuyền</h1>
               <h3>Khám phá dây chuyền bạc và vàng cho mọi dịp.</h3>
             </div>
-            <Button className="pt-5 pb-5 pl-10 pr-10">XEM THÊM</Button>
+            <Button
+              className="pt-5 pb-5 pl-10 pr-10"
+              onClick={() => {
+                window.location.href = "/dc";
+              }}
+            >
+              XEM THÊM
+            </Button>
           </div>
 
-          <div className="pt-10 pb-10 flex justify-evenly">
-            <Row
-              gutter={[
-                {
-                  xs: 8,
-                  sm: 16,
-                  md: 24,
-                  lg: 32,
-                },
-                32,
-              ]}
-            >
-              {filterDC.map((dc) => (
-                <Col
-                  key={dc.id}
-                  className="gutter-row justify-center flex flex-col w-32"
-                  span={6}
-                >
-                  <img src={dc.ImageURL} className="w-24 h-40" />
-                  <h3>{dc.Name}</h3>
-                  <h3>{dc.Cost}</h3>
-                </Col>
-              ))}
-            </Row>
-          </div>
+          <Swiper
+            slidesPerView={4}
+            spaceBetween={10}
+            freeMode={true}
+            navigation={true}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            modules={[Navigation, Autoplay]}
+          >
+            {filterDC.map((dc) => (
+              <SwiperSlide key={dc.id}>
+                <div className="ml-32 pb-16 pt-5">
+                  <img src={dc.ImageURL} className="w-32 h-40" />
+                  <h3 className="font-medium">{dc.Name}</h3>
+                  <h4>{dc.Cost}</h4>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
 
         <div>
@@ -101,32 +107,37 @@ function ProductAll() {
               <h1 className="title_3 text-4xl pr-10">Hoa tai</h1>
               <h3>Khám phá hoa tai bạc và vàng cho mọi dịp.</h3>
             </div>
-            <Button className="pt-5 pb-5 pl-10 pr-10">XEM THÊM</Button>
+            <Button
+              className="pt-5 pb-5 pl-10 pr-10"
+              onClick={() => {
+                window.location.href = "/ht";
+              }}
+            >
+              XEM THÊM
+            </Button>
           </div>
 
-          <div className="pt-10 pb-10 flex justify-evenly">
-            <Row
-              gutter={[
-                {
-                  xs: 8,
-                  sm: 16,
-                  md: 24,
-                  lg: 32,
-                },
-                32,
-              ]}
-            >
-              {filterHT.map((ht) => (
-                <Col
-                  key={ht.id}
-                  className="gutter-row justify-center flex"
-                  span={6}
-                >
-                  <img src={ht.ImageURL} className="w-40 h-40" />
-                </Col>
-              ))}
-            </Row>
-          </div>
+          <Swiper
+            slidesPerView={4}
+            spaceBetween={10}
+            freeMode={true}
+            navigation={true}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            modules={[Navigation, Autoplay]}
+          >
+            {filterHT.map((ht) => (
+              <SwiperSlide key={ht.id}>
+                <div className="ml-32 pb-16 pt-5">
+                  <img src={ht.ImageURL} className="w-32 h-40" />
+                  <h3 className="font-medium">{ht.Name}</h3>
+                  <h4>{ht.Cost}</h4>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
 
         <div>
@@ -135,31 +146,37 @@ function ProductAll() {
               <h1 className="title_3 text-4xl pr-10">Vòng tay</h1>
               <h3>Khám phá vòng tay bạc và vàng cho mọi dịp.</h3>
             </div>
-            <Button className="pt-5 pb-5 pl-10 pr-10">XEM THÊM</Button>
-          </div>
-          <div className="pt-10 pb-10 flex justify-evenly">
-            <Row
-              gutter={[
-                {
-                  xs: 8,
-                  sm: 16,
-                  md: 24,
-                  lg: 32,
-                },
-                32,
-              ]}
+            <Button
+              className="pt-5 pb-5 pl-10 pr-10"
+              onClick={() => {
+                window.location.href = "/vt";
+              }}
             >
-              {filterVT.map((vt) => (
-                <Col
-                  key={vt.id}
-                  className="gutter-row justify-center flex"
-                  span={6}
-                >
-                  <img src={vt.ImageURL} className="w-40 h-40" />
-                </Col>
-              ))}
-            </Row>
+              XEM THÊM
+            </Button>
           </div>
+
+          <Swiper
+            slidesPerView={4}
+            spaceBetween={10}
+            freeMode={true}
+            navigation={true}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            modules={[Navigation, Autoplay]}
+          >
+            {filterVT.map((vt) => (
+              <SwiperSlide key={vt.id}>
+                <div className="ml-32 pb-16 pt-5">
+                  <img src={vt.ImageURL} className="w-32 h-40" />
+                  <h3 className="font-medium">{vt.Name}</h3>
+                  <h4>{vt.Cost}</h4>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
 
         <div>
@@ -168,32 +185,59 @@ function ProductAll() {
               <h1 className="title_3 text-4xl pr-10">Nhẫn</h1>
               <h3>Khám phá nhẫn bạc và vàng cho mọi dịp.</h3>
             </div>
-            <Button className="pt-5 pb-5 pl-10 pr-10">XEM THÊM</Button>
+            <Button
+              className="pt-5 pb-5 pl-10 pr-10"
+              onClick={() => {
+                window.location.href = "/n";
+              }}
+            >
+              XEM THÊM
+            </Button>
           </div>
 
-          <div className="pt-10 pb-10 flex justify-evenly">
-            <Row
-              gutter={[
-                {
-                  xs: 8,
-                  sm: 16,
-                  md: 24,
-                  lg: 32,
-                },
-                32,
-              ]}
-            >
-              {filterNh.map((n) => (
-                <Col
-                  key={n.id}
-                  className="gutter-row justify-center flex"
-                  span={6}
-                >
+          <Swiper
+            // slidesPerView={4}
+            // spaceBetween={10}
+            freeMode={true}
+            // centeredSlides={true}
+            centeredSlides={false}
+            // centerInsufficientSlides={true}
+            breakpoints={{
+              480: {
+                slidesPerView: 2,
+                spaceBetween: 10,
+              },
+              640: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+              },
+              768: {
+                slidesPerView: 3,
+                spaceBetween: 0,
+              },
+              1024: {
+                slidesPerView: 4,
+                spaceBetween: 10,
+              },
+            }}
+            navigation={true}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: false,
+            }}
+            modules={[Navigation, Autoplay]}
+            className="swiperNhan"
+          >
+            {filterNh.map((n) => (
+              <SwiperSlide key={n.id}>
+                <div className="pb-16 pt-5">
                   <img src={n.ImageURL} className="w-40 h-40" />
-                </Col>
-              ))}
-            </Row>
-          </div>
+                  <h3 className="font-medium">{n.Name}</h3>
+                  <h4>{n.Cost}</h4>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </div>
     </div>
