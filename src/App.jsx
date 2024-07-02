@@ -11,11 +11,15 @@ import ScanBarcode from "./Page/scan barcode/index";
 import GoldPrice from "./Page/goldPrice/index";
 import Cart from "./Page/cart/index";
 import OrderReview from "./Page/cart/orderreview/index";
-import ProductDetail from "./Page/product/productDetail";
 import ProductAll from "./Page/product/all";
 import AboutUs from "./Page/about";
 import FillInformationForPurchase from "./Page/purchaseinformation";
 import Payment from "./Page/cart/payment";
+import HoaTai from "./Page/product/eachProduct/HoaTai";
+import DayChuyen from "./Page/product/eachProduct/DayChuyen";
+import Nhan from "./Page/product/eachProduct/Nhan";
+import VongTay from "./Page/product/eachProduct/VongTay";
+import ProductDetail2 from "./Page/product/productDetail/index2";
 
 function App() {
   const router = createBrowserRouter([
@@ -56,8 +60,8 @@ function App() {
           element: <OrderReview />,
         },
         {
-          path: "/prodetail",
-          element: <ProductDetail />,
+          path: "/prodetail/:id",
+          element: <ProductDetail2 />,
         },
         {
           path: "/proall",
@@ -74,6 +78,22 @@ function App() {
         {
           path: "/payment",
           element: <Payment />,
+        },
+        {
+          path: "/ht",
+          element: <HoaTai />,
+        },
+        {
+          path: "/dc",
+          element: <DayChuyen />,
+        },
+        {
+          path: "/n",
+          element: <Nhan />,
+        },
+        {
+          path: "/vt",
+          element: <VongTay />,
         },
       ],
     },
