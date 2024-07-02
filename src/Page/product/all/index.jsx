@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./index.scss";
-import { Button, Col, Row } from "antd";
+import { Button } from "antd";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
@@ -79,19 +79,37 @@ function ProductAll() {
           </div>
 
           <Swiper
-            slidesPerView={4}
-            spaceBetween={10}
-            freeMode={true}
+            centeredSlides={false}
+            breakpoints={{
+              "@0.00": {
+                slidesPerView: 2,
+                spaceBetween: 10,
+              },
+              "@1.00": {
+                slidesPerView: 3,
+                spaceBetween: 40,
+              },
+              "@1.50": {
+                slidesPerView: 4,
+                spaceBetween: 50,
+              },
+            }}
             navigation={true}
             autoplay={{
               delay: 3000,
               disableOnInteraction: false,
             }}
             modules={[Navigation, Autoplay]}
+            className="swiperNhan"
           >
             {filterDC.map((dc) => (
               <SwiperSlide key={dc.id}>
-                <div className="ml-32 pb-16 pt-5">
+                <div
+                  className="pb-16 pt-5 w-36"
+                  onClick={() => {
+                    window.location.href = `/prodetail/${dc.id}`;
+                  }}
+                >
                   <img src={dc.ImageURL} className="w-32 h-40" />
                   <h3 className="font-medium">{dc.Name}</h3>
                   <h4>{dc.Cost}</h4>
@@ -118,19 +136,37 @@ function ProductAll() {
           </div>
 
           <Swiper
-            slidesPerView={4}
-            spaceBetween={10}
-            freeMode={true}
+            centeredSlides={false}
+            breakpoints={{
+              "@0.00": {
+                slidesPerView: 2,
+                spaceBetween: 10,
+              },
+              "@1.00": {
+                slidesPerView: 3,
+                spaceBetween: 40,
+              },
+              "@1.50": {
+                slidesPerView: 4,
+                spaceBetween: 50,
+              },
+            }}
             navigation={true}
             autoplay={{
               delay: 3000,
               disableOnInteraction: false,
             }}
             modules={[Navigation, Autoplay]}
+            className="swiperNhan"
           >
             {filterHT.map((ht) => (
               <SwiperSlide key={ht.id}>
-                <div className="ml-32 pb-16 pt-5">
+                <div
+                  className="pb-16 pt-5"
+                  onClick={() => {
+                    window.location.href = `/prodetail/${ht.id}`;
+                  }}
+                >
                   <img src={ht.ImageURL} className="w-32 h-40" />
                   <h3 className="font-medium">{ht.Name}</h3>
                   <h4>{ht.Cost}</h4>
@@ -157,19 +193,37 @@ function ProductAll() {
           </div>
 
           <Swiper
-            slidesPerView={4}
-            spaceBetween={10}
-            freeMode={true}
+            centeredSlides={false}
+            breakpoints={{
+              "@0.00": {
+                slidesPerView: 2,
+                spaceBetween: 10,
+              },
+              "@1.00": {
+                slidesPerView: 3,
+                spaceBetween: 40,
+              },
+              "@1.50": {
+                slidesPerView: 4,
+                spaceBetween: 50,
+              },
+            }}
             navigation={true}
             autoplay={{
               delay: 3000,
               disableOnInteraction: false,
             }}
             modules={[Navigation, Autoplay]}
+            className="swiperNhan"
           >
             {filterVT.map((vt) => (
               <SwiperSlide key={vt.id}>
-                <div className="ml-32 pb-16 pt-5">
+                <div
+                  className="pb-16 pt-5"
+                  onClick={() => {
+                    window.location.href = `/prodetail/${vt.id}`;
+                  }}
+                >
                   <img src={vt.ImageURL} className="w-32 h-40" />
                   <h3 className="font-medium">{vt.Name}</h3>
                   <h4>{vt.Cost}</h4>
@@ -196,28 +250,19 @@ function ProductAll() {
           </div>
 
           <Swiper
-            // slidesPerView={4}
-            // spaceBetween={10}
-            freeMode={true}
-            // centeredSlides={true}
             centeredSlides={false}
-            // centerInsufficientSlides={true}
             breakpoints={{
-              480: {
+              "@0.00": {
                 slidesPerView: 2,
                 spaceBetween: 10,
               },
-              640: {
-                slidesPerView: 2,
-                spaceBetween: 20,
-              },
-              768: {
+              "@1.00": {
                 slidesPerView: 3,
-                spaceBetween: 0,
+                spaceBetween: 40,
               },
-              1024: {
+              "@1.50": {
                 slidesPerView: 4,
-                spaceBetween: 10,
+                spaceBetween: 50,
               },
             }}
             navigation={true}
@@ -230,7 +275,12 @@ function ProductAll() {
           >
             {filterNh.map((n) => (
               <SwiperSlide key={n.id}>
-                <div className="pb-16 pt-5">
+                <div
+                  className="pb-16 pt-5"
+                  onClick={() => {
+                    window.location.href = `/prodetail/${n.id}`;
+                  }}
+                >
                   <img src={n.ImageURL} className="w-40 h-40" />
                   <h3 className="font-medium">{n.Name}</h3>
                   <h4>{n.Cost}</h4>

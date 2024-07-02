@@ -54,10 +54,10 @@ function Nhan() {
               }}
             >
               <img src={n.ImageURL} className="w-40 h-40 " />
-              <h3 className="absolute -bottom-5 left-28 font-medium w-40">
+              <h3 className="absolute -bottom-5 font-medium w-40">
                 {n.Name}
               </h3>
-              <h3 className="absolute -bottom-10 left-28 text-gray-400">
+              <h3 className="absolute -bottom-5 font-medium w-40">
                 {n.Cost}
               </h3>
             </Col>

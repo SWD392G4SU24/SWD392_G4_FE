@@ -54,10 +54,10 @@ function HoaTai() {
               }}
             >
               <img src={ht.ImageURL} className="w-40 h-40 " />
-              <h3 className="absolute -bottom-5 left-28 font-medium w-40">
+              <h3 className="absolute -bottom-5 font-medium w-40">
                 {ht.Name}
               </h3>
-              <h3 className="absolute -bottom-10 left-28 text-gray-400">
+              <h3 className="absolute -bottom-10 text-gray-400 w-40">
                 {ht.Cost}
               </h3>
             </Col>

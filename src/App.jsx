@@ -11,7 +11,6 @@ import ScanBarcode from "./Page/scan barcode/index";
 import GoldPrice from "./Page/goldPrice/index";
 import Cart from "./Page/cart/index";
 import OrderReview from "./Page/cart/orderreview/index";
-import ProductDetail from "./Page/product/productDetail";
 import ProductAll from "./Page/product/all";
 import AboutUs from "./Page/about";
 import FillInformationForPurchase from "./Page/purchaseinformation";
@@ -59,10 +58,6 @@ function App() {
         {
           path: "/orderreview",
           element: <OrderReview />,
-        },
-        {
-          path: "/prodetail",
-          element: <ProductDetail />,
         },
         {
           path: "/prodetail/:id",

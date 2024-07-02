@@ -34,7 +34,14 @@ img.poster{
     height: 600px;
 }
 
-// .swiperNhan{
+.swiperNhan{
+    display: flex;
+    justify-content: center;
+    padding-left: 10%;
+}
+
+// .swiperDC{
 //     display: flex;
-//     justify-content: center;
+//     justify-content: left;   
+//     // padding-left: 2%;
 // }
