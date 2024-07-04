@@ -1,9 +1,7 @@
 
-
-
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from './Profile.module.scss';
 import customStyles from './CustomStyles.module.scss';
 import { MailOutlined, UserOutlined, WhatsAppOutlined } from "@ant-design/icons";
@@ -13,8 +11,20 @@ import { withFormik, Form } from 'formik';
 // Check validation
 import * as Yup from 'yup';
 import { display } from '@mui/system';
+import axios from 'axios';
 
 function Profile(props) {
+    
+    let [state, setState] = useState({
+        userInfo: [],
+        values: {
+            taskName: ''
+        },
+        errors: {
+            taskName: ''
+        }
+    });
+
     const [activeTab, setActiveTab] = useState('Tài Khoản');
     const [isEditing, setIsEditing] = useState(false);
     const [isSidebarHidden, setIsSidebarHidden] = useState(false);
@@ -30,11 +40,17 @@ function Profile(props) {
         handleChange,
         handleBlur,
         handleSubmit,
+        setFieldValue,
+        userInfo,
+        
     } = props;
 
     const openEditForm = () => {
         setIsEditing(true);
         setIsSidebarHidden(true);
+        setFieldValue('preferredName', state.userInfo.name);
+        setFieldValue('email', state.userInfo.email);
+        setFieldValue('phoneNumber', state.userInfo.phone);
     };
 
     const closeEditForm = () => {
@@ -45,8 +61,83 @@ function Profile(props) {
             contentRef.current.scrollIntoView({ behavior: "smooth" });
         }
     };
+    
+    
+
+
+    // Lấy API thông tin khách hàng API
+    const getUser = () => {
+        let promise = axios({
+            url: 'https://6662b50e62966e20ef099f31.mockapi.io/User',
+            method: 'GET'
+        });
+
+        promise.then((result) => {
+            console.log(result.data);
+            //Nếu gọi api lấy về kết quả thành công 
+            //=> set lại state của component
+            setState({
+                ...state,
+                userInfo: result.data[0]
+            })
+            console.log('thành công')
+        });
+        promise.catch((err) => {
+            console.log('thất bại')
+
+            console.log(err.response.data)
+        });
+    }
+
+    useEffect(() => {
+        getUser();
+        return () => {}
+    }, [])
+   
+
+     // Api cập nhật thông tin khách hàng
+     const updateUser = (userInfo) => {
+
+        userInfo.preventDefault(); //Dừng sự kiện submit form
+        console.log(state.values.taskName);
+        let promise = axios({
+            url:  `https://6662b50e62966e20ef099f31.mockapi.io/User/${userInfo.id}`,
+            method: 'PUT',
+            data: userInfo,
+        });
+
+        promise.then((result) => {
+            console.log(result.data);
+            //Nếu gọi api lấy về kết quả thành công 
+            //=> set lại state của component
+            setState({
+                ...state,
+                userInfo: result.data
+            })
+            setActiveTab('Tài Khoản');
+            setIsEditing(false);
+            setIsSidebarHidden(false);
+            console.log('thành công')
+        });
+        promise.catch((err) => {
+            console.log('thất bại')
+
+            console.log(err.response.data)
+        });
+    }
+
+    const submitForm = (values) => {
+        const updatedUserInfo = {
+            id: userInfo.id, // Ensure userInfo.id is available
+            name: values.preferredName,
+            email: values.email,
+            phone: values.phoneNumber
+        };
+        updateUser(updatedUserInfo);
+    };
 
     const renderContent = () => {
+        const { userInfo } = state;
         switch (activeTab) {
             case "Tài Khoản":
                 return (
@@ -58,7 +149,7 @@ function Profile(props) {
                                 <span className={styles.infoItem_span}>
                                     <UserOutlined />
                                 </span>
-                                Scarlett Fitzgerald Smith
+                                {userInfo.name}
                             </p>
                         </div>
                         <label className={styles.fontstyle}>Email</label>
@@ -67,7 +158,7 @@ function Profile(props) {
                                 <span className={styles.infoItem_span}>
                                     <MailOutlined />
                                 </span>
-                                Scarlett.smith@gmail.com
+                                {userInfo.email}
                             </p>
                         </div>
                         <label className={styles.fontstyle}>Số điện thoại</label>
@@ -76,7 +167,7 @@ function Profile(props) {
                                 <span className={styles.infoItem_span}>
                                     <WhatsAppOutlined />
                                 </span>
-                                0123465987
+                                {userInfo.phone}
                             </p>
                         </div>
                         <div className={styles.buttonPosition}>
@@ -241,6 +332,7 @@ function Profile(props) {
             </div>
         );
     };
+    
 
     const renderOrderContent = () => {
         const orders = [
@@ -399,20 +491,25 @@ const ProfileWithFormik = withFormik({
         phoneNumber: '',
     }),
     validationSchema: Yup.object().shape({
-        preferredName: Yup.string().required('Yêu cầu phải có biệt danh !').max(50, 'Biệt danh phải ít hơn 50 kí tự.'),
-        email: Yup.string().required('Yêu cầu phải có email !').email('Email không hợp lệ!'),
-        phoneNumber: Yup.string()
-            .required('Yêu cầu phải có số điện thoại !')
-            .matches(/^[0-9]*$/, 'Yêu cầu số điện thoại chỉ chứa chữ số.')
-            .min(10, 'Số điện thoại phải có ít nhất 10 chữ số.')
-            .max(11, 'Số điện thoại phải có tối đa 11 chữ số.'),
-    }),
-    handleSubmit: (values, { props, setSubmitting }) => {
-        console.log(values);
-    },
-    validateOnChange: true,
-    validateOnBlur: true,
-    displayName: 'ProfileForm',
+        preferredName: Yup.string()
+        .required('Biệt danh là bắt buộc')
+        .max(50, 'Biệt danh tối đa 50 ký tự'),
+    email: Yup.string()
+        .email('Email không hợp lệ')
+        .required('Email là bắt buộc')
+        .max(64, 'Email tối đa 64 ký tự'),
+    phoneNumber: Yup.string()
+        .required('Số điện thoại là bắt buộc')
+        .matches(/^[0-9]+$/, 'Số điện thoại chỉ chứa ký tự số')
+        .min(10, 'Số điện thoại tối thiểu 10 số')
+        .max(15, 'Số điện thoại tối đa 15 số')
+}),
+
+handleSubmit: (values, { props }) => {
+    props.submitForm(values); // Call submitForm function from props
+},
+
+displayName: 'MyProfileForm',
 })(Profile);
 
 export default ProfileWithFormik;

@@ -258,6 +258,8 @@
 .ordersList {
     display: flex;
     flex-direction: column;
+    border-color: #000;
+    border: 10px;
 }
 
 .orderDetails {
@@ -265,8 +267,8 @@
     align-items: center;
     margin-bottom: 20px;
     position: relative; /* Ensure positioning context for absolute positioning */
+   
 }
-
 .orderInfo {
     flex: 2;
     padding-bottom: 30px;
