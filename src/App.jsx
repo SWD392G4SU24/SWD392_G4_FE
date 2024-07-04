@@ -21,6 +21,8 @@ import Nhan from "./Page/product/eachProduct/Nhan";
 import VongTay from "./Page/product/eachProduct/VongTay";
 import ProductDetail2 from "./Page/product/productDetail/index2";
 import DiamondPrice from "./Page/diamondPrice";
+import Admin from "./Page/admin";
+import ManageProducts from "./Page/manage products";
 
 function App() {
   const router = createBrowserRouter([
@@ -99,6 +101,14 @@ function App() {
         {
           path: "/vt",
           element: <VongTay />,
+        },
+        {
+          path: "/admin",
+          element: <Admin />,
+        },
+        {
+          path: "/crudproduct",
+          element: <ManageProducts />,
         },
       ],
     },

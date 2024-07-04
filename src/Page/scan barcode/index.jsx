@@ -6,6 +6,7 @@
 
 // // import "react-barcode-scanner/polyfill";
 
+
 // // function ScanBarcode() {
 // //   // const [scanResult, setScanResult] = useState(null);
 // //   // useEffect(() => {
@@ -103,6 +104,7 @@
 import React, { useState } from "react";
 import { Scanner } from "@yudiel/react-qr-scanner";
 
+
 function ScanBarcode() {
   const [scanResult, setScanResult] = useState(null);
   const [error, setError] = useState(null);
@@ -120,26 +122,19 @@ function ScanBarcode() {
   };
 
   return (
-    <div className="scanner-container flex flex-col justify-center items-center px-5 py-5">
-      <h1 className="text-2xl font-serif mb-5">QR Code Scanning in Jewelry</h1>
-      {error && <div className="text-red-500">Error: {error}</div>}
-      {scanResult ? (
-        <div className="text-green-500">
-          Success:{" "}
-          <a href={scanResult} className="underline">
-            {scanResult}
-          </a>
-          console.log(scanResult);
-        </div>
-      ) : (
-        <div
-          className="w-2/3 h-screen mb-10"
-          id="reader"
-          style={{ width: "40%" , height: "40%"}}
-        >
-          <Scanner onScan={handleScan} onError={handleError} />
-        </div>
-      )}
+    <div>
+      <BarcodeScanner
+        width={500}
+        height={500}
+        onUpdate={(err, result) => {
+          if (result) setData(result.text);
+          else setData("Not Found");
+        }}
+      />
+      <div className="flex">
+        <h1>Barcode:</h1>
+        <p className="text-center text-2xl mt-4">{data}</p>
+      </div>
     </div>
   );
 }
