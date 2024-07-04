@@ -20,6 +20,7 @@ import DayChuyen from "./Page/product/eachProduct/DayChuyen";
 import Nhan from "./Page/product/eachProduct/Nhan";
 import VongTay from "./Page/product/eachProduct/VongTay";
 import ProductDetail2 from "./Page/product/productDetail/index2";
+import DiamondPrice from "./Page/diamondPrice";
 
 function App() {
   const router = createBrowserRouter([
@@ -50,6 +51,10 @@ function App() {
         {
           path: "/goldprice",
           element: <GoldPrice />,
+        },
+        {
+          path: "/diamondprice",
+          element: <DiamondPrice />,
         },
         {
           path: "/cart",
