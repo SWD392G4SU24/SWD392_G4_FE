@@ -6,7 +6,6 @@ import { BarcodeScanner } from "react-barcode-scanner";
 
 import "react-barcode-scanner/polyfill";
 
-
 function ScanBarcode() {
   // const [scanResult, setScanResult] = useState(null);
   // useEffect(() => {
@@ -56,7 +55,10 @@ function ScanBarcode() {
           else setData("Not Found");
         }}
       />
-      <p>{data}</p>
+      <div className="flex">
+        <h1>Barcode:</h1>
+        <p className="text-center text-2xl mt-4">{data}</p>
+      </div>
     </div>
   );
 }

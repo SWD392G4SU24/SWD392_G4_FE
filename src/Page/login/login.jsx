@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../../config/axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,8 +9,16 @@ import { auth, googleProvider } from "../../config/firebase";
 import axios from "axios";
 
 function Login1() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const formValues = Object.fromEntries(formData.entries());
+    console.log(formValues.data);
+  };
   const handleLoginGoogle = async (e) => {
     e.preventDefault();
     const result = await signInWithPopup(auth, googleProvider);
@@ -21,19 +29,26 @@ function Login1() {
     console.log(user);
     dispatch(login(result.data));
     // call api BE gui token xuong
-    // const response = await axios.get(
-    //   "https://d35f-118-69-182-149.ngrok-free.app/api/User/user/login"
-    // );
-    // console.log(response.data);
+    const response = await axios.get(
+      "https://dassie-living-bonefish.ngrok-free.app/login"
+    );
+    console.log(response.data);
   };
   const Login = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/Student", {
-        fullName: "LeAnhDuy",
-        token: "aaaaaaa",
-      });
+      const res = await api.post(
+        "https://dassie-living-bonefish.ngrok-free.app/login",
+        {
+          user: {
+            email: email,
+            password: password,
+          },
+        }
+      );
       dispatch(login(res.data));
+      const { token } = res.data;
+      localStorage.setItem("token", token);
       // dispatch(logout());
     } catch (error) {
       console.log(error);
@@ -52,40 +67,49 @@ function Login1() {
           <h1 className="text-4xl text-black/75 font-bold text-center mb-6">
             Login
           </h1>
-          <form action="" className="flex flex-col justify-center items-center">
+          <div className="pb-3">
+            <button
+              className="flex justify-center items-center transition-all gap-5 bg-black rounded-full px-14 py-2"
+              onClick={handleLoginGoogle}
+            >
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1024px-Google_%22G%22_logo.svg.png"
+                alt=""
+                width={30}
+              />
+              <span className="">Login with google</span>
+            </button>
+          </div>
+          <div className="px-32">
+            <h1>OR</h1>
+          </div>
+          <form
+            action=""
+            className="flex flex-col justify-center items-center"
+            onClick={Login}
+            onSubmit={handleSubmit}
+          >
             <div className="relative my-4">
               <input
                 type="email"
-                className="block w-72 py-2.5 px-0 text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none
-              dark:focus:border-orange-200 focus:outline-none focus:ring-0 focus:text-white focus:border-orange-200 peer "
-                placeholder=""
+                className="block w-72 h-10 px-4 py-2 text-sm text-gray-800 placeholder-gray-400 bg-white border border-gray-300 
+                rounded-md focus:outline-none focus:ring-orange-200 focus:border-orange-200"
+                placeholder="Email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <label
-                htmlFor=""
-                className="absolute text-sm text-white duration-300 transform -translate-y-1 scale-75 top-3 -z-10 origin-[0]
-            peer-focus:left-0 peer-focus:text-orange-300 peer-focus:dark:text-orange-300 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 
-            peer-focus:scale-75 peer-focus:-translate-y-6 "
-              >
-                UserName
-              </label>
-              <UserOutlined className="absolute top-4 right-4" />
+              <UserOutlined className="absolute top-3 right-3 text-gray-500" />
             </div>
             <div className="relative my-4">
               <input
-                type="email"
-                className="block w-72 py-2.5 px-0 text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none
-              dark:focus:border-orange-200 focus:outline-none focus:ring-0 focus:text-white focus:border-orange-200 peer "
-                placeholder=""
+                type="password"
+                className="block w-72 h-10 px-4 py-2 text-sm text-gray-800 placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-orange-200 focus:border-orange-200"
+                placeholder="Mật khẩu"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
-              <label
-                htmlFor=""
-                className="absolute text-sm text-white duration-300 transform -translate-y-1 scale-75 top-3 -z-10 origin-[0]
-            peer-focus:left-0 peer-focus:text-orange-300 peer-focus:dark:text-orange-300 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 
-            peer-focus:scale-75 peer-focus:-translate-y-6 "
-              >
-                Your Password
-              </label>
-              <UnlockOutlined className="absolute top-4 right-4" />
             </div>
             <div className="flex justify-between items-center">
               <div className="flex gap-2 items-center">
@@ -97,22 +121,10 @@ function Login1() {
               </Link>
             </div>
             <button
-              onClick={Login}
               type="submit"
               className="w-full mb-4 text-[18px] mt-6 rounded-full bg-white text-orange-200 hover:bg-orange-200 hover:text-white py-2 transition-colors duration-300"
             >
               Login
-            </button>
-            <button
-              className="flex justify-center items-center transition-all gap-5 bg-black rounded-full px-14 py-2"
-              onClick={handleLoginGoogle}
-            >
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1024px-Google_%22G%22_logo.svg.png"
-                alt=""
-                width={30}
-              />
-              <span className="">Login with google</span>
             </button>
             <div>
               <span className="mt-4 px-10">
