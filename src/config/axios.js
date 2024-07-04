@@ -1,10 +1,6 @@
 import axios from "axios";
 
 const baseUrl = "https://dassie-living-bonefish.ngrok-free.app";
-
-//const baseUrl = "https://6627a8d2b625bf088c092e93.mockapi.io";
-
-//
 const config = {
   baseUrl,
   timeout: 3000000,
@@ -22,6 +18,5 @@ const handleError = (error) => {
   return;
 };
 api.interceptors.request.use(handleBefore, handleError);
-// api.interceptors.response.use(null, handleError);
 
 export default api;

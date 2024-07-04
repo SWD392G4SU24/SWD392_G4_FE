@@ -1,4 +1,9 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  Route,
+  RouterProvider,
+  Routes,
+  createBrowserRouter,
+} from "react-router-dom";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store";
@@ -23,6 +28,7 @@ import ProductDetail2 from "./Page/product/productDetail/index2";
 import DiamondPrice from "./Page/diamondPrice";
 import Admin from "./Page/admin";
 import ManageProducts from "./Page/manage products";
+import Accounts from "./Page/admin/accounts";
 
 function App() {
   const router = createBrowserRouter([
@@ -110,14 +116,32 @@ function App() {
           path: "/crudproduct",
           element: <ManageProducts />,
         },
+        {
+          path: "/accounts",
+          element: <Accounts />,
+        },
       ],
     },
   ]);
 
   return (
+    // <Provider store={store}>
+    //   <PersistGate loading={null} persistor={persistor}>
+    //     <RouterProvider router={router} />
+    //     <RouterProvider />
+    //   </PersistGate>
+    // </Provider>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <RouterProvider router={router} />
+        <RouterProvider router={router}>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route path="/login1" element={<Login1 />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/accounts" element={<Accounts />} />
+            </Route>
+          </Routes>
+        </RouterProvider>
       </PersistGate>
     </Provider>
   );
