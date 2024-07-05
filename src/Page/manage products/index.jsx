@@ -228,6 +228,7 @@ function ManageProducts() {
       >
         Add new product
       </Button>
+      
       <Table columns={columns} dataSource={dataSource} />
 
       <Modal
