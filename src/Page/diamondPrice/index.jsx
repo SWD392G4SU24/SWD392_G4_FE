@@ -2,36 +2,31 @@ import { Table } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./index.scss";
-import api from "../../config/axios";
 
-function GoldPrice() {
-  const [prices, setPrices] = useState([]);
+function DiamondPrice() {
+  const [prices, setPrice] = useState([]);
 
-  const fetchPrices = async () => {
-    try {
-      const resp = await api.get(
-        "https://dassie-living-bonefish.ngrok-free.app/goldBtmc/get-price"
-      );
-      setPrices(resp.data);
-      console.log(resp.data);
-    } catch (error) {
-      console.log(error);
-    }
+  const fetchPrice = async () => {
+    const resp = await axios.get(
+      // "http://api.btmc.vn/api/BTMCAPI/getpricebtmc?key=3kd8ub1llcg9t45hnoh8hmn7t5kc2v"
+      // "https://6663df16932baf9032a93456.mockapi.io/goldprice"
+      "https://dassie-living-bonefish.ngrok-free.app/diamond/get-price"
+    );
+    setPrice(resp.data);
+    console.log(resp.data);
   };
 
   useEffect(() => {
-    fetchPrices();
+    fetchPrice();
   }, []);
+
+  const filterFirst = prices.filter((p) => p.id / 2 !== 0);
+  console.log(filterFirst);
 
   const columns = [
     {
-      title: "Loại vàng",
+      title: "Kích cỡ ",
       dataIndex: "name",
-    },
-    {
-      title: "Hàm lượng",
-      dataIndex: "goldContent",
-      align: "center",
     },
     {
       title: "Giá bán ra",
@@ -57,7 +52,7 @@ function GoldPrice() {
         Bảng giá vàng
       </h1>
       <h3 className="text-center mb-5 mt-2 text-gray-400">
-        Ngày cập nhật: {prices[0]?.createdAt}
+        Ngày cập nhật: {prices[1]?.createAt}
       </h3>
       <Table
         columns={columns}
@@ -70,4 +65,4 @@ function GoldPrice() {
   );
 }
 
-export default GoldPrice;
+export default DiamondPrice;

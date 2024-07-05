@@ -7,7 +7,8 @@ function AboutUs() {
 
   const fetchAU = async () => {
     const rs = await axios.get(
-      "https://665aa0df003609eda45e5ea3.mockapi.io/JeWellry"
+      // "https://665aa0df003609eda45e5ea3.mockapi.io/JeWellry"
+      "https://667a1e4918a459f6395263f0.mockapi.io/image"
     );
 
     setAbout(rs.data);
@@ -27,7 +28,7 @@ function AboutUs() {
       ))} */}
       <div className="pic_au">
         <div className="pic_text">
-          <h1 className="text-3xl ">{filterPic?.content} </h1>
+          <h1 className="text-3xl ">{filterPic?.title} </h1>
           <h3>
             <hr className="pb-12"/>
             Jewelry là một trang web bán trang sức trực tuyến đáng tin cậy và
@@ -59,7 +60,7 @@ function AboutUs() {
             bạn với những món trang sức tinh tế và đẳng cấp từ Jewelry!
           </h3>
         </div>
-        <img src={filterPic?.poster_path} className="w-full" />
+        <img src={filterPic?.avatar} className="w-full" />
       </div>
     </div>
   );
