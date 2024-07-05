@@ -73,16 +73,16 @@ function ProductDetail2() {
   return (
     <div className="pt-14 pb-14 w-full h-full block m-auto dark:bg-black/85 dark:text-white">
       {prodetail && (
-        <div key={prodetail.id} className="flex justify-center">
+        <div key={prodetail?.id} className="flex justify-center">
           <div className="img_pd mb-20">
-            <img src={prodetail.ImageURL} alt={prodetail.id} />
+            <img src={prodetail?.ImageURL} alt={prodetail.id} />
           </div>
           <div className="pl-20 w-2/5">
-            <h1 className="text-3xl title_3">{prodetail.Name}</h1>
+            <h1 className="text-3xl title_3">{prodetail?.Name}</h1>
 
-            <h3 className="text-gray-500 mt-3">{prodetail.Cost} VNĐ</h3>
+            <h3 className="text-gray-500 mt-3">{prodetail?.Cost} VNĐ</h3>
 
-            <h3 className="mt-3">{prodetail.Description}</h3>
+            <h3 className="mt-3">{prodetail?.Description}</h3>
 
             <div className="btn_cart mt-7 w-full flex justify-start">
               <Button
