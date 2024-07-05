@@ -125,12 +125,6 @@ function App() {
   ]);
 
   return (
-    // <Provider store={store}>
-    //   <PersistGate loading={null} persistor={persistor}>
-    //     <RouterProvider router={router} />
-    //     <RouterProvider />
-    //   </PersistGate>
-    // </Provider>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <RouterProvider router={router}>

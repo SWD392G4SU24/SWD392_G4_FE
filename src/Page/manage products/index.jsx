@@ -18,6 +18,7 @@ import { useForm } from "antd/es/form/Form";
 import api from "../../config/axios";
 import { Option } from "antd/es/mentions";
 import { backdropClasses } from "@mui/material";
+import { render } from "@testing-library/react";
 
 function ManageProducts() {
   const [form] = useForm();
@@ -149,7 +150,7 @@ function ManageProducts() {
   async function fetchDiamonds() {
     try {
       const response = await api.get(
-        "https://dassie-living-bonefish.ngrok-free.app/diamond/get-price"
+        "https://667a1e4918a459f6395263f0.mockapi.io/diamond"
       );
       setDiamonds(response.data);
     } catch (error) {
@@ -306,22 +307,19 @@ function ManageProducts() {
               {diamonds
                 .reduce((acc, diamond) => {
                   const existingDiamond = acc.find(
-                    (d) => d.name === diamond.name
+                    (d) => d.Type === diamond.Type
                   );
-                  if (
-                    !existingDiamond ||
-                    existingDiamond.createdAt < diamond.createdAt
-                  ) {
+                  if (!existingDiamond || existingDiamond.Date < diamond.Date) {
                     return [
                       { ...diamond },
-                      ...acc.filter((d) => d.name !== diamond.name),
+                      ...acc.filter((d) => d.Type !== diamond.Type),
                     ];
                   }
                   return acc;
                 }, [])
                 .map((diamond) => (
-                  <Option key={diamond.id} value={diamond.id}>
-                    {diamond.name}
+                  <Option key={diamond.DiamondID} value={diamond.DiamondID}>
+                    {diamond.Type}
                   </Option>
                 ))}
             </Select>
