@@ -17,11 +17,15 @@ import uploadFile from "../../utils/upload";
 import { useForm } from "antd/es/form/Form";
 import api from "../../config/axios";
 import { Option } from "antd/es/mentions";
+import { backdropClasses } from "@mui/material";
+import { render } from "@testing-library/react";
 
 function ManageProducts() {
   const [form] = useForm();
   const [dataSource, setDataSource] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [diamonds, setDiamonds] = useState([]);
+  const [golds, setGolds] = useState([]);
   const handleDeleteProduct = async (id) => {
     console.log("delete product", id);
     const response = await axios.delete(
@@ -33,15 +37,15 @@ function ManageProducts() {
     setDataSource(listAfterDelete);
   };
   const columns = [
-    // {
-    //   title: "Sản phẩm",
-    //   dataIndex: "name",
-    //   key: "name",
-    // },
     {
-      title: "Sản phẩm",
+      title: "Mã sản phẩm",
       dataIndex: "id",
       key: "id",
+    },
+    {
+      title: "Sản phẩm",
+      dataIndex: "name",
+      key: "name",
     },
     {
       title: "Hình ảnh",
@@ -141,9 +145,35 @@ function ManageProducts() {
     } catch (e) {
       console.log(e);
     }
-
-    // setDataSource(response.data);
   }
+
+  async function fetchDiamonds() {
+    try {
+      const response = await api.get(
+        "https://667a1e4918a459f6395263f0.mockapi.io/diamond"
+      );
+      setDiamonds(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function fetchGolds() {
+    try {
+      const response = await api.get(
+        "https://dassie-living-bonefish.ngrok-free.app/goldBtmc/get-price"
+      );
+      setGolds(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchDiamonds();
+    fetchProducts();
+    fetchGolds();
+  }, []);
 
   function handleShowModal() {
     setIsOpen(true);
@@ -175,7 +205,7 @@ function ManageProducts() {
         categoryID: values.categoryID,
       }
     );
-    console.log(response);
+    console.log(response.data);
     setDataSource([...dataSource, response.data]);
 
     // hide modal
@@ -190,8 +220,12 @@ function ManageProducts() {
   }, []);
 
   return (
-    <div className="product-management py-5">
-      <Button type="primary" onClick={handleShowModal}>
+    <div className="product-management py-5 px-20">
+      <Button
+        type="primary"
+        onClick={handleShowModal}
+        className="bg-gradient-to-r from-orange-300 to-orange-400 text-white"
+      >
         Add new product
       </Button>
       <Table columns={columns} dataSource={dataSource} />
@@ -203,6 +237,13 @@ function ManageProducts() {
         onOk={handleOk}
       >
         <Form form={form} onFinish={handleSubmit}>
+          <Form.Item
+            label="Tên sản phẩm"
+            name="name"
+            rules={[{ required: true }]}
+          >
+            <Input.TextArea rows={1} />
+          </Form.Item>
           <Form.Item
             label="Description"
             name="description"
@@ -234,7 +275,7 @@ function ManageProducts() {
               onPreview={handlePreview}
               onChange={handleChange}
             >
-              {fileList.length >= 8 ? null : uploadButton}
+              {fileList.length >= 6 ? null : uploadButton}
             </Upload>
           </Form.Item>
           <Form.Item
@@ -243,9 +284,11 @@ function ManageProducts() {
             rules={[{ required: true }]}
           >
             <Select>
-              <Option value={1}>14k</Option>
-              <Option value={2}>18k</Option>
-              <Option value={3}>24k</Option>
+              {golds.map((gold) => (
+                <Option key={gold.name} value={gold.name}>
+                  {gold.name}-{gold.karaContent}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item
@@ -261,9 +304,24 @@ function ManageProducts() {
             rules={[{ required: true }]}
           >
             <Select>
-              <Option value={1}>3ly6</Option>
-              <Option value={2}>3ly6</Option>
-              <Option value={3}>3ly6</Option>
+              {diamonds
+                .reduce((acc, diamond) => {
+                  const existingDiamond = acc.find(
+                    (d) => d.Type === diamond.Type
+                  );
+                  if (!existingDiamond || existingDiamond.Date < diamond.Date) {
+                    return [
+                      { ...diamond },
+                      ...acc.filter((d) => d.Type !== diamond.Type),
+                    ];
+                  }
+                  return acc;
+                }, [])
+                .map((diamond) => (
+                  <Option key={diamond.DiamondID} value={diamond.DiamondID}>
+                    {diamond.Type}
+                  </Option>
+                ))}
             </Select>
           </Form.Item>
           <Form.Item

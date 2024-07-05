@@ -6,10 +6,9 @@ import { login, logout, selectUser } from "../../redux/features/counterSlice";
 import { UnlockOutlined, UserOutlined } from "@ant-design/icons";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../config/firebase";
-import axios from "axios";
 
 function Login1() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
@@ -28,11 +27,11 @@ function Login1() {
     console.log(token);
     console.log(user);
     dispatch(login(result.data));
-    // call api BE gui token xuong
-    const response = await axios.get(
+    const response = await api.get(
       "https://dassie-living-bonefish.ngrok-free.app/login"
     );
     console.log(response.data);
+    dispatch(logout());
   };
   const Login = async (e) => {
     e.preventDefault();
@@ -41,15 +40,14 @@ function Login1() {
         "https://dassie-living-bonefish.ngrok-free.app/login",
         {
           user: {
-            email: email,
+            username: username,
             password: password,
           },
         }
       );
+      const { value } = res.data;
       dispatch(login(res.data));
-      const { token } = res.data;
-      localStorage.setItem("token", token);
-      // dispatch(logout());
+      localStorage.setItem("token", value);
     } catch (error) {
       console.log(error);
     }
@@ -91,13 +89,13 @@ function Login1() {
           >
             <div className="relative my-4">
               <input
-                type="email"
+                type="text"
                 className="block w-72 h-10 px-4 py-2 text-sm text-gray-800 placeholder-gray-400 bg-white border border-gray-300 
                 rounded-md focus:outline-none focus:ring-orange-200 focus:border-orange-200"
-                placeholder="Email"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Username"
+                name="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
               <UserOutlined className="absolute top-3 right-3 text-gray-500" />
             </div>
