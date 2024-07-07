@@ -1,7 +1,7 @@
 import { UnlockOutlined, UserOutlined } from "@ant-design/icons";
-import axios from "axios";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../../config/axios";
 
 function Register() {
   const [userData, setUserData] = useState({
@@ -11,7 +11,7 @@ function Register() {
     email: "",
     phoneNumber: "",
     address: "",
-    roleID: 2,
+    roleID: 3,
   });
   const [confirmPassword, setConfirmPassword] = useState("");
   const handleConfirmPasswordChange = (e) => {
@@ -29,11 +29,10 @@ function Register() {
       return;
     }
     try {
-      const response = await axios.post(
+      const response = await api.post(
         "https://dassie-living-bonefish.ngrok-free.app/register",
         userData
       );
-
       console.log(response.data);
     } catch (error) {
       console.log(error);
@@ -79,7 +78,7 @@ function Register() {
                 type="text"
                 className="block w-72 h-10 px-4 py-2 text-sm text-gray-800 placeholder-gray-400 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-orange-200 focus:border-orange-200"
                 placeholder="Tên người dùng"
-                name="userName"
+                name="username"
                 value={userData.username}
                 onChange={handleChange}
               />

@@ -29,6 +29,7 @@ import DiamondPrice from "./Page/diamondPrice";
 import Admin from "./Page/admin";
 import ManageProducts from "./Page/manage products";
 import Accounts from "./Page/admin/accounts";
+import Chart from "./component/chart/Chart";
 import Profile1 from "./Page/Profile/Profile1";
 
 function App() {
@@ -125,17 +126,15 @@ function App() {
           path: "/accounts",
           element: <Accounts />,
         },
+        {
+          path: "/chart",
+          element: <Chart />,
+        },
       ],
     },
   ]);
 
   return (
-    // <Provider store={store}>
-    //   <PersistGate loading={null} persistor={persistor}>
-    //     <RouterProvider router={router} />
-    //     <RouterProvider />
-    //   </PersistGate>
-    // </Provider>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <RouterProvider router={router}>

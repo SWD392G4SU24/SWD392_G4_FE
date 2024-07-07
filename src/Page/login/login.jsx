@@ -6,7 +6,6 @@ import { login, logout, selectUser } from "../../redux/features/counterSlice";
 import { UnlockOutlined, UserOutlined } from "@ant-design/icons";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../config/firebase";
-import axios from "axios";
 
 function Login1() {
   const [username, setUsername] = useState("");
@@ -28,7 +27,7 @@ function Login1() {
     console.log(token);
     console.log(user);
     dispatch(login(result.data));
-    const response = await axios.get(
+    const response = await api.get(
       "https://dassie-living-bonefish.ngrok-free.app/login"
     );
     console.log(response.data);

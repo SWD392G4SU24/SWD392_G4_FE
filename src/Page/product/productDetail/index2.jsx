@@ -4,26 +4,28 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./index.scss";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addProduct, clearAll } from "../../../redux/features/cartSlice";
 
 function ProductDetail2() {
   const [prodetail, setProdDetail] = useState([]);
   const { id } = useParams();
   const [isFavor, setIsFavor] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetchProductDetail();
-  }, []);
+  }, [id]);
 
   const fetchProductDetail = () => {
     axios
       .get(`https://667cd2303c30891b865dc8d6.mockapi.io/productAll/${id}`)
       .then((rs) => {
         setProdDetail(rs.data);
-        console.log(rs.data);
       });
   };
-
+  console.log(prodetail);
   const toggleIcon = () => {
     setIsFavor((prevFavor) => !prevFavor);
   };
@@ -99,9 +101,20 @@ function ProductDetail2() {
                     Đã thêm
                   </Button>
                 ) : (
-                  <Button className="ml-3 mr-3 bg-black text-white">
-                    Thêm vào giỏ hàng
-                  </Button>
+                  <>
+                    <Button
+                      className="ml-3 mr-3 bg-black text-white"
+                      onClick={() => {
+                        dispatch(addProduct(prodetail));
+                      }}
+                    >
+                      Thêm vào giỏ hàng
+                    </Button>
+
+                    <Button onClick={() => dispatch(clearAll())}>
+                      Clear All
+                    </Button>
+                  </>
                 )}
               </div>
 

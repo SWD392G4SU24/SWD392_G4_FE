@@ -2,72 +2,70 @@ import { CloseOutlined, ShoppingOutlined } from "@ant-design/icons";
 import { Button, Image, Popconfirm, Table } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { store } from "../../redux/store";
+import {
+  decreaseQuantity,
+  increaseQuantity,
+  removeProduct,
+  selectProduct,
+} from "../../redux/features/cartSlice";
 
 function Cart() {
-  const [dataSource, setDataSource] = useState([]);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [quantities, setQuantities] = useState({});
+  const [checked, setChecked] = useState([]);
+  const dispatch = useDispatch();
   const handleDeleteProduct = async (id) => {
-    console.log("delete movie", id);
-    const response = await axios.delete(
-      `https://6627a8d2b625bf088c092e93.mockapi.io/movies-netflix/${id}`
-    );
-
-    console.log(response);
-    const listAfterDelete = dataSource.filter((movie) => movie.id !== id);
-    setDataSource(listAfterDelete);
+    console.log(id);
+    dispatch(removeProduct(id));
   };
 
-  const handleQuantityChange = (id, quantity) => {
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [id]: quantity,
-    }));
-  };
+  const carts = useSelector((store) => store.cart.products);
+  console.log(carts);
+  console.log(carts);
   const columns = [
     {
       title: "San Pham",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "Name",
+      key: "Name",
     },
     {
       title: "Hinh anh mo ta",
-      dataIndex: "poster_path",
-      key: "poster_path",
+      dataIndex: "ImageURL",
+      key: "ImageURL",
       align: "center",
       render: (poster_path) => <Image src={poster_path} width={200} />,
     },
     {
       title: "Chi tiet",
-      dataIndex: "category",
-      key: "category",
+      dataIndex: "Cate",
+      key: "Cate",
       align: "center",
     },
     {
-      title: "Quantity",
-      dataIndex: "id",
-      key: "id",
+      title: "So luong",
+      dataIndex: "quantity",
+      key: "quantity",
       align: "center",
-      render: (id) => (
+      render: (quantity, record) => (
         <div>
           <Button
             shape="circle"
             icon="-"
-            onClick={() =>
-              handleQuantityChange(id, Math.max(0, quantities[id] - 1))
-            }
+            onClick={() => {
+              dispatch(decreaseQuantity(record.id));
+            }}
           />
-          <span style={{ margin: "0 8px" }}>{quantities[id]}</span>
+          <span style={{ margin: "0 8px" }}>{quantity}</span>
           <Button
             shape="circle"
             icon="+"
-            onClick={() => handleQuantityChange(id, quantities[id] + 1)}
+            onClick={() => dispatch(increaseQuantity(record.id))}
           />
         </div>
       ),
     },
     {
-      title: "Actions",
+      title: "Hanh dong",
       dataIndex: "id",
       key: "id",
       align: "center",
@@ -84,29 +82,9 @@ function Cart() {
       ),
     },
   ];
-  async function fetchProducts() {
-    const response = await axios.get(
-      "https://6627a8d2b625bf088c092e93.mockapi.io/movies-netflix"
-    );
+  const count = checked.reduce((total, id) => total + id.quantity, 0);
 
-    console.log(response.data);
-    setDataSource(response.data);
-
-    const initialQuantities = {};
-    response.data.forEach((movie) => {
-      initialQuantities[movie.id] = 1;
-    });
-    setQuantities(initialQuantities);
-  }
-  useEffect(function () {
-    fetchProducts();
-  }, []);
-
-  const count = selectedRowKeys.reduce(
-    (total, key) => total + quantities[key],
-    0
-  );
-
+  console.log(count);
   return (
     <div className="justify-items-center flex flex-col items-center ">
       <div className="rounded-xl shadow-md duration-200 relative z-40 bg-white/50 bottom-1 w-full">
@@ -122,33 +100,30 @@ function Cart() {
       <div className="py-1 w-full">
         <Table
           columns={columns}
-          dataSource={dataSource}
+          dataSource={carts}
           bordered
           className="w-11/12 m-auto"
           rowKey="id"
           rowSelection={{
-            selectedRowKeys,
-            onChange: setSelectedRowKeys,
+            onChange: (id, value) => {
+              setChecked(value);
+            },
           }}
         />
       </div>
       <div></div>
       <div className="flex justify-between w-full px-40 py-20">
-        <h1>Tong Thanh Toan: </h1>
+        <h1>Tong So Luong Mua: </h1>
         <button
           className="rounded-lg bg-black text-white py-1 px-10"
           onClick={() => {
+            dispatch(selectProduct(checked));
             window.location.href = "/orderreview";
           }}
         >
           Mua hàng ({count})
         </button>
       </div>
-      {/* <div className="py-2">
-        <button className="rounded-sm bg-black text-white py-1 px-10">
-          Thanh Toán
-        </button>
-      </div> */}
     </div>
   );
 }
