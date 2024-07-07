@@ -12,6 +12,7 @@ import { withFormik, Form } from 'formik';
 import * as Yup from 'yup';
 import { display } from '@mui/system';
 import axios from 'axios';
+import api from "../../config/axios"
 
 function Profile(props) {
     

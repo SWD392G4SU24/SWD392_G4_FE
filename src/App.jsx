@@ -29,6 +29,7 @@ import DiamondPrice from "./Page/diamondPrice";
 import Admin from "./Page/admin";
 import ManageProducts from "./Page/manage products";
 import Accounts from "./Page/admin/accounts";
+import Profile1 from "./Page/Profile/Profile1";
 
 function App() {
   const router = createBrowserRouter([
@@ -47,6 +48,10 @@ function App() {
         {
           path: "/profile",
           element: <Profile />,
+        },
+        {
+          path: "/profile1",
+          element: <Profile1 />,
         },
         {
           path: "/",
