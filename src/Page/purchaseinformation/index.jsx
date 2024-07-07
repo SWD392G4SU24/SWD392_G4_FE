@@ -12,7 +12,7 @@ function FillInformationForPurchase() {
       >
         Quay về
       </button>
-      <div className="flex justify-between">
+      <div className="flex items-start">
         <div className="w-3/5 h-screen">
           <div className="p-10">
             <h1 className="py-4 text-2xl">Phiếu Điền Thông Tin</h1>
@@ -85,9 +85,10 @@ function FillInformationForPurchase() {
             </div>
           </div>
         </div>
-        <div className="px-28 w-5/12 pt-16">
-          <div className="border border-gray-400 shadow-md flex flex-col p-4">
-            <h1 className="px-32 pb-7 font-serif">Order Total</h1>
+        <div className="px-28 w-5/12 mt-14">
+          <div className="border border-gray-400 shadow-md py-4 px-10">
+            <h1 className="px-20 pb-7 font-serif text-2xl">Order Total</h1>
+            <hr />
             <div className="pt-5 pb-12">
               <h2 className="pb-2">Mã khuyến mãi (nếu có)</h2>
               <input
@@ -104,7 +105,7 @@ function FillInformationForPurchase() {
             </div>
             <div className="py-5">
               <div className="flex flex-col border bg-black text-white font-serif">
-                <button className="py-2">Thanh Toán</button>
+                <button className="py-2 px-10">Thanh Toán</button>
               </div>
             </div>
           </div>
