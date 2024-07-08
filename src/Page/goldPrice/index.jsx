@@ -1,5 +1,4 @@
 import { Table } from "antd";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./index.scss";
 import api from "../../config/axios";
@@ -53,7 +52,7 @@ function GoldPrice() {
 
   return (
     <div className="dark:bg-black/85 dark:text-white">
-      <h1 className="text-center text-3xl pt-6 font-serif text-amber-700">
+      <h1 className="text-center text-4xl pt-6 text-amber-700">
         Bảng giá vàng
       </h1>
       <h3 className="text-center mb-5 mt-2 text-gray-400">

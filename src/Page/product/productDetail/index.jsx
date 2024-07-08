@@ -25,6 +25,7 @@ function ProductDetail() {
   const toggleIcon = () => {
     setIsFavor((prevFavor) => !prevFavor);
   };
+
   const toggleCart = () => {
     setIsAdd((prevAdd) => !prevAdd);
   };
@@ -58,24 +59,30 @@ function ProductDetail() {
     console.log(key);
   };
 
+  const handleAddToCart = () => {
+    
+  };
+
   return (
     <div className="pt-14 pb-14 w-full h-full justify-between flex dark:bg-black/85 dark:text-white">
       {filteredProduct && (
-        <div key={filteredProduct.id} className="flex justify-center">
+        <div key={filteredProduct?.id} className="flex justify-center">
           <div className="img_pd">
-            {filteredProduct.jw_image && (
-              <img src={filteredProduct.jw_image} alt={filteredProduct.id} />
+            {filteredProduct?.jw_image && (
+              <img src={filteredProduct?.jw_image} alt={filteredProduct.id} />
             )}
           </div>
           <div className="pl-20 mt-4 w-2/5">
-            {filteredProduct.jw_name && (
-              <h1 className="text-3xl font-serif">{filteredProduct.jw_name}</h1>
+            {filteredProduct?.jw_name && (
+              <h1 className="text-3xl font-serif">
+                {filteredProduct?.jw_name}
+              </h1>
             )}
 
-            <h3 className="text-gray-500 mt-3">{filteredProduct.price} VNĐ</h3>
+            <h3 className="text-gray-500 mt-3">{filteredProduct?.price} VNĐ</h3>
 
-            {filteredProduct.description && (
-              <h3 className="mt-3">{filteredProduct.description}</h3>
+            {filteredProduct?.description && (
+              <h3 className="mt-3">{filteredProduct?.description}</h3>
             )}
 
             <div className="btn_cart mt-7 w-full flex">
@@ -93,7 +100,7 @@ function ProductDetail() {
                     Đã thêm
                   </Button>
                 ) : (
-                  <Button className="ml-3 mr-3 bg-black text-white">
+                  <Button className="ml-3 mr-3 bg-black text-white" onClick={handleAddToCart()}>
                     Thêm vào giỏ hàng
                   </Button>
                 )}

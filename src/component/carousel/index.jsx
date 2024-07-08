@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   Autoplay,
-  FreeMode,
   Keyboard,
   Mousewheel,
   Navigation,
@@ -49,6 +48,20 @@ function Carousel({ numOfSlide, isUseNavigate }) {
     fetchCate();
     fetchProduct();
   }, []);
+
+  const handleOnClickCate = (id) => {
+    id === "1"
+      ? (window.location.href = `/dc`)
+      : id === "2"
+      ? (window.location.href = `/ht`)
+      : id === "3"
+      ? (window.location.href = `/vt`)
+      : (window.location.href = `/n`);
+  };
+
+  const handleOnClickDetail = (id) => {
+    window.location.href = `/prodetail/${id}`;
+  };
 
   return (
     <>
@@ -130,7 +143,13 @@ function Carousel({ numOfSlide, isUseNavigate }) {
         {/* </div> */}
         <Row justify="space-evenly">
           {cates.map((cate) => (
-            <Col span={4} key={cate.id}>
+            <Col
+              span={4}
+              key={cate.id}
+              onClick={() => {
+                handleOnClickCate(cate.id);
+              }}
+            >
               <img src={cate.pic_path} alt="" />
               <h2 className="font-medium text-center text-xl font-serif">
                 {cate.name}
@@ -151,16 +170,17 @@ function Carousel({ numOfSlide, isUseNavigate }) {
           slidesPerView={4}
           spaceBetween={10}
           freeMode={true}
-          // pagination={{
-          //   clickable: true,
-          // }}
-          // modules={[FreeMode, Pagination]}
           navigation={true}
           modules={[Navigation, Pagination]}
-          // className={`crs`}
         >
           {products.map((prd) => (
-            <SwiperSlide key={prd.id}>
+            <SwiperSlide
+              key={prd.id}
+              onClick={() => {
+                handleOnClickDetail(prd.id);
+                console.log(prd.id);
+              }}
+            >
               <div className="ml-20 pb-16 pt-5">
                 <img src={prd.jw_image} />
                 <h3 className="font-medium">{prd.jw_name}</h3>

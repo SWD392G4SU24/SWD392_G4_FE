@@ -30,6 +30,7 @@ import Admin from "./Page/admin";
 import ManageProducts from "./Page/manage products";
 import Accounts from "./Page/admin/accounts";
 import Chart from "./component/chart/Chart";
+import Revenue from "./Page/admin/revenue";
 
 function App() {
   const router = createBrowserRouter([
@@ -124,6 +125,10 @@ function App() {
         {
           path: "/chart",
           element: <Chart />,
+        },
+        {
+          path: "/revenue",
+          element: <Revenue />,
         },
       ],
     },
