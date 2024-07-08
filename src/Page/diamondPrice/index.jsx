@@ -9,8 +9,8 @@ function DiamondPrice() {
   const fetchPrices = async () => {
     try {
       const resp = await api.get(
-        // "https://dassie-living-bonefish.ngrok-free.app/diamond/get-price"
-        "https://667a1e4918a459f6395263f0.mockapi.io/diamond"
+        "/diamond/get-db-price"
+        // "https://667a1e4918a459f6395263f0.mockapi.io/diamond"
       );
       setPrice(resp.data);
       console.log(resp.data);
@@ -23,10 +23,10 @@ function DiamondPrice() {
     fetchPrices();
   }, []);
 
-  const filterFirst = prices.filter((p) => p.Date == "16-07-2024");
+  // const filterFirst = prices.filter((p) => p.Date == "16-07-2024");
   // const filterSecond = prices.filter((p) => p.Date == "17-07-2024");
   // const filterThird = prices.filter((p) => p.Date == "18-07-2024");
-  console.log(filterFirst);
+  // console.log(filterFirst);
 
   const columns = [
     {
@@ -65,7 +65,7 @@ function DiamondPrice() {
       </h3>
       <Table
         columns={columns}
-        dataSource={filterFirst}
+        dataSource={prices}
         bordered
         pagination={false}
         className="dp_tb w-11/12 m-auto pb-20 dark:bg-black/85 dark:text-white"

@@ -29,6 +29,7 @@ import DiamondPrice from "./Page/diamondPrice";
 import Admin from "./Page/admin";
 import ManageProducts from "./Page/manage products";
 import Accounts from "./Page/admin/accounts";
+import Revenue from "./Page/admin/revenue";
 
 function App() {
   const router = createBrowserRouter([
@@ -119,6 +120,10 @@ function App() {
         {
           path: "/accounts",
           element: <Accounts />,
+        },
+        {
+          path: "/revenue",
+          element: <Revenue />,
         },
       ],
     },
