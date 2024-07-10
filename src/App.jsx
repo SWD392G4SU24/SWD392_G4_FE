@@ -30,7 +30,7 @@ import Admin from "./Page/admin";
 import ManageProducts from "./Page/manage products";
 import Accounts from "./Page/admin/accounts";
 import Chart from "./component/chart/Chart";
-import Revenue from "./Page/admin/revenue";
+// import Revenue from "./Page/admin/revenue";
 import Manager from "./Page/manager";
 
 function App() {
@@ -131,10 +131,10 @@ function App() {
           path: "/manager",
           element: <Manager />,
         },
-        {
-          path: "/revenue",
-          element: <Revenue />,
-        },
+        // {
+        //   path: "/revenue",
+        //   element: <Revenue />,
+        // },
       ],
     },
   ]);

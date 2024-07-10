@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../../../config/axios";
 import { SearchOutlined } from "@ant-design/icons";
+import { Table } from "antd";
 
 function Accounts() {
   const [datasource, setDatasource] = useState([]);

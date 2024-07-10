@@ -17,8 +17,8 @@ import uploadFile from "../../utils/upload";
 import { useForm } from "antd/es/form/Form";
 import api from "../../config/axios";
 import { Option } from "antd/es/mentions";
-import { backdropClasses } from "@mui/material";
-import { render } from "@testing-library/react";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/features/counterSlice";
 
 function ManageProducts() {
   const [form] = useForm();
@@ -26,6 +26,9 @@ function ManageProducts() {
   const [isOpen, setIsOpen] = useState(false);
   const [diamonds, setDiamonds] = useState([]);
   const [golds, setGolds] = useState([]);
+  const [cates, setCates] = useState([]);
+  // const user = useSelector(selectUser);
+  // console.log(user);
   const handleDeleteProduct = async (id) => {
     console.log("delete product", id);
     const response = await axios.delete(
@@ -37,11 +40,6 @@ function ManageProducts() {
     setDataSource(listAfterDelete);
   };
   const columns = [
-    {
-      title: "Mã sản phẩm",
-      dataIndex: "id",
-      key: "id",
-    },
     {
       title: "Sản phẩm",
       dataIndex: "name",
@@ -60,8 +58,8 @@ function ManageProducts() {
     },
     {
       title: "Danh mục",
-      dataIndex: "categoryID",
-      key: "categoryID",
+      dataIndex: "category",
+      key: "category",
     },
     {
       title: "Loại vàng",
@@ -141,7 +139,7 @@ function ManageProducts() {
       const response = await api.get(
         "https://dassie-living-bonefish.ngrok-free.app/Product"
       );
-      setDataSource(response.data.value);
+      setDataSource(response.data);
     } catch (e) {
       console.log(e);
     }
@@ -149,9 +147,7 @@ function ManageProducts() {
 
   async function fetchDiamonds() {
     try {
-      const response = await api.get(
-        "https://667a1e4918a459f6395263f0.mockapi.io/diamond"
-      );
+      const response = await api.get("/diamond/get-db-price");
       setDiamonds(response.data);
     } catch (error) {
       console.log(error);
@@ -169,10 +165,21 @@ function ManageProducts() {
     }
   }
 
+  async function fetchCates() {
+    try {
+      const response = await api.get("/category");
+      const { value } = response.data;
+      setCates(value);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     fetchDiamonds();
     fetchProducts();
     fetchGolds();
+    fetchCates();
   }, []);
 
   function handleShowModal() {
@@ -193,9 +200,10 @@ function ManageProducts() {
     const url = await uploadFile(values.imageURL.file.originFileObj);
     values.imageURL = url;
     console.log(values);
-    const response = await axios.post(
+    const response = await api.post(
       "https://dassie-living-bonefish.ngrok-free.app/Product/create",
       {
+        name: values.name,
         goldWeight: values.goldWeight,
         goldType: values.goldType,
         diamondType: values.diamondType,
@@ -208,16 +216,10 @@ function ManageProducts() {
     console.log(response.data);
     setDataSource([...dataSource, response.data]);
 
-    // hide modal
     handleHideModal();
 
-    // clear form
     form.resetFields();
   }
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
 
   return (
     <div className="product-management py-5 px-20">
@@ -228,7 +230,7 @@ function ManageProducts() {
       >
         Add new product
       </Button>
-      
+
       <Table columns={columns} dataSource={dataSource} />
 
       <Modal
@@ -258,10 +260,11 @@ function ManageProducts() {
             rules={[{ required: true }]}
           >
             <Select>
-              <Option value={1}>Vòng cổ</Option>
-              <Option value={2}>Nhẫn</Option>
-              <Option value={3}>Khuyên tai</Option>
-              <Option value={4}>Vòng tay</Option>
+              {cates.map((cate) => (
+                <Option key={cate.id} value={cate.id}>
+                  {cate.name}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item
@@ -305,24 +308,11 @@ function ManageProducts() {
             rules={[{ required: true }]}
           >
             <Select>
-              {diamonds
-                .reduce((acc, diamond) => {
-                  const existingDiamond = acc.find(
-                    (d) => d.Type === diamond.Type
-                  );
-                  if (!existingDiamond || existingDiamond.Date < diamond.Date) {
-                    return [
-                      { ...diamond },
-                      ...acc.filter((d) => d.Type !== diamond.Type),
-                    ];
-                  }
-                  return acc;
-                }, [])
-                .map((diamond) => (
-                  <Option key={diamond.DiamondID} value={diamond.DiamondID}>
-                    {diamond.Type}
-                  </Option>
-                ))}
+              {diamonds.map((diamond) => (
+                <Option key={diamond.name} value={diamond.name}>
+                  {diamond.name}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item
