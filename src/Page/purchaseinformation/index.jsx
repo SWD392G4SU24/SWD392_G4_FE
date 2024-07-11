@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import api from "../../config/axios";
 
 function FillInformationForPurchase() {
+  const [payment, setPayment] = useState([]);
   const selectedProduct = useSelector((store) => store.cart.selectedItems);
   console.log(selectedProduct);
   const subtotal = selectedProduct.reduce((acc, item) => {
@@ -31,6 +32,21 @@ function FillInformationForPurchase() {
       console.log(e);
     }
   };
+
+  async function fetchPaymentMethod() {
+    try {
+      const response = await api.get("/paymentMethod");
+      const { value } = response.data;
+      setPayment(value);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
+    fetchPaymentMethod();
+  }, []);
+
   return (
     <div>
       <button
@@ -71,28 +87,22 @@ function FillInformationForPurchase() {
               />
             </div>
             <div className="py-3 flex justify-around">
-              <div className="flex items-center ">
-                <input
-                  type="radio"
-                  id="tienMat"
-                  name="paymentMethod"
-                  className="pr-2"
-                />
-                <label htmlFor="tienMat" className="pl-2">
-                  Tiền mặt
-                </label>
-              </div>
-              <div className="flex items-center">
-                <input
-                  type="radio"
-                  id="vnPay"
-                  name="paymentMethod"
-                  className="pr-2"
-                />
-                <label htmlFor="vnPay" className="pl-2">
-                  VN Pay
-                </label>
-              </div>
+              {payment.map((method) => (
+                <div className="flex items-center" key={method.id}>
+                  <input
+                    type="radio"
+                    id={method.id === 1 ? "vnPay" : "tienMat"}
+                    name="paymentMethod"
+                    className="pr-2"
+                  />
+                  <label
+                    htmlFor={method.id === 1 ? "vnPay" : "tienMat"}
+                    className="pl-2"
+                  >
+                    {method.name}
+                  </label>
+                </div>
+              ))}
             </div>
           </div>
         </div>
