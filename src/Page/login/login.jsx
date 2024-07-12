@@ -45,9 +45,8 @@ function Login1() {
           },
         }
       );
-      const { value } = res.data;
       dispatch(login(res.data));
-      localStorage.setItem("token", value);
+      localStorage.setItem("token", res.data.token);
     } catch (error) {
       console.log(error);
     }

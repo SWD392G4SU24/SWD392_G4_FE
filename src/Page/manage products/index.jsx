@@ -19,6 +19,7 @@ import api from "../../config/axios";
 import { Option } from "antd/es/mentions";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
+import { toast } from "react-toastify";
 
 function ManageProducts() {
   const [form] = useForm();
@@ -27,8 +28,6 @@ function ManageProducts() {
   const [diamonds, setDiamonds] = useState([]);
   const [golds, setGolds] = useState([]);
   const [cates, setCates] = useState([]);
-  // const user = useSelector(selectUser);
-  // console.log(user);
   const handleDeleteProduct = async (id) => {
     console.log("delete product", id);
     const response = await axios.delete(
@@ -195,30 +194,35 @@ function ManageProducts() {
   }
 
   async function handleSubmit(values) {
-    console.log(values);
-    console.log(values.imageURL.file.originFileObj);
-    const url = await uploadFile(values.imageURL.file.originFileObj);
-    values.imageURL = url;
-    console.log(values);
-    const response = await api.post(
-      "https://dassie-living-bonefish.ngrok-free.app/Product/create",
-      {
-        name: values.name,
-        goldWeight: values.goldWeight,
-        goldType: values.goldType,
-        diamondType: values.diamondType,
-        imageURL: values.imageURL,
-        quantity: values.quantity,
-        description: values.description,
-        categoryID: values.categoryID,
-      }
-    );
-    console.log(response.data);
-    setDataSource([...dataSource, response.data]);
+    try {
+      console.log(values);
+      console.log(values.imageURL.file.originFileObj);
+      const url = await uploadFile(values.imageURL.file.originFileObj);
+      values.imageURL = url;
+      console.log(values);
+      const response = await api.post(
+        "https://dassie-living-bonefish.ngrok-free.app/Product/create",
+        {
+          name: values.name,
+          goldWeight: values.goldWeight,
+          goldType: values.goldType,
+          diamondType: values.diamondType,
+          imageURL: values.imageURL,
+          quantity: values.quantity,
+          description: values.description,
+          categoryID: values.categoryID,
+        }
+      );
+      toast.success("Tạo thành công!");
+      console.log(response.data);
+      setDataSource([...dataSource, response.data]);
 
-    handleHideModal();
+      handleHideModal();
 
-    form.resetFields();
+      form.resetFields();
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return (
@@ -320,7 +324,7 @@ function ManageProducts() {
             name="quantity"
             rules={[{ required: true }]}
           >
-            <InputNumber min={2} />
+            <InputNumber />
           </Form.Item>
         </Form>
       </Modal>
