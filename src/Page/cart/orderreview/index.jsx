@@ -56,6 +56,7 @@ function OrderReview() {
                         EDIT ORDER
                       </button>
                     </div>
+                    
                     <div className="">
                       {(
                         parseFloat(

@@ -14,10 +14,18 @@ function ChartComponents() {
         type: "line",
         width: 1,
         data: {
-          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+          labels: [
+            "Tháng 1",
+            "Tháng 2",
+            "Tháng 3",
+            "Tháng 4",
+            "Tháng 5",
+            "Tháng 6",
+            "Tháng 7",
+          ],
           datasets: [
             {
-              label: "Doanh thu",
+              label: "Số lượng người dùng",
               data: [0, 30, 120, 300, 400, 120, 500, 300],
               borderColor: "rgb(0,0,0)",
               borderWidth: 1,
@@ -29,7 +37,7 @@ function ChartComponents() {
             y: {
               title: {
                 display: true,
-                text: "Doanh thu",
+                text: "Tổng số lượng",
               },
               type: "linear",
               position: "left",
@@ -38,7 +46,7 @@ function ChartComponents() {
             x: {
               title: {
                 display: true,
-                text: "Total Users",
+                text: "Số lượng người dùng theo tháng",
               },
             },
           },
