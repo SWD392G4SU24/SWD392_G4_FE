@@ -1,7 +1,52 @@
-import { Radio } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import api from "../../config/axios";
 
 function FillInformationForPurchase() {
+  const [payment, setPayment] = useState([]);
+  const selectedProduct = useSelector((store) => store.cart.selectedItems);
+  console.log(selectedProduct);
+  const subtotal = selectedProduct.reduce((acc, item) => {
+    const cost = item.Cost.replace(/\./g, "").replace(",", ".");
+    const itemPrice = parseFloat(cost) * item.quantity;
+    return acc + itemPrice;
+  }, 0);
+
+  const formattedSubtotal1 = subtotal.toFixed(0);
+
+  const formattedSubtotal2 = subtotal.toLocaleString("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
+
+  const handlePayment = async () => {
+    try {
+      const response = await api.post("/create-payment-url", {
+        orderType: "VNPay",
+        amount: formattedSubtotal1,
+        orderDescription: "string",
+        name: "string",
+      });
+      window.location.href = response.data;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  async function fetchPaymentMethod() {
+    try {
+      const response = await api.get("/paymentMethod");
+      const { value } = response.data;
+      setPayment(value);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
+    fetchPaymentMethod();
+  }, []);
+
   return (
     <div>
       <button
@@ -19,6 +64,14 @@ function FillInformationForPurchase() {
             <hr className="py-2" />
             <div className="py-3">
               <input
+                type="text"
+                placeholder=" Họ và tên"
+                className="py-1 border border-gray-300 px-2"
+                style={{ width: "100%" }}
+              />
+            </div>
+            <div className="py-3">
+              <input
                 type="email"
                 placeholder=" Email"
                 className="py-1 border border-gray-300 px-2"
@@ -33,55 +86,23 @@ function FillInformationForPurchase() {
                 style={{ width: "100%" }}
               />
             </div>
-            <div className="py-3">
-              <input
-                type="text"
-                placeholder=" Địa chỉ"
-                className="py-1 border border-gray-300 px-2"
-                style={{ width: "100%" }}
-              />
-            </div>
-            <div className="py-3 flex ">
-              <div className="pr-2">
-                <input
-                  type="text"
-                  placeholder="Quận"
-                  className="border border-gray-300 py-1 px-2"
-                  style={{ width: "85%" }}
-                />
-              </div>
-              <div style={{ flex: 1 }}>
-                <input
-                  type="text"
-                  placeholder="Thành phố"
-                  className="border border-gray-300 py-1 px-2"
-                  style={{ width: "100%" }}
-                />
-              </div>
-            </div>
             <div className="py-3 flex justify-around">
-              <div className="flex items-center ">
-                <input
-                  type="radio"
-                  id="tienMat"
-                  name="paymentMethod"
-                  className="pr-2"
-                />
-                <label htmlFor="tienMat" className="pl-2">
-                  Tiền mặt
-                </label>
-              </div>
-              <div className="flex items-center">
-                <input
-                  type="radio"
-                  id="vnPay"
-                  name="paymentMethod"
-                  className="pr-2"
-                />
-                <label htmlFor="vnPay" className="pl-2">
-                  VN Pay
-                </label>
-              </div>
+              {payment.map((method) => (
+                <div className="flex items-center" key={method.id}>
+                  <input
+                    type="radio"
+                    id={method.id === 1 ? "vnPay" : "tienMat"}
+                    name="paymentMethod"
+                    className="pr-2"
+                  />
+                  <label
+                    htmlFor={method.id === 1 ? "vnPay" : "tienMat"}
+                    className="pl-2"
+                  >
+                    {method.name}
+                  </label>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -99,13 +120,15 @@ function FillInformationForPurchase() {
               ></input>
             </div>
             <hr className="py-3" />
-            <div className="flex justify-between py-3">
+            <div className="flex justify-between py-3 font-bold text-xl">
               <h2>Total</h2>
-              <h2>100.000 VND</h2>
+              <h2>{formattedSubtotal2}</h2>
             </div>
             <div className="py-5">
               <div className="flex flex-col border bg-black text-white font-serif">
-                <button className="py-2 px-10">Thanh Toán</button>
+                <button className="py-2 px-10" onClick={handlePayment}>
+                  Thanh Toán
+                </button>
               </div>
             </div>
           </div>

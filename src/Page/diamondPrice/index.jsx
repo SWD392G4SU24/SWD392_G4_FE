@@ -1,37 +1,45 @@
 import { Table } from "antd";
-import axios from "axios";
+import api from "../../config/axios";
 import React, { useEffect, useState } from "react";
 import "./index.scss";
 
 function DiamondPrice() {
   const [prices, setPrice] = useState([]);
 
-  const fetchPrice = async () => {
-    const resp = await axios.get(
-      // "http://api.btmc.vn/api/BTMCAPI/getpricebtmc?key=3kd8ub1llcg9t45hnoh8hmn7t5kc2v"
-      // "https://6663df16932baf9032a93456.mockapi.io/goldprice"
-      "https://dassie-living-bonefish.ngrok-free.app/diamond/get-price"
-    );
-    setPrice(resp.data);
-    console.log(resp.data);
+  const fetchPrices = async () => {
+    try {
+      const resp = await api.get(
+        "/diamond/get-db-price"
+        // "https://667a1e4918a459f6395263f0.mockapi.io/diamond"
+      );
+      setPrice(resp.data);
+      console.log(resp.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
-    fetchPrice();
+    fetchPrices();
   }, []);
 
-  const filterFirst = prices.filter((p) => p.id / 2 !== 0);
-  console.log(filterFirst);
+  // const filterFirst = prices.filter((p) => p.Date == "16-07-2024");
+  // const filterSecond = prices.filter((p) => p.Date == "17-07-2024");
+  // const filterThird = prices.filter((p) => p.Date == "18-07-2024");
+  // console.log(filterFirst);
 
   const columns = [
     {
       title: "Kích cỡ ",
-      dataIndex: "name",
+      dataIndex: "Type",
+      key: "Type",
+      align: "center",
     },
     {
       title: "Giá bán ra",
       className: "column-money",
-      dataIndex: "sellCost",
+      dataIndex: "SellCost",
+      key: "SellCost",
       align: "center",
       render: (text) => (
         <h3 className="text-green-700 font-semibold">{text}</h3>
@@ -40,7 +48,8 @@ function DiamondPrice() {
     {
       title: "Giá mua vào",
       className: "column-money",
-      dataIndex: "buyCost",
+      dataIndex: "BuyCost",
+      key: "BuyCost",
       align: "center",
       render: (text) => <h3 className="text-red-600 font-semibold">{text}</h3>,
     },
@@ -48,18 +57,18 @@ function DiamondPrice() {
 
   return (
     <div className="dark:bg-black/85 dark:text-white">
-      <h1 className="text-center text-3xl pt-6 font-serif text-amber-700">
-        Bảng giá vàng
+      <h1 className="text-center text-4xl pt-6 text-sky-600 title-diamond">
+        Bảng giá kim cương
       </h1>
       <h3 className="text-center mb-5 mt-2 text-gray-400">
-        Ngày cập nhật: {prices[1]?.createAt}
+        Ngày cập nhật: {prices[0]?.Date}
       </h3>
       <Table
         columns={columns}
         dataSource={prices}
         bordered
         pagination={false}
-        className="gp_tb w-11/12 m-auto pb-20"
+        className="dp_tb w-11/12 m-auto pb-20 dark:bg-black/85 dark:text-white"
       />
     </div>
   );
