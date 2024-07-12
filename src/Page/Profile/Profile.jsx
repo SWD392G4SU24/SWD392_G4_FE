@@ -3,7 +3,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './Profile.module.scss';
-import customStyles from './CustomStyles.module.scss';
 import { MailOutlined, UserOutlined, WhatsAppOutlined } from "@ant-design/icons";
 import { Input } from 'antd';
 // Formik này là để lấy dữ liệu từ ô mình nhập
@@ -11,28 +10,29 @@ import { withFormik, Form } from 'formik';
 // Check validation
 import * as Yup from 'yup';
 import { display } from '@mui/system';
-import axios from 'axios';
 import api from "../../config/axios"
 
 function Profile(props) {
     
-    let [state, setState] = useState({
-        userInfo: [],
-        values: {
-            taskName: ''
-        },
-        errors: {
-            taskName: ''
-        }
-    });
+    // let [state, setState] = useState({
+    //     userInfo: [],
+    //     values: {
+    //         taskName: ''
+    //     },
+    //     errors: {
+    //         taskName: ''
+    //     }
+    // });
 
     const [activeTab, setActiveTab] = useState('Tài Khoản');
     const [isEditing, setIsEditing] = useState(false);
     const [isSidebarHidden, setIsSidebarHidden] = useState(false);
     const contentRef = useRef(null); // Tham chiếu tới phần nội dung
+    const [user, setUser] = useState(null);//setState getUser
     const [orderFilter, setOrderFilter] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
     const ordersPerPage = 3; // Số đơn hàng trên mỗi trang
+    const [error, setError] = useState(null);
 
     const {
         values,
@@ -49,9 +49,9 @@ function Profile(props) {
     const openEditForm = () => {
         setIsEditing(true);
         setIsSidebarHidden(true);
-        setFieldValue('preferredName', state.userInfo.name);
-        setFieldValue('email', state.userInfo.email);
-        setFieldValue('phoneNumber', state.userInfo.phone);
+        setFieldValue('preferredName',user.fullName);
+        setFieldValue('email', user.email); 
+        setFieldValue('phoneNumber', user.phoneNumber);
     };
 
     const closeEditForm = () => {
@@ -67,90 +67,80 @@ function Profile(props) {
 
 
     // Lấy API thông tin khách hàng API
-    const getUser = () => {
-        let promise = axios({
-            url: 'https://6662b50e62966e20ef099f31.mockapi.io/User',
-            method: 'GET'
-        });
-
-        promise.then((result) => {
-            console.log(result.data);
-            //Nếu gọi api lấy về kết quả thành công 
-            //=> set lại state của component
-            setState({
-                ...state,
-                userInfo: result.data[0]
-            })
-            console.log('thành công')
-        });
-        promise.catch((err) => {
-            console.log('thất bại')
-
-            console.log(err.response.data)
-        });
-    }
+    const getUserProfile = async () => {
+        try {
+          // Make API call with token and ID
+          const userInfor = await api.get(`/user-current`);
+          setUser(userInfor.data); // Assuming API returns user data directly
+          console.log(userInfor.data);
+        } catch (err) {
+          setError(err);
+        }
+    };
+    
 
     useEffect(() => {
-        getUser();
-        return () => {}
+        getUserProfile();
     }, [])
    
 
      // Api cập nhật thông tin khách hàng
-     const updateUser = (userInfo) => {
+    //  const updateUser = (userInfo) => {
 
-        userInfo.preventDefault(); //Dừng sự kiện submit form
-        console.log(state.values.taskName);
-        let promise = axios({
-            url:  `https://6662b50e62966e20ef099f31.mockapi.io/User/${userInfo.id}`,
-            method: 'PUT',
-            data: userInfo,
-        });
+    //     userInfo.preventDefault(); //Dừng sự kiện submit form
+    //     console.log(state.values.taskName);
+    //     let promise = axios({
+    //         url:  `https://6662b50e62966e20ef099f31.mockapi.io/User/${userInfo.id}`,
+    //         method: 'PUT',
+    //         data: userInfo,
+    //     });
 
-        promise.then((result) => {
-            console.log(result.data);
-            //Nếu gọi api lấy về kết quả thành công 
-            //=> set lại state của component
-            setState({
-                ...state,
-                userInfo: result.data
-            })
-            setActiveTab('Tài Khoản');
-            setIsEditing(false);
-            setIsSidebarHidden(false);
-            console.log('thành công')
-        });
-        promise.catch((err) => {
-            console.log('thất bại')
+    //     promise.then((result) => {
+    //         console.log(result.data);
+    //         //Nếu gọi api lấy về kết quả thành công 
+    //         //=> set lại state của component
+    //         setState({
+    //             ...state,
+    //             userInfo: result.data
+    //         })
+    //         setActiveTab('Tài Khoản');
+    //         setIsEditing(false);
+    //         setIsSidebarHidden(false);
+    //         console.log('thành công')
+    //     });
+    //     promise.catch((err) => {
+    //         console.log('thất bại')
 
-            console.log(err.response.data)
-        });
-    }
+    //         console.log(err.response.data)
+    //     });
+    // }
 
-    const submitForm = (values) => {
-        const updatedUserInfo = {
-            id: userInfo.id, // Ensure userInfo.id is available
-            name: values.preferredName,
-            email: values.email,
-            phone: values.phoneNumber
-        };
-        updateUser(updatedUserInfo);
-    };
+    // const submitForm = (values) => {
+    //     const updatedUserInfo = {
+    //         id: userInfo.id, // Ensure userInfo.id is available
+    //         name: values.preferredName,
+    //         email: values.email,
+    //         phone: values.phoneNumber
+    //     };
+    //     updateUser(updatedUserInfo);
+    // };
 
     const renderContent = () => {
-        const { userInfo } = state;
+        if (!user) {
+            return <div>Loading...</div>;
+        }
         switch (activeTab) {
             case "Tài Khoản":
                 return (
                     <div className={styles.infoSection} ref={contentRef}>
-                        <h2 style={{ color: "#B18165", fontSize: "30px" }}>Điểm tích lũy</h2>
+                        <h2 style={{ color: "#B18165", fontSize: "30px" }}>Điểm tích lũy: {user.point}</h2>
                         <label className={styles.fontstyle}>Biệt danh</label>
                         <div className={styles.infoItem}>
                             <p className={styles.infoItem_p}>
                                 <span className={styles.infoItem_span}>
                                     <UserOutlined />
                                 </span>
-                                {userInfo.name}
+                                {user.fullName}
                             </p>
                         </div>
                         <label className={styles.fontstyle}>Email</label>
@@ -159,7 +149,7 @@ function Profile(props) {
                                 <span className={styles.infoItem_span}>
                                     <MailOutlined />
                                 </span>
-                                {userInfo.email}
+                                {user.email}
                             </p>
                         </div>
                         <label className={styles.fontstyle}>Số điện thoại</label>
@@ -168,7 +158,7 @@ function Profile(props) {
                                 <span className={styles.infoItem_span}>
                                     <WhatsAppOutlined />
                                 </span>
-                                {userInfo.phone}
+                                {user.phoneNumber}
                             </p>
                         </div>
                         <div className={styles.buttonPosition}>
@@ -266,74 +256,81 @@ function Profile(props) {
     const renderEditForm = () => {
         return (
             <div className={styles.infoSection}>
-                <h2 style={{ color: '#B18165', fontSize: '40px' }}>Chỉnh sửa thông tin</h2>
+              
+                <div>
+                    <h2 style={{ color: '#B18165', fontSize: '40px' }}>Chỉnh sửa thông tin</h2>
+                </div>
                 <form onSubmit={handleSubmit}>
-                    <div className={styles.infoItemEditItem}>
-                        <div>
-                            <label className={styles.fontstyle}>Biệt danh</label>
+                    <div className={styles.editItem}>
+                        <div >
+                            <div>
+                                <label className={styles.fontstyle}>Biệt danh</label>
+                            </div>
+                            <div className={styles.infoItemEditItem}>
+                                <Input
+                                    prefix={<UserOutlined />}
+                                    type='text'
+                                    className={styles.customInputEdit}
+                                    showCount
+                                    maxLength={50}
+                                    name="preferredName"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.preferredName}
+                                />
+                                
+                            </div>
+                            {touched.preferredName && errors.preferredName && <div style={{ color: 'red', fontWeight: 'bold' }}>{errors.preferredName}</div>}
                         </div>
-                        <div>
-                            <Input
-                                prefix={<UserOutlined />}
-                                type='text'
-                                className={customStyles.customInput}
-                                showCount
-                                maxLength={50}
-                                name="preferredName"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.preferredName}
-                            />
+                        <div className={styles.infoItemEditItem}  >
+                            <div>
+                                <label className={styles.fontstyle}>Email</label>
+                            </div>
+                            <div>
+                                <Input
+                                    prefix={<MailOutlined />}
+                                    type='text'
+                                    className={styles.customInputEdit}
+                                    showCount
+                                    maxLength={64}
+                                    name="email"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.email}
+                                />
+                            </div>
+                            {touched.email && errors.email && <div style={{ color: 'red', fontWeight: 'bold' }}>{errors.email}</div>}
                         </div>
-                        {touched.preferredName && errors.preferredName && <div style={{ color: 'red', fontWeight: 'bold' }}>{errors.preferredName}</div>}
+                        <div >
+                            <div>
+                                <label className={styles.fontstyle}>Số điện thoại</label>
+                            </div>
+                            <div>
+                                <Input
+                                    prefix={<WhatsAppOutlined />}
+                                    type='text'
+                                    className={styles.customInputEdit}
+                                    showCount
+                                    maxLength={11}
+                                    name="phoneNumber"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.phoneNumber}
+                                />
+                            </div>
+                            {touched.phoneNumber && errors.phoneNumber && <div style={{ color: 'red', fontWeight: 'bold' }}>{errors.phoneNumber}</div>}
+                        </div>
+                        <div className={styles.buttonPositionEdit}>
+                            <button type="submit" className={styles.editButton}>Lưu thay đổi</button>
+                            <button type="button" className={styles.cancelButton} onClick={closeEditForm}>Hủy</button>
+                        </div>
                     </div>
-                    <div className={styles.infoItemEditItem}>
-                        <div>
-                            <label className={styles.fontstyle}>Email</label>
-                        </div>
-                        <div>
-                            <Input
-                                prefix={<MailOutlined />}
-                                type='text'
-                                className={customStyles.customInput}
-                                showCount
-                                maxLength={64}
-                                name="email"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.email}
-                            />
-                        </div>
-                        {touched.email && errors.email && <div style={{ color: 'red', fontWeight: 'bold' }}>{errors.email}</div>}
-                    </div>
-                    <div className={styles.infoItemEditItem}>
-                        <div>
-                            <label className={styles.fontstyle}>Số điện thoại</label>
-                        </div>
-                        <div>
-                            <Input
-                                prefix={<WhatsAppOutlined />}
-                                type='text'
-                                className={customStyles.customInput}
-                                showCount
-                                maxLength={11}
-                                name="phoneNumber"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.phoneNumber}
-                            />
-                        </div>
-                        {touched.phoneNumber && errors.phoneNumber && <div style={{ color: 'red', fontWeight: 'bold' }}>{errors.phoneNumber}</div>}
-                    </div>
-                    <div className={styles.buttonPosition}>
-                        <button type="submit" className={styles.editButton}>Lưu thay đổi</button>
-                        <button type="button" className={styles.cancelButton} onClick={closeEditForm}>Hủy</button>
-                    </div>
+
                 </form>
             </div>
         );
     };
-    
+
 
     const renderOrderContent = () => {
         const orders = [
@@ -449,6 +446,14 @@ function Profile(props) {
 
     return (
         <div className={styles.container}>
+            <button
+                onClick={() => {
+                    window.location.href = "/";
+                }}
+                className="pb-2 pt-7 text-gray-500 pl-5 text-lg"
+            >
+                Quay về
+            </button>
             <h1
                 className={styles.thongtin}
                 style={{ display: isSidebarHidden ? "none" : "block" }}

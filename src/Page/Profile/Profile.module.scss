@@ -92,14 +92,28 @@
     margin-bottom: 25px;
     margin-left: 50px;
 }
-.infoItemEditItem{
-    
-    justify-content: center;  /* Center the button horizontally */
-    align-items: center;  /* Center the button vertically (if necessary) */
-    margin-top: 10px;
+.editItem{
+    display: flex;
+    flex-direction: column;  /* Ensure items are stacked vertically */
+    justify-content: center;  /* Center items vertically */
+    align-items: center;  /* Center items horizontally */
+    height: 50vh;  /* Full height of the viewport */
+    margin-top: 4%;
     margin-bottom: 25px;
-    margin-left: 400px;
 }
+
+.infoItemEditItem{
+  margin-bottom: 15px;
+  
+}
+
+.customInputEdit {
+    width: 500px;  /* Ensure input fields take up the full width of their container */
+    font-size: 20px;
+    margin-top: 5px;
+    
+}
+
 
 .infoItem_p{
     border-bottom: 1px solid;
@@ -127,6 +141,16 @@
     justify-content: center;  /* Center the button horizontally */
     align-items: center;  /* Center the button vertically (if necessary) */
     margin-top: 50px;  /* Optional: Add margin to the top for spacing */
+
+}
+
+.buttonPositionEdit {
+    display: flex;
+    justify-content: space-between;  /* Distribute space between the buttons */
+    align-items: center;  /* Center items vertically */
+    width: 100%;  /* Full width */
+    max-width: 600px;  /* Optional: max width of the button container */
+    margin: 40px auto 0;  /* Center horizontally and add top margin */
 }
 
 .editButton {
