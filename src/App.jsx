@@ -32,6 +32,9 @@ import Accounts from "./Page/admin/accounts";
 import Chart from "./component/chart/Chart";
 // import Revenue from "./Page/admin/revenue";
 import Manager from "./Page/manager";
+import Revenue from "./Page/admin/revenue";
+import LayoutOfAdmin from "./component/layout/index2";
+import AdminPage2 from "./Page/admin/revenue/index2";
 
 function App() {
   const router = createBrowserRouter([
@@ -112,24 +115,34 @@ function App() {
           element: <VongTay />,
         },
         {
-          path: "/admin",
-          element: <Admin />,
-        },
-        {
           path: "/crudproduct",
           element: <ManageProducts />,
-        },
-        {
-          path: "/accounts",
-          element: <Accounts />,
         },
         {
           path: "/chart",
           element: <Chart />,
         },
+      ],
+    },
+    {
+      element: <LayoutOfAdmin />,
+      children: [
+        {
+          path: "/admin",
+          element: <Admin />,
+        },
         {
           path: "/manager",
           element: <Manager />,
+  },
+         {
+          path: "/revenue",
+          // element: <Revenue />,
+          element: <AdminPage2 />,
+        },
+        {
+          path: "/accounts",
+          element: <Accounts />,
         },
         // {
         //   path: "/revenue",
