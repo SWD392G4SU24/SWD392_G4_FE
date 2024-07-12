@@ -10,20 +10,13 @@ import { withFormik, Form } from 'formik';
 // Check validation
 import * as Yup from 'yup';
 import { display } from '@mui/system';
-import api from "../../config/axios"
+import api from "../../config/axios";
+import { selectId } from "../../redux/features/counterSlice";
+import { useSelector } from 'react-redux';
+
 
 function Profile(props) {
     
-    // let [state, setState] = useState({
-    //     userInfo: [],
-    //     values: {
-    //         taskName: ''
-    //     },
-    //     errors: {
-    //         taskName: ''
-    //     }
-    // });
-
     const [activeTab, setActiveTab] = useState('Tài Khoản');
     const [isEditing, setIsEditing] = useState(false);
     const [isSidebarHidden, setIsSidebarHidden] = useState(false);
@@ -34,22 +27,22 @@ function Profile(props) {
     const ordersPerPage = 3; // Số đơn hàng trên mỗi trang
     const [error, setError] = useState(null);
 
+    const userId = useSelector(selectId); // Lấy user ID từ Redux store 
+    const [alertContent, setAlertContent] = useState("");
+
     const {
         values,
         touched,
         errors,
         handleChange,
         handleBlur,
-        handleSubmit,
         setFieldValue,
-        userInfo,
-        
     } = props;
 
     const openEditForm = () => {
         setIsEditing(true);
         setIsSidebarHidden(true);
-        setFieldValue('preferredName',user.fullName);
+        setFieldValue('fullName',user.fullName);
         setFieldValue('email', user.email); 
         setFieldValue('phoneNumber', user.phoneNumber);
     };
@@ -62,7 +55,6 @@ function Profile(props) {
             contentRef.current.scrollIntoView({ behavior: "smooth" });
         }
     };
-    
     
 
 
@@ -84,47 +76,43 @@ function Profile(props) {
     }, [])
    
 
-     // Api cập nhật thông tin khách hàng
-    //  const updateUser = (userInfo) => {
-
-    //     userInfo.preventDefault(); //Dừng sự kiện submit form
-    //     console.log(state.values.taskName);
-    //     let promise = axios({
-    //         url:  `https://6662b50e62966e20ef099f31.mockapi.io/User/${userInfo.id}`,
-    //         method: 'PUT',
-    //         data: userInfo,
-    //     });
-
-    //     promise.then((result) => {
-    //         console.log(result.data);
-    //         //Nếu gọi api lấy về kết quả thành công 
-    //         //=> set lại state của component
-    //         setState({
-    //             ...state,
-    //             userInfo: result.data
-    //         })
-    //         setActiveTab('Tài Khoản');
-    //         setIsEditing(false);
-    //         setIsSidebarHidden(false);
-    //         console.log('thành công')
-    //     });
-    //     promise.catch((err) => {
-    //         console.log('thất bại')
-
-    //         console.log(err.response.data)
-    //     });
-    // }
-
-    // const submitForm = (values) => {
-    //     const updatedUserInfo = {
-    //         id: userInfo.id, // Ensure userInfo.id is available
-    //         name: values.preferredName,
-    //         email: values.email,
-    //         phone: values.phoneNumber
-    //     };
-    //     updateUser(updatedUserInfo);
-    // };
-
+    const updateUserProfile = async () => {
+        try {
+          const formData = new FormData();
+          formData.append("UserID", userId); // Thêm UserID vào dữ liệu gửi đi
+          formData.append("fullName", values.fullName);
+          formData.append("email", values.email);
+          formData.append("phoneNumber", values.phoneNumber);
+    
+          const response = await api.patch(`/user/update`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          });
+          setUser(response.data);
+          setAlertContent("Cập nhật thông tin thành công!");
+          // Lưu thông báo thành công vào localStorage
+          localStorage.setItem('Cập nhật thông tin thành công!', 'true');
+          console.log(response.data);
+        } catch (err) {
+          setError(err);
+          console.log("Error: ", err.response?.data || err.message);
+        }
+      }
+      useEffect(() => {
+        // Kiểm tra nếu có thông báo thành công trong localStorage
+        const storedMessage = localStorage.getItem('Cập nhật thông tin thành công!');
+        if (storedMessage === 'true') {
+            setAlertContent("Cập nhật thông tin thành công!");
+            // Xóa thông báo thành công sau khi hiển thị
+            localStorage.removeItem('Cập nhật thông tin thành công!');
+        }
+    }, []);
+   
+      const handleSubmit = (e) => {
+        updateUserProfile();
+      };
+    
     const renderContent = () => {
         if (!user) {
             return <div>Loading...</div>;
@@ -273,14 +261,14 @@ function Profile(props) {
                                     className={styles.customInputEdit}
                                     showCount
                                     maxLength={50}
-                                    name="preferredName"
+                                    name="fullName"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    value={values.preferredName}
+                                    value={values.fullName}
                                 />
                                 
                             </div>
-                            {touched.preferredName && errors.preferredName && <div style={{ color: 'red', fontWeight: 'bold' }}>{errors.preferredName}</div>}
+                            {touched.fullName && errors.fullName && <div style={{ color: 'red', fontWeight: 'bold' }}>{errors.fullName}</div>}
                         </div>
                         <div className={styles.infoItemEditItem}  >
                             <div>
@@ -327,6 +315,7 @@ function Profile(props) {
                     </div>
 
                 </form>
+                
             </div>
         );
     };
@@ -492,12 +481,12 @@ function Profile(props) {
 
 const ProfileWithFormik = withFormik({
     mapPropsToValues: () => ({
-        preferredName: '',
+        fullName: '',
         email: '',
         phoneNumber: '',
     }),
     validationSchema: Yup.object().shape({
-        preferredName: Yup.string()
+        fullName: Yup.string()
         .required('Biệt danh là bắt buộc')
         .max(50, 'Biệt danh tối đa 50 ký tự'),
     email: Yup.string()
@@ -511,259 +500,11 @@ const ProfileWithFormik = withFormik({
         .max(15, 'Số điện thoại tối đa 15 số')
 }),
 
-handleSubmit: (values, { props }) => {
-    props.submitForm(values); // Call submitForm function from props
-},
-
+// handleSubmit: (values, { props }) => {
+//     props.updateUserProfile1(values); // Gọi hàm updateUserProfile từ props
+// },
 displayName: 'MyProfileForm',
 })(Profile);
 
 export default ProfileWithFormik;
 
-
-
-
-// ========
-// import React, { useState, useRef } from 'react';
-// import styles from './Profile.module.scss';
-// import customStyles from './CustomStyles.module.scss';
-// import { HeartOutlined, MailOutlined, PhoneOutlined, UserOutlined, WhatsAppOutlined } from "@ant-design/icons";
-// import { Flex, Input,ColorPicker } from 'antd';
-// function Profile() {
-//     const [activeTab, setActiveTab] = useState('Tài Khoản');
-//     const [isEditing, setIsEditing] = useState(false);
-//     const [isSidebarHidden, setIsSidebarHidden] = useState(false);
-//     const contentRef = useRef(null); // Tham chiếu tới phần nội dung
-//     const [orderFilter, setOrderFilter] = useState('All');
-
-//     const [orders, setOrders] = useState([
-//         {
-//             id: 1,
-//             name: 'RING OF LEAVES',
-//             date: '15.01.2023',
-//             price: '200,000 VND',
-//             status: 'Đã thanh toán',
-//             image: 'https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg',
-//         },
-//         {
-//             id: 2,
-//             name: 'SIGNET RING',
-//             date: '15.05.2024',
-//             price: '100,000 VND',
-//             status: 'Chưa thanh toán',
-//             image: 'https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg',
-//         },
-//     ]);
-
-//     const { TextArea } = Input;
-//     const onChange = (e) => {
-//         console.log('Change:', e.target.value);
-//       };
-
-//     const openEditForm = () => {
-//         setIsEditing(true);
-//         setIsSidebarHidden(true);
-//     };
-
-//     const closeEditForm = () => {
-//         setIsEditing(false);
-//         setIsSidebarHidden(false);
-//         if (contentRef.current) {
-//           // Cuộn trang đến vị trí nội dung sau khi đóng form chỉnh sửa
-//           contentRef.current.scrollIntoView({ behavior: 'smooth' });
-//       }
-//     };
-
-//     const renderContent = () => {
-//         switch(activeTab) {
-//             case 'Tài Khoản':
-//                 return (
-//                     <div className={styles.infoSection} ref={contentRef}>
-//                         <h2 style={{color:'#B18165'}}>Accumulated Points</h2>
-//                         <label className={styles.fontstyle}>Preferred Name</label>
-//                         <div className={styles.infoItem}>
-//                             <p className={styles.infoItem_p}>
-//                                  <span className={styles.infoItem_span}><UserOutlined/></span>
-//                                  Scarlett Fitzgerald Smith
-//                              </p>
-//                         </div>
-//                         <label className={styles.fontstyle}>Email</label>
-//                         <div className={styles.infoItem}>
-//                             <p className={styles.infoItem_p} >
-//                                 <span className={styles.infoItem_span}><MailOutlined/></span>
-//                                 Scarlett.smith@gmail.com
-//                             </p>
-//                         </div>
-//                         <label className={styles.fontstyle}>Phone number</label>
-//                         <div className={styles.infoItem}>
-//                             <p  className={styles.infoItem_p}>
-//                                  <span className={styles.infoItem_span}><WhatsAppOutlined/></span>
-//                                  0123465987
-//                            </p>
-//                         </div>
-//                         <div className={styles.buttonPosition}>
-//                             <button className={styles.editButton} onClick={openEditForm}>Chỉnh sửa thông tin</button>
-//                         </div>
-//                     </div>
-//                 );
-//                 case 'Yêu Thích':
-//                 return (
-//                     <div className={styles.favoritesSection}>
-//                         <h1>Sản phẩm yêu thích</h1>
-//                         <div className={styles.favoriteItem}>
-//                             <img className={styles.favoriteItem_Img} style={{width:'200px',height:'170px'}} src="https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg" alt="ảnh" />
-
-//                             <div className={styles.favoriteItem_Name_Item} >
-//                             <img style={{marginBottom:'75px'}} src="./img/imgProfile/icon/ph_heart-thin.svg" alt="Heart icon" />
-
-//                             <p >
-//                                 LEAFY CHAIN
-//                                 <br/>
-//                                 <span>$80.00</span>
-//                                 </p>
-//                             </div>
-
-//                             <div className={styles.favoriteItem_Info}>
-//                                 <button className={styles.favoriteButton}>Mua ngay</button>
-//                             </div>
-//                         </div>
-
-//                     </div>
-//                 );
-//             case 'Đơn hàng':
-
-//                     return (
-//                         <div className={styles.orderHistorySection}>
-//                             <h1>Order History</h1>
-//                             <div className={styles.orderFilter}>
-//                                 <div style={{width:100, height:50 , marginRight:'10px'}}>
-//                                     <button className={orderFilter === 'All' ? styles.active : ''} onClick={() => setOrderFilter('All')}>All</button>
-//                                 </div>
-//                                 <div style={{width:100, height:50 , marginRight:'70px'}}>
-//                                 <button  className={orderFilter === 'Processing' ? styles.active : ''} onClick={() => setOrderFilter('Processing')}>Processing</button>
-//                                 </div>
-//                                 <div style={{width:100, height:50 , marginRight:'70px'}}>
-//                                 <button className={orderFilter === 'Completed' ? styles.active : ''} onClick={() => setOrderFilter('Completed')}>Completed</button>
-//                                 </div>
-
-//                             </div>
-//                             {renderOrderContent()}
-//                         </div>
-//                     );
-//             case 'Khuyến mãi':
-//                 return <div>Promotions content</div>;
-
-//             default:
-//                 return null;
-//         }
-//     }
-
-//     const renderEditForm = () => {
-//         return (
-//             <div className={styles.infoSection}>
-//                 <h2 style={{color:'#B18165', fontSize:'40px'}}>Chỉnh sửa thông tin</h2>
-//                 <form>
-//                     <div className={styles.infoItem}>
-//                         <div>
-//                             <label className={styles.fontstyle}>Preferred Name</label>
-//                         </div>
-//                         <div>
-//                             <Input prefix={<UserOutlined/>}   type='text'   className={customStyles.customInput} showCount maxLength={50} onChange={onChange} />
-//                         </div>
-//                     </div>
-//                     <div className={styles.infoItem}>
-//                         <div>
-//                             <label className={styles.fontstyle}>Email</label>
-//                         </div>
-//                         <div>
-//                           <Input prefix={<MailOutlined />} type='text' className={customStyles.customInput} showCount maxLength={64} onChange={onChange} />
-//                         </div>
-//                     </div>
-//                     <div className={styles.infoItem}>
-//                         <div>
-//                             <label className={styles.fontstyle}>Phone number</label>
-//                         </div>
-//                         <div>
-//                         <Input prefix={<WhatsAppOutlined />} type='text' className={customStyles.customInput}  showCount maxLength={11} onChange={onChange} />
-//                         </div>
-//                     </div>
-//                     <div className={styles.buttonPosition}>
-//                         <button className={styles.editButton} onClick={closeEditForm}>Lưu thay đổi</button>
-//                         <button className={styles.cancelButton} onClick={closeEditForm}>Hủy</button>
-//                     </div>
-//                 </form>
-//             </div>
-//         );
-//     }
-
-//     const renderOrderContent = () => {
-//         const orders = [
-//             {
-//                 id: 1,
-//                 name: 'RING OF LEAVES',
-//                 date: '15.01.2023',
-//                 price: '200,000 VND',
-//                 status: 'Completed',
-//                 image: 'https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg',
-//             },
-//             {
-//                 id: 2,
-//                 name: 'SIGNET RING',
-//                 date: '15.05.2024',
-//                 price: '100,000 VND',
-//                 status: 'Processing',
-//                 image: 'https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg',
-//             },
-//         ];
-
-//         const filteredOrders = orders.filter(order => orderFilter === 'All' || order.status === orderFilter);
-
-//         return (
-//             <div className={styles.ordersList}>
-//                 {filteredOrders.map(order => (
-//                     <div key={order.id} className={styles.orderDetails}>
-//                         <img src={order.image} alt={order.name} className={styles.orderImage} />
-//                         <div>
-//                             <h2>{order.name}</h2>
-//                             <p>Ngày: {order.date}</p>
-//                             <p>Giá: {order.price}</p>
-//                             <p>Trạng thái: {order.status}</p>
-//                         </div>
-//                     </div>
-//                 ))}
-//             </div>
-//         );
-//     };
-
-//     return (
-//         <div className={styles.container}>
-//             <h1 className={styles.thongtin} style={{ display: isSidebarHidden ? 'none' : 'block' }}>Thông tin của tôi</h1>
-//             <div className={styles.row}>
-//                 <div className={styles.sidebar} style={{ display: isSidebarHidden ? 'none' : 'block' }}>
-//                     <ul className={styles.listGroup}>
-//                         {['Tài Khoản', 'Yêu Thích', 'Đơn hàng', 'Khuyến mãi'].map(tab => (
-//                             <li
-//                                 key={tab}
-//                                 className={`${styles.listHover} ${styles.customList} ${activeTab === tab ? styles.active : ''}`}
-//                                 onClick={() => setActiveTab(tab)}
-//                             >
-//                                 {tab}
-//                             </li>
-//                         ))}
-//                     </ul>
-//                 </div>
-
-//                 <div className={styles.divider} style={{ display: isSidebarHidden ? 'none' : 'block' }}></div>
-//                 <div className={styles.content}>
-//                     {isEditing ? renderEditForm() : renderContent()}
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// }
-
-// export default Profile;
-
-
-
- 
