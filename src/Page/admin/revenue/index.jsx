@@ -1,4 +1,3 @@
-
 import { DownOutlined } from "@ant-design/icons";
 // import { BarChart, LineChart } from "@mui/x-charts";
 import { Avatar, Flex, Segmented, Table, Tabs } from "antd";
@@ -119,57 +118,6 @@ function Revenue() {
     },
   ];
 
-  const dataCounterBar = [
-    {
-      name: "T1",
-      revenue: 3200,
-    },
-    {
-      name: "T2",
-      revenue: 2800,
-    },
-    {
-      name: "T3",
-      revenue: 1890,
-    },
-    {
-      name: "T4",
-      revenue: 3500,
-    },
-    {
-      name: "T5",
-      revenue: 2900,
-    },
-    {
-      name: "T6",
-      revenue: 4500,
-    },
-    {
-      name: "T7",
-      revenue: 3490,
-    },
-    {
-      name: "T8",
-      revenue: 2790,
-    },
-    {
-      name: "T9",
-      revenue: 2990,
-    },
-    {
-      name: "T10",
-      revenue: 3890,
-    },
-    {
-      name: "T11",
-      revenue: 4090,
-    },
-    {
-      name: "T12",
-      revenue: 2990,
-    },
-  ];
-
   const column = [
     {
       title: "Kỳ",
@@ -204,11 +152,19 @@ function Revenue() {
       title: "Doanh thu",
       dataIndex: "staffRevenue",
       sorter: (a, b) => a.staffRevenue - b.staffRevenue,
+      align: "center",
     },
   ];
 
-  const handleOnClick = () => {
+  const sumRevenue = revenues.reduce((acc, curr) => acc + curr.totalRevenue, 0);
+  const sumCounter = revenues.reduce(
+    (acc, curr) => acc + curr.counterRevenue,
+    0
+  );
+  const sumStaff = revenues.reduce((acc, curr) => acc + curr.staffRevenue, 0);
 
+  const handleOnClick = (record) => {
+    console.log(record.id);
   };
 
   return (
@@ -224,7 +180,29 @@ function Revenue() {
 
       {tag == "Doanh thu" ? (
         <div>
-          <div className="shadow border w-11/12 block m-auto mt-10 p-5">
+          <div className="mt-10 flex justify-center gap-10">
+            <div className="border w-72 rounded-md pl-5 p-4 shadow-md">
+              <h3>Tổng doanh thu</h3>
+              <h2 className="text-2xl font-bold my-2">
+                {sumRevenue * 1000} VNĐ
+              </h2>
+              <h3 className="text-gray-500">+20% so với tháng trước</h3>
+            </div>
+            <div className="border w-72 rounded-md pl-5 p-4 shadow-md">
+              <h3>Tổng doanh thu của nhân viên</h3>
+              <h2 className="text-2xl font-bold my-2">{sumStaff * 1000} VNĐ</h2>
+              <h3 className="text-gray-500">+10% so với tháng trước</h3>
+            </div>
+            <div className="border w-72 rounded-md pl-5 p-4 shadow-md">
+              <h3>Tổng doanh thu của từng quầy</h3>
+              <h2 className="text-2xl font-bold my-2">
+                {sumCounter * 1000} VNĐ
+              </h2>
+              <h3 className="text-gray-500">-8% so với tháng trước</h3>
+            </div>
+          </div>
+
+          <div className="shadow border w-11/12 block m-auto mt-10 p-5 rounded-md">
             <h3 className="pb-3 font-bold">Tổng lợi nhuận trong tháng</h3>
 
             <ResponsiveContainer width="100%" height={300} className="text-sm">
@@ -254,18 +232,18 @@ function Revenue() {
             </ResponsiveContainer>
           </div>
           <div className="flex justify-evenly pl-28 gap-5 pb-5">
-            <div className="shadow border mt-10 p-5 w-fit">
+            <div className="shadow border mt-10 p-5 w-fit rounded-md">
               <h3 className="font-bold">Thống kê số lượt bán theo từng kỳ</h3>
               <Table
                 dataSource={revenues}
                 columns={column}
                 pagination={false}
                 size="small"
-                className="p-5"
+                className="table-revenue p-5"
               />
             </div>
 
-            <div className="shadow border mt-10 w-full mr-28 h-fit p-5">
+            <div className="shadow border mt-10 w-full mr-28 h-fit p-5 rounded-md">
               <h3 className="font-bold">
                 Sơ đồ cột tổng quan từng tháng trong năm
               </h3>
@@ -288,7 +266,7 @@ function Revenue() {
         </div>
       ) : tag == "Doanh thu quầy hàng" ? (
         <div>
-          <div className="shadow border w-11/12 block m-auto mt-10 p-5">
+          <div className="shadow border w-11/12 block m-auto mt-10 p-5 rounded-md">
             <h3 className="pb-3 font-bold">
               Tổng lợi nhuận của các quầy trong tháng
             </h3>
@@ -320,7 +298,7 @@ function Revenue() {
             </ResponsiveContainer>
           </div>
 
-          <div className="table-staff shadow border p-5 mt-10 w-11/12 block m-auto">
+          <div className="table-staff shadow border p-5 mt-10 w-11/12 block m-auto rounded-md">
             <h3 className="font-bold pb-3">
               Danh sách doanh thu các quầy hàng
             </h3>
@@ -329,7 +307,7 @@ function Revenue() {
         </div>
       ) : (
         <div>
-          <div className="shadow border w-11/12 block m-auto mt-10 p-5">
+          <div className="shadow border w-11/12 block m-auto mt-10 p-5 rounded-md">
             <h3 className="pb-3 font-bold">
               Tổng lợi nhuận của các nhân viên trong tháng
             </h3>
@@ -361,11 +339,16 @@ function Revenue() {
             </ResponsiveContainer>
           </div>
 
-          <div className="table-staff shadow border p-5 mt-10 w-11/12 block m-auto">
+          <div className="table-staff shadow border p-5 mt-10 w-11/12 block m-auto rounded-md">
             <h3 className="font-bold pb-3">
               Danh sách doanh thu các nhân viên theo năm
             </h3>
-            <Table columns={staffTable} dataSource={revenues} onC/>
+            <Table
+              columns={staffTable}
+              dataSource={revenues}
+              rowKey="id"
+              onRow={(record) => ({ onClick: () => handleOnClick(record) })}
+            />
           </div>
         </div>
       )}
@@ -373,4 +356,4 @@ function Revenue() {
   );
 }
 
-// export default Revenue;
+export default Revenue;

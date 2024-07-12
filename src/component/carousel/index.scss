@@ -14,3 +14,17 @@
         font-family: Lora;
     }
 }
+
+a.cateLink:hover{
+    h2{
+        color: black;
+        font-weight: 600;
+    }
+
+    img{
+        box-shadow: 12px -12px rgba(225, 225, 225, 0.8);
+        width: fit-content;
+    }
+
+} 
+
