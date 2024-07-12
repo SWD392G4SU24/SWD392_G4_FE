@@ -5,8 +5,12 @@ import {
 } from "@ant-design/icons";
 import DarkMode from "./darkmode";
 import { Link } from "react-router-dom";
+import { Badge } from "antd";
+import { useSelector } from "react-redux";
+import { store } from "../../redux/store";
 
 function Header() {
+  const carts = useSelector((store) => store.cart.products);
   return (
     //
     <div className="header shadow-md bg-white dark:bg-black/85 dark:text-white duration-200 relative z-40">
@@ -30,17 +34,19 @@ function Header() {
               />
               <SearchOutlined className="search__logo text-gray-500 group-hover:text-orange-200 absolute top-1/2 -translate-y-1/2 right-3" />
             </div>
-            <button className="bg-gradient-to-r from-orange-200 to-orange-400 dark:from-gray-600 dark:text-white dark:bg-orange-300 transition-all duration-200 text-white py-1 px-4 rounded-full flex items-center gap-3 group">
-              <span className="group-hover:block hidden transition-all duration-200">
-                Order
-              </span>
-              <ShoppingCartOutlined
-                className="text-xl text-white drop-shadow-sm cursor-pointer"
-                onClick={() => {
-                  window.location.href = "/cart";
-                }}
-              />
-            </button>
+            <Badge count={carts ? carts.length : 0}>
+              <button className="bg-gradient-to-r from-orange-200 to-orange-400 dark:from-gray-600 dark:text-white dark:bg-orange-300 transition-all duration-200 text-white py-1 px-4 rounded-full flex items-center gap-3 group">
+                <span className="group-hover:block hidden transition-all duration-200">
+                  Order
+                </span>
+                <ShoppingCartOutlined
+                  className="text-xl text-white drop-shadow-sm cursor-pointer"
+                  onClick={() => {
+                    window.location.href = "/cart";
+                  }}
+                />
+              </button>
+            </Badge>
             <div className="flex items-center justify-center w-7 h-7 bg-gradient-to-r from-orange-200 to-orange-400 dark:from-gray-600 dark:text-white dark:bg-orange-300 text-white rounded-full cursor-pointer hover:bg-gray-600 transition-colors duration-300">
               <UserOutlined />
             </div>
