@@ -15,7 +15,16 @@ function HeaderAdmin() {
     },
     {
       key: "2",
-      label: <a onClick={() => dispatch(logout())}>Logout</a>,
+      label: (
+        <a
+          onClick={() => {
+            dispatch(logout());
+            window.location.href = "/login1";
+          }}
+        >
+          Logout
+        </a>
+      ),
     },
   ];
   return (

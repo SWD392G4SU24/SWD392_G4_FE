@@ -25,7 +25,6 @@ function AdminPage2() {
         onChange={(value) => {
           console.log(value);
         }}
-        // className=""
       />
     </div>
   );
