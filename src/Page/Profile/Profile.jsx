@@ -24,6 +24,12 @@ function Profile(props) {
     const [user, setUser] = useState(null);//setState getUser
     const [orderFilter, setOrderFilter] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
+    // Reset the current page to 1 when the filter changes  
+    const handleFilterChange = (filter) => {   
+        setOrderFilter(filter);       
+         setCurrentPage(1);
+    }; 
+    const [orderHistory, setOrderHistory] = useState([]); // setState for order histor
     const ordersPerPage = 3; // Số đơn hàng trên mỗi trang
     const [error, setError] = useState(null);
 
@@ -70,9 +76,26 @@ function Profile(props) {
         }
     };
     
+    //Api get history order
+    const getOrderHistory = async () => {
+        try {
+          const pageNumber = 1; // Trang đầu tiên
+          const pageSize = 10; // Số lượng đơn hàng trên mỗi trang
+      
+          const response = await api.get(`/order/get-by-userID?PageNumber=${pageNumber}&PageSize=${pageSize}&UserID=${userId}`);
+          setOrderHistory(response.data.data); // Assuming API returns the order history data
+          console.log(response.data.data);
+        } catch (err) {
+          setError(err);
+          console.log("Error: ", err.response?.data || err.message);
+        }
+      };
 
     useEffect(() => {
+      setTimeout(() => {  
         getUserProfile();
+        getOrderHistory()
+    }, 2000);
     }, [])
    
 
@@ -112,10 +135,11 @@ function Profile(props) {
       const handleSubmit = (e) => {
         updateUserProfile();
       };
-    
+
+    // render các mục lớn trong profile
     const renderContent = () => {
         if (!user) {
-            return <div>Loading...</div>;
+            return <div  >Đang tải ...</div>;
         }
         switch (activeTab) {
             case "Tài Khoản":
@@ -196,35 +220,36 @@ function Profile(props) {
                 return (
                     <div className={styles.orderHistorySection}>
                         <div className={styles.orderFilter}>
-                            <div style={{ width: 100, height: 50, marginRight: "10px" }}>
+                            <div style={{ width: 150, height: 50, marginRight: "10px" }}>
                                 <button
                                     className={orderFilter === "All" ? styles.active : ""}
-                                    onClick={() => setOrderFilter("All")}
+                                    onClick={() => handleFilterChange("All")}
                                 >
-                                    All
+                                    Tất cả
                                 </button>
                             </div>
-                            <div style={{ width: 100, height: 50, marginRight: "70px"}}>
+                            <div style={{ width:  150, height: 50, marginRight: "20px"}}>
                                 <button
-                                    className={orderFilter === "Processing" ? styles.active : ""}
-                                    onClick={() => setOrderFilter("Processing")}
+                                    className={orderFilter === "COMPLETED" ? styles.active : ""}
+                                    onClick={() => handleFilterChange("COMPLETED")}
                                 >
-                                    Processing
+                                  Hoàn tất
                                 </button>
                             </div>
-                            <div style={{ width: 100, height: 50, marginRight: "70px"}}>
+                            <div style={{ width:  200, height: 50, marginRight: "20px"}}>
                                 <button
-                                    className={orderFilter === "Completed" ? styles.active : ""}
-                                    onClick={() => setOrderFilter("Completed")}
+                                    className={orderFilter === "PAID" ? styles.active : ""}
+                                    onClick={() => handleFilterChange("PAID")}
                                 >
-                                    Completed
+                                    Đã thanh toán
                                 </button>
                             </div>
+                           
 
-                            <div style={{ width: 100, height: 50, marginRight: "70px"}}>
+                            <div style={{ width:  150, height: 50, marginRight: "20px"}}>
                                 <button
-                                    className={orderFilter === "Cancel" ? styles.active : ""}
-                                    onClick={() => setOrderFilter("Cancel")}
+                                    className={orderFilter === "REFUND" ? styles.active : ""}
+                                    onClick={() => handleFilterChange("REFUND")}
                                 >
                                     Cancel
                                 </button>
@@ -322,64 +347,9 @@ function Profile(props) {
 
 
     const renderOrderContent = () => {
-        const orders = [
-            {
-                id: 1,
-                name: "RING OF LEAVES",
-                date: "15.01.2023",
-                price: "200,000 VND",
-                status: "Completed",
-                image:
-                    "https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg",
-            },
-            {
-                id: 2,
-                name: "SIGNET RING",
-                date: "15.05.2024",
-                price: "100,000 VND",
-                status: "Processing",
-                image:
-                    "https://www.pnj.com.vn/blog/wp-content/uploads/2022/03/Xay-dung-hinh-anh-moi-cho-ban-than-voi-nhung-mon-trang-suc-mau-sac-ruc-ro-1-1024x768.jpg",
-            },
-            {
-              id: 3,
-              name: "SIGNET RING",
-              date: "15.05.2024",
-              price: "100,000 VND",
-              status: "Processing",
-              image:
-                  "https://cdn.pnj.io/images/detailed/183/on-bo-trang-suc-cuoi-vang-24k-pnj-trau-cau-00360-02848-1.jpg",
-          },
-          {
-            id: 4,
-            name: "SIGNET RING",
-            date: "15.05.2024",
-            price: "100,000 VND",
-            status: "Processing",
-            image:
-                "https://cdn.pnj.io/images/detailed/38/bo-trang-suc-pnj-vang-18k-dinh-da-ruby-71605.600-71606.600-71607.600.jpg",
-        },
-        {
-          id: 5,
-          name: "SIGNET RING",
-          date: "15.05.2024",
-          price: "100,000 VND",
-          status: "Processing",
-          image:
-              "https://www.pnj.com.vn/blog/wp-content/uploads/2023/04/top-5-trang-suc-y-pnj-duoc-ua-chuong-nhat-thang-4-2023-1-1024x768.jpg",
-      },
-      {
-        id: 6,
-        name: "SIGNET RING",
-        date: "15.05.2024",
-        price: "100,000 VND",
-        status: "Cancel",
-        image:
-            "https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg",
-    },
-        ];
+    
 
-        const filteredOrders = orders.filter(
+        const filteredOrders = orderHistory.filter(
             (order) => orderFilter === "All" || order.status === orderFilter
         );
 
@@ -390,48 +360,56 @@ function Profile(props) {
         const indexOfLastOrder = currentPage * ordersPerPage;
         const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
         const currentOrders = filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder);
-
+                 
         return (
             <div>
-               <div className={styles.ordersList}>
-            {currentOrders.map(order => (
-
-                <div key={order.id} className={styles.orderDetails}>
-                        <img src={order.image} alt={order.name} className={styles.orderImage} />
-                        <div className={styles.orderInfo}>
-                            <div>
-                                <h2 className={styles.orderName}>{order.name}</h2>
-                                <p className={styles.orderQuantity}>Số Lượng: 1 </p>
-                                <p className={styles.orderPrice}>Giá: {order.price}</p>
-                                <p className={styles.orderTotalPrice}>Tổng tiền: {order.price}</p>
-                            </div>
+              <div className={styles.ordersList}>
+                {currentOrders.length > 0 ? (
+                  currentOrders.map(order => (
+                    <div key={order.id} className={styles.orderDetails}>
+                      <img src={order.orderDetailsDto[0].productImgUrl} alt={order.orderDetailsDto[0].product} className={styles.orderImage} />
+                      <div className={styles.orderInfo}>
+                        <div>
+                          <h2 className={styles.orderName}>{order.orderDetailsDto[0].product}</h2>
+                          <p className={styles.orderQuantity}>Số Lượng: {order.orderDetailsDto[0].quantity}</p>
+                          <p className={styles.orderPrice}>Giá: {order.orderDetailsDto[0].productCost}</p>
+                          <p className={styles.orderTotalPrice}>Tổng tiền: {order.totalCost}</p>
                         </div>
-                        <div className={styles.containerDateAndStatus}>
-                            <p className={styles.orderDate}>Ngày: {order.date}</p>
-                            <div className={`${styles.statusContainer} ${order.status === 'Completed' ? styles.completed : ''} ${order.status === 'Processing' ? styles.processing : ''} ${order.status === 'Cancel' ? styles.cancelled : ''}`}>
-                                <p className={styles.status}>{order.status}</p>
-                            </div>
+                      </div>
+                      <div className={styles.containerDateAndStatus}>
+                        <p className={styles.orderDate}>Ngày: {new Date(order.pickupDate).toLocaleDateString()}</p>
+                        <div className={`${styles.statusContainer} ${order.status === 'COMPLETED' ? styles.completed : ''} ${order.status === 'PAID' ? styles.processing : ''} ${order.status === 'REFUND' ? styles.cancelled : ''}`}>
+                          <p className={styles.status}>{order.status}</p>
                         </div>
-                </div>
-
-            ))}
-        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className={styles.notFoundStatusHistory}>Không tìm thấy lịch sử giao dịch.</p>
+                )}
+              </div>
+          
+              {currentOrders.length > 0 && (
                 <div className={styles.pagination}>
-                    <button onClick={() => setCurrentPage(prevPage => Math.max(prevPage - 1, 1))} disabled={currentPage === 1}>
-                        Previous
+                  <button onClick={() => setCurrentPage(prevPage => Math.max(prevPage - 1, 1))} disabled={currentPage === 1}>
+                    Trước
+                  </button>
+                  {Array.from({ length: totalPages }, (_, index) => (
+                    <button key={index + 1} onClick={() => setCurrentPage(index + 1)} className={currentPage === index + 1 ? styles.active : ''}>
+                      {index + 1}
                     </button>
-                    {Array.from({ length: totalPages }, (_, index) => (
-                        <button key={index + 1} onClick={() => setCurrentPage(index + 1)} className={currentPage === index + 1 ? styles.active : ''}>
-                            {index + 1}
-                        </button>
-                    ))}
-                    <button onClick={() => setCurrentPage(prevPage => Math.min(prevPage + 1, totalPages))} disabled={currentPage === totalPages}>
-                        Next
-                    </button>
+                  ))}
+                  <button onClick={() => setCurrentPage(prevPage => Math.min(prevPage + 1, totalPages))} disabled={currentPage === totalPages}>
+                    Sau
+                  </button>
                 </div>
+              )}
             </div>
-        );
+          );
+          
     };
+
+    
 
     return (
         <div className={styles.container}>
