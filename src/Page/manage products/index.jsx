@@ -220,8 +220,17 @@ function ManageProducts() {
       handleHideModal();
 
       form.resetFields();
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        const { errors } = error.response.data;
+        if (errors) {
+          Object.keys(errors).forEach((key) => {
+            errors[key].forEach((errorMessage) => {
+              toast.error(errorMessage);
+            });
+          });
+        }
+      }
     }
   }
 
@@ -286,11 +295,7 @@ function ManageProducts() {
               {fileList.length >= 6 ? null : uploadButton}
             </Upload>
           </Form.Item>
-          <Form.Item
-            label="Gold Type"
-            name="goldType"
-            rules={[{ required: true }]}
-          >
+          <Form.Item label="Gold Type" name="goldType">
             <Select>
               {golds.map((gold) => (
                 <Option key={gold.name} value={gold.name}>
@@ -299,18 +304,10 @@ function ManageProducts() {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item
-            label="Gold Weight"
-            name="goldWeight"
-            rules={[{ required: true }]}
-          >
+          <Form.Item label="Gold Weight" name="goldWeight">
             <InputNumber />
           </Form.Item>
-          <Form.Item
-            label="Diamond Type"
-            name="diamondType"
-            rules={[{ required: true }]}
-          >
+          <Form.Item label="Diamond Type" name="diamondType">
             <Select>
               {diamonds.map((diamond) => (
                 <Option key={diamond.name} value={diamond.name}>

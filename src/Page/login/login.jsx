@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../../config/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout, selectUser } from "../../redux/features/counterSlice";
 import { UnlockOutlined, UserOutlined } from "@ant-design/icons";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../config/firebase";
+import { toast } from "react-toastify";
 
 function Login1() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const user = useSelector(selectUser);
@@ -45,10 +47,12 @@ function Login1() {
           },
         }
       );
+      toast.success("Đăng nhập thành công!");
       dispatch(login(res.data));
       localStorage.setItem("token", res.data.token);
+      navigate("/");
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data.detail);
     }
   };
   console.log(user);
