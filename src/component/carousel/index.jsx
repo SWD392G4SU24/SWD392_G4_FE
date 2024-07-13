@@ -13,6 +13,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Col, Row } from "antd";
 import "./index.scss";
+import api from "../../config/axios";
 
 function Carousel({ numOfSlide, isUseNavigate }) {
   const [pics, setPics] = useState([]);
@@ -28,10 +29,11 @@ function Carousel({ numOfSlide, isUseNavigate }) {
   };
 
   const fetchCate = async () => {
-    const response = await axios.get(
+    const response = await api.get(
       "https://665aa0df003609eda45e5ea3.mockapi.io/category"
+      // "/category"
     );
-    console.log(response.data);
+    // const { value } = response.data;
     setCates(response.data);
   };
 
@@ -133,14 +135,12 @@ function Carousel({ numOfSlide, isUseNavigate }) {
       </Swiper>
 
       <>
-        {/* <div className=""> */}
         <h1 className="text-3xl text-center mt-10 font-serif">
-          Shop by categories
+          Phân loại sản phẩm
         </h1>
         <h3 className="text-center mt-2 mb-10">
           Xin hãy thưởng thức những gì chúng tôi có
         </h3>
-        {/* </div> */}
         <Row justify="space-evenly">
           {cates.map((cate) => (
             <Col
