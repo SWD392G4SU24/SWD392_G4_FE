@@ -66,7 +66,7 @@ function Profile(props) {
         }
     };
 
-  
+    const [isFocused, setIsFocused] = useState(false); // focues filter for promotion input
 
 
     //  Api get infor user
@@ -102,8 +102,8 @@ function Profile(props) {
             const pageSize = 10; // Số lượng đơn hàng trên mỗi trang
 
             // Make API call with token and ID
-            // const prom = await api.get(`/Promotion`);
-            const prom = await api.get(`/Promotion/get-by-userID?PageNumber=${pageNumber}&PageSize=${pageSize}&UserId=${userId}`);
+            const prom = await api.get(`/Promotion`);
+            // const prom = await api.get(`/Promotion/get-by-userID?PageNumber=${pageNumber}&PageSize=${pageSize}&UserId=${userId}`);
             setPromotions(prom.data.value); // Assuming API returns user data directly
             console.log(prom.data.value)
           } catch (err) {
@@ -450,14 +450,16 @@ function Profile(props) {
             const copyInput = document.querySelector('#copyvalue');
             copyInput.select();
             document.execCommand("copy");
-    
+            
             const copyBtn = document.querySelector(".copybtn");
-            copyBtn.textContent = "ĐÃ SAO CHÉP";
+            copyBtn.textContent = "Đã sao chép";
             setTimeout(() => {
-                copyBtn.textContent = "Áp dụng";
+                copyBtn.textContent = "Sao chép mã";
+                setIsFocused(false)
             }, 2000);
         };
-
+        
+    
         return (
             <div>
                 <div className={styles.promotionsList}>
@@ -484,7 +486,10 @@ function Profile(props) {
                                                 id="copyvalue"
                                                 defaultValue={promotion.id}
                                                 readOnly
-                                                className={styles.copyInput}
+                                            
+                                                className={`${styles.copyInput} ${isFocused ? styles.focused : ''}`}
+                                                onFocus={() => setIsFocused(true)}
+                                                onBlur={() => setIsFocused(false)}
                                             />
                                             <button className={`${styles.applyButton} copybtn`} onClick={copyIt}>
                                                 Sao chép mã

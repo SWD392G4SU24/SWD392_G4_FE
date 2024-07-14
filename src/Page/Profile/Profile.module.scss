@@ -548,5 +548,10 @@
     border-radius: 5px;
     text-align: center;
     width: 200px; // Độ rộng của ô mã khuyến mãi
+    filter: blur(2px)
+}
+
+.copyInput.focused {
+    filter: none;
 }
 
