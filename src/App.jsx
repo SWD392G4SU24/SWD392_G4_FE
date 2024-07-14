@@ -4,7 +4,7 @@ import {
   Routes,
   createBrowserRouter,
 } from "react-router-dom";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store";
 import Layout from "./component/layout";
@@ -26,7 +26,6 @@ import Nhan from "./Page/product/eachProduct/Nhan";
 import VongTay from "./Page/product/eachProduct/VongTay";
 import ProductDetail2 from "./Page/product/productDetail/index2";
 import DiamondPrice from "./Page/diamondPrice";
-// import Admin from "./Page/admin";
 import ManageProducts from "./Page/manage products";
 import Accounts from "./Page/admin/accounts";
 import Chart from "./component/chart/Chart";
@@ -40,8 +39,10 @@ import NecklaceSize from "./Page/rule/tutorial/necklaceSize";
 import ReturnWarranty from "./Page/rule/returns";
 import BuyTutorial from "./Page/rule/tutorial/buyProduct";
 import SecurityInfo from "./Page/rule/security";
+import { selectUser } from "./redux/features/counterSlice";
 
 function App() {
+  const user = useSelector(selectUser);
   const router = createBrowserRouter([
     {
       path: "/",
@@ -160,10 +161,6 @@ function App() {
     {
       element: <LayoutOfAdmin />,
       children: [
-        // {
-        //   path: "/admin",
-        //   element: <Admin />,
-        // },
         {
           path: "/manager",
           element: <Manager />,
@@ -186,9 +183,9 @@ function App() {
         <RouterProvider router={router}>
           <Routes>
             <Route path="/" element={<Layout />}>
+              <Route path="/" element={<HomePage />} />
               <Route path="/login1" element={<Login1 />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/accounts" element={<Accounts />} />
             </Route>
           </Routes>
         </RouterProvider>

@@ -26,27 +26,30 @@ function FillInformationForPurchase() {
 
   const handlePayment = async () => {
     try {
-      const orderDetails = selectedProduct.map((item) => ({
-        productID: item.productId,
-        quantity: item.quantity,
-      }));
-      const orderResponse = await api.post("/customer-create", {
-        orderDetails: orderDetails,
-        promotionID: "",
-        paymentMethodID: 1,
-      });
       const response = await api.post("/create-payment-url", {
         orderType: "VNPay",
         amount: formattedSubtotal1,
         orderDescription: "string",
         name: "string",
       });
-      console.log(orderResponse);
       window.location.href = response.data;
     } catch (e) {
       console.log(e);
     }
   };
+
+  // const handleCreateOrder = async () => {
+  //   const orderDetails = selectedProduct.map((item) => ({
+  //     productID: item.id,
+  //     quantity: item.quantity,
+  //   }));
+  //   const orderResponse = await api.post("/customer-create", {
+  //     orderDetails: orderDetails,
+  //     promotionID: "",
+  //     paymentMethodID: 1,
+  //   });
+  //   console.log(orderResponse);
+  // };
 
   async function fetchCurrentUser() {
     try {
@@ -147,7 +150,11 @@ function FillInformationForPurchase() {
             </div>
             <div className="py-5">
               <div className="flex flex-col border bg-black text-white font-serif">
-                <button className="py-2 px-10" onClick={handlePayment}>
+                <button
+                  className="py-2 px-10"
+                  onClick={handlePayment}
+                  // onChange={handleCreateOrder}
+                >
                   Thanh Toán
                 </button>
               </div>
