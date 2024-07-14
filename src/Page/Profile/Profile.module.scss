@@ -71,6 +71,12 @@
     margin-left: 50px;
    
 }
+.point {
+    color: #B18165;
+    font-size: 30px;
+    margin-top: -50px;
+    margin-bottom: 20px;
+}
 
 .containerFormEdit{
     position: fixed;
@@ -530,7 +536,8 @@
     padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
-    margin-left: 10px; // Khoảng cách giữa mã khuyến mãi và nút
+    margin-left: 20px; // Khoảng cách giữa mã khuyến mãi và nút
+    margin-right: 20px;
 }
 .applyButton:hover {
     background-color:#9e8478;
@@ -540,6 +547,6 @@
     padding: 5px;
     border-radius: 5px;
     text-align: center;
-    width: 100px; // Độ rộng của ô mã khuyến mãi
+    width: 200px; // Độ rộng của ô mã khuyến mãi
 }
 

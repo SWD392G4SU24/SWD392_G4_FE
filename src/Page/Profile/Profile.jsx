@@ -24,7 +24,7 @@ function Profile(props) {
     const [user, setUser] = useState(null);//setState getUser
     const [submitComplete, setSubmitComplete] = useState(false); //setState submit complete
     const [orderFilter, setOrderFilter] = useState('All');
-    const [promotions, setPromotions] = useState(null);//setState Promotion
+    const [promotions, setPromotions] = useState([]);//setState Promotion
     const [currentPage, setCurrentPage] = useState(1);
     // Reset the current page to 1 when the filter changes  
     const handleFilterChange = (filter) => {   
@@ -98,8 +98,12 @@ function Profile(props) {
     //Api get promotion
     const getUserPromotion = async () => {
         try {
+            const pageNumber = 5; // Trang đầu tiên
+            const pageSize = 10; // Số lượng đơn hàng trên mỗi trang
+
             // Make API call with token and ID
-            const prom = await api.get(`/Promotion`);
+            // const prom = await api.get(`/Promotion`);
+            const prom = await api.get(`/Promotion/get-by-userID?PageNumber=${pageNumber}&PageSize=${pageSize}&UserId=${userId}`);
             setPromotions(prom.data.value); // Assuming API returns user data directly
             console.log(prom.data.value)
           } catch (err) {
@@ -166,7 +170,7 @@ function Profile(props) {
             case "Tài Khoản":
                 return (
                     <div className={styles.infoSection} ref={contentRef}>
-                        <h2 style={{ color: "#B18165", fontSize: "30px" }}>Điểm tích lũy: {user.point}</h2>
+                        <h2 className={styles.point} >Điểm tích lũy: {user.point}</h2>
                         <label className={styles.fontstyle}>Biệt danh</label>
                         <div className={styles.infoItem}>
                             <p className={styles.infoItem_p}>
@@ -433,67 +437,6 @@ function Profile(props) {
           
     };
    
-    // const renderPromotion = () => {
-        
-
-    //     // Calculate total pages
-    //     const totalPages = Math.ceil(filtered.length / promotionsPerPage);
-    
-    //     // Get current promotions
-    //     const indexOfLastPromotions = currentPage *  promotionsPerPage;
-    //     const indexOfFirstPromotions = indexOfLastOrder -  promotionsPerPage;
-    //     const currentPromotions = filtered.slice(indexOfFirstPromotions, indexOfLastPromotions);
-        
-
-         
-    //     const copyIt = () => {
-    //         const copyInput = document.querySelector('#copyvalue');
-    //         copyInput.select();
-    //         document.execCommand("copy");
-    
-    //         const copyBtn = document.querySelector(".copybtn");
-    //         copyBtn.textContent = "ĐÃ SAO CHÉP";
-    //         setTimeout(() => {
-    //             copyBtn.textContent = "Áp dụng";
-    //         }, 2000);
-    //     };
-
-    //     return promotions.map((promotion) => (
-    //         <div key={promotion.id} className={styles.promotionSection}>
-    //             <div className={styles.promotionCard}>
-    //                 <div className={styles.promotionLogo}>
-    //                     <img 
-    //                         src="https://logomaker.designfreelogoonline.com/media/productdesigner/logo/resized/00319_DIAMOND_Jewelry-03.png"
-    //                         alt="Promotion Icon"
-    //                         className={styles.promotionIcon}
-    //                     /> 
-    //                     <h2 className={styles.promotionLogoFont}>JeWellry</h2>
-    //                 </div>
-    //                 <div className={styles.promotionDetails}>
-    //                     <h3>{promotion.description}</h3>
-    //                     <p>{new Date(promotion.expiresTime).toLocaleDateString()}</p>
-    //                 </div>
-    //                 <div className={styles.promotionCodeSection}>
-    //                     <div className={styles.codeContainer}>
-    //                         <input
-    //                             type="text"
-    //                             id="copyvalue"
-    //                             defaultValue="DISCOUNT5"
-    //                             readOnly
-    //                             className={styles.copyInput}
-    //                         />
-    //                         <button className={`${styles.applyButton} copybtn`} onClick={copyIt}>
-    //                             Sao chép mã
-    //                         </button>
-    //                         <button onClick={() => {
-    //                             window.location.href = "/cart";
-    //                         }}>Đi tới giỏ hàng</button>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     ));
-    // };
     const renderPromotion = () => {
         // Tính tổng số trang
         const totalPages = Math.ceil(promotions.length / promotionsPerPage);
@@ -532,14 +475,14 @@ function Profile(props) {
                                     </div>
                                     <div className={styles.promotionDetails}>
                                         <h3>{promotion.description}</h3>
-                                        <p>{new Date(promotion.expiresTime).toLocaleDateString()}</p>
+                                        <p>Ngày hết hạn: {new Date(promotion.expiresTime).toLocaleDateString()}</p>
                                     </div>
                                     <div className={styles.promotionCodeSection}>
                                         <div className={styles.codeContainer}>
                                             <input
                                                 type="text"
                                                 id="copyvalue"
-                                                defaultValue="DISCOUNT5"
+                                                defaultValue={promotion.id}
                                                 readOnly
                                                 className={styles.copyInput}
                                             />
@@ -644,10 +587,6 @@ const ProfileWithFormik = withFormik({
         .min(10, 'Số điện thoại tối thiểu 10 số')
         .max(15, 'Số điện thoại tối đa 15 số')
 }),
-
-// handleSubmit: (values, { props }) => {
-//     props.updateUserProfile1(values); // Gọi hàm updateUserProfile từ props
-// },
 displayName: 'MyProfileForm',
 })(Profile);
 
