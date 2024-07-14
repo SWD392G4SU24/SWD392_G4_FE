@@ -22,6 +22,10 @@ function Profile(props) {
     const [isSidebarHidden, setIsSidebarHidden] = useState(false);
     const contentRef = useRef(null); // Tham chiếu tới phần nội dung
     const [user, setUser] = useState(null);//setState getUser
+
+    const [newFullName, setNewFullName] = useState("");
+    const [newEmail, setNewEmail] = useState("");
+    const [newPhoneNumber, setNewPhoneNumber] = useState("");
     const [orderFilter, setOrderFilter] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
     // Reset the current page to 1 when the filter changes  
@@ -43,6 +47,7 @@ function Profile(props) {
         handleChange,
         handleBlur,
         setFieldValue,
+        isValid 
     } = props;
 
     const openEditForm = () => {
@@ -70,7 +75,6 @@ function Profile(props) {
           // Make API call with token and ID
           const userInfor = await api.get(`/user-current`);
           setUser(userInfor.data); // Assuming API returns user data directly
-          console.log(userInfor.data);
         } catch (err) {
           setError(err);
         }
@@ -92,10 +96,9 @@ function Profile(props) {
       };
 
     useEffect(() => {
-      setTimeout(() => {  
         getUserProfile();
         getOrderHistory()
-    }, 2000);
+  
     }, [])
    
 
@@ -133,13 +136,17 @@ function Profile(props) {
     }, []);
    
       const handleSubmit = (e) => {
+        // e.preventDefault();
         updateUserProfile();
+        getUserProfile();
+ 
+     
       };
 
     // render các mục lớn trong profile
     const renderContent = () => {
         if (!user) {
-            return <div  >Đang tải ...</div>;
+            return <div className={styles.loader} >Đang tải....</div>;
         }
         switch (activeTab) {
             case "Tài Khoản":
@@ -334,7 +341,7 @@ function Profile(props) {
                             {touched.phoneNumber && errors.phoneNumber && <div style={{ color: 'red', fontWeight: 'bold' }}>{errors.phoneNumber}</div>}
                         </div>
                         <div className={styles.buttonPositionEdit}>
-                            <button type="submit" className={styles.editButton}>Lưu thay đổi</button>
+                            <button type="submit" className={styles.editButton} disabled={!isValid} >Lưu thay đổi</button>
                             <button type="button" className={styles.cancelButton} onClick={closeEditForm}>Hủy</button>
                         </div>
                     </div>
@@ -461,7 +468,7 @@ const ProfileWithFormik = withFormik({
     mapPropsToValues: () => ({
         fullName: '',
         email: '',
-        phoneNumber: '',
+        phoneNumber: '', 
     }),
     validationSchema: Yup.object().shape({
         fullName: Yup.string()
