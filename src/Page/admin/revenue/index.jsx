@@ -1,4 +1,3 @@
-
 import { DownOutlined } from "@ant-design/icons";
 // import { BarChart, LineChart } from "@mui/x-charts";
 import { Avatar, Flex, Segmented, Table, Tabs } from "antd";
@@ -15,8 +14,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-// import { data } from "autoprefixer";
-// import { Bar } from "react-chartjs-2";
 import React, { useEffect, useState } from "react";
 import api from "../../../config/axios";
 
@@ -207,9 +204,7 @@ function Revenue() {
     },
   ];
 
-  const handleOnClick = () => {
-
-  };
+  const handleOnClick = () => {};
 
   return (
     <div className="pb-10">
@@ -365,7 +360,7 @@ function Revenue() {
             <h3 className="font-bold pb-3">
               Danh sách doanh thu các nhân viên theo năm
             </h3>
-            <Table columns={staffTable} dataSource={revenues} onC/>
+            <Table columns={staffTable} dataSource={revenues} onC />
           </div>
         </div>
       )}
@@ -373,4 +368,4 @@ function Revenue() {
   );
 }
 
-// export default Revenue;
+export default Revenue;

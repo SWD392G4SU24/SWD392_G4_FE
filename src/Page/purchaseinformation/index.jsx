@@ -9,7 +9,6 @@ function FillInformationForPurchase() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [payment, setPayment] = useState([]);
   const selectedProduct = useSelector((store) => store.cart.selectedItems);
   console.log(selectedProduct);
   const subtotal = selectedProduct.reduce((acc, item) => {
@@ -27,12 +26,22 @@ function FillInformationForPurchase() {
 
   const handlePayment = async () => {
     try {
+      const orderDetails = selectedProduct.map((item) => ({
+        productID: item.productId,
+        quantity: item.quantity,
+      }));
+      const orderResponse = await api.post("/customer-create", {
+        orderDetails: orderDetails,
+        promotionID: "",
+        paymentMethodID: 1,
+      });
       const response = await api.post("/create-payment-url", {
         orderType: "VNPay",
         amount: formattedSubtotal1,
         orderDescription: "string",
         name: "string",
       });
+      console.log(orderResponse);
       window.location.href = response.data;
     } catch (e) {
       console.log(e);
@@ -52,19 +61,8 @@ function FillInformationForPurchase() {
     }
   }
 
-  async function fetchPaymentMethod() {
-    try {
-      const response = await api.get("/paymentMethod");
-      const { value } = response.data;
-      setPayment(value);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   useEffect(() => {
     fetchCurrentUser();
-    fetchPaymentMethod();
   }, []);
 
   return (
