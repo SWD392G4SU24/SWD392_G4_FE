@@ -22,17 +22,18 @@ function Profile(props) {
     const [isSidebarHidden, setIsSidebarHidden] = useState(false);
     const contentRef = useRef(null); // Tham chiếu tới phần nội dung
     const [user, setUser] = useState(null);//setState getUser
-
-    const [submitComplete, setSubmitComplete] = useState(false);
+    const [submitComplete, setSubmitComplete] = useState(false); //setState submit complete
     const [orderFilter, setOrderFilter] = useState('All');
+    const [promotions, setPromotions] = useState(null);//setState Promotion
     const [currentPage, setCurrentPage] = useState(1);
     // Reset the current page to 1 when the filter changes  
     const handleFilterChange = (filter) => {   
         setOrderFilter(filter);       
          setCurrentPage(1);
     }; 
-    const [orderHistory, setOrderHistory] = useState([]); // setState for order histor
-    const ordersPerPage = 3; // Số đơn hàng trên mỗi trang
+    const [orderHistory, setOrderHistory] = useState([]); // setState for order history
+    const ordersPerPage = 3; // Số đơn hàng trên mỗi trang của page order
+    const promotionsPerPage = 5; // Số đơn hàng trên mỗi trang của page promotion
     const [error, setError] = useState(null);
 
     const userId = useSelector(selectId); // Lấy user ID từ Redux store 
@@ -64,10 +65,11 @@ function Profile(props) {
             contentRef.current.scrollIntoView({ behavior: "smooth" });
         }
     };
-    
+
+  
 
 
-    // Lấy API thông tin khách hàng API
+    //  Api get infor user
     const getUserProfile = async () => {
         try {
           // Make API call with token and ID
@@ -92,7 +94,18 @@ function Profile(props) {
           console.log("Error: ", err.response?.data || err.message);
         }
       };
-
+    
+    //Api get promotion
+    const getUserPromotion = async () => {
+        try {
+            // Make API call with token and ID
+            const prom = await api.get(`/Promotion`);
+            setPromotions(prom.data.value); // Assuming API returns user data directly
+            console.log(prom.data.value)
+          } catch (err) {
+            setError(err);
+          }
+    }
 
     useEffect(() => {
         const delay = 1500; // Delay in milliseconds (adjust as needed)
@@ -101,6 +114,7 @@ function Profile(props) {
             await new Promise(resolve => setTimeout(resolve, delay));
             getUserProfile();
             getOrderHistory();
+            getUserPromotion()
         };
     
         fetchData();
@@ -255,10 +269,10 @@ function Profile(props) {
 
                             <div style={{ width:  150, height: 50, marginRight: "20px"}}>
                                 <button
-                                    className={orderFilter === "REFUND" ? styles.active : ""}
-                                    onClick={() => handleFilterChange("REFUND")}
+                                    className={orderFilter === "REFUNDED" ? styles.active : ""}
+                                    onClick={() => handleFilterChange("REFUNDED")}
                                 >
-                                    Cancel
+                                    Trả hàng
                                 </button>
                             </div>
                             
@@ -357,18 +371,19 @@ function Profile(props) {
 
     const renderOrderContent = () => {
     
-
-        const filteredOrders = orderHistory.filter(
+        const filtered = orderHistory.filter(
             (order) => orderFilter === "All" || order.status === orderFilter
         );
-
+    
         // Calculate total pages
-        const totalPages = Math.ceil(filteredOrders.length / ordersPerPage);
-
+        const totalPages = Math.ceil(filtered.length / ordersPerPage);
+    
         // Get current orders
         const indexOfLastOrder = currentPage * ordersPerPage;
         const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-        const currentOrders = filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder);
+        const currentOrders = filtered.slice(indexOfFirstOrder, indexOfLastOrder);
+        
+       
                  
         return (
             <div>
@@ -387,7 +402,7 @@ function Profile(props) {
                       </div>
                       <div className={styles.containerDateAndStatus}>
                         <p className={styles.orderDate}>Ngày: {new Date(order.pickupDate).toLocaleDateString()}</p>
-                        <div className={`${styles.statusContainer} ${order.status === 'COMPLETED' ? styles.completed : ''} ${order.status === 'PAID' ? styles.processing : ''} ${order.status === 'REFUND' ? styles.cancelled : ''}`}>
+                        <div className={`${styles.statusContainer} ${order.status === 'COMPLETED' ? styles.completed : ''} ${order.status === 'PAID' ? styles.processing : ''} ${order.status === 'REFUNDED' ? styles.cancelled : ''}`}>
                           <p className={styles.status}>{order.status}</p>
                         </div>
                       </div>
@@ -418,57 +433,150 @@ function Profile(props) {
           
     };
    
+    // const renderPromotion = () => {
+        
+
+    //     // Calculate total pages
+    //     const totalPages = Math.ceil(filtered.length / promotionsPerPage);
+    
+    //     // Get current promotions
+    //     const indexOfLastPromotions = currentPage *  promotionsPerPage;
+    //     const indexOfFirstPromotions = indexOfLastOrder -  promotionsPerPage;
+    //     const currentPromotions = filtered.slice(indexOfFirstPromotions, indexOfLastPromotions);
+        
+
+         
+    //     const copyIt = () => {
+    //         const copyInput = document.querySelector('#copyvalue');
+    //         copyInput.select();
+    //         document.execCommand("copy");
+    
+    //         const copyBtn = document.querySelector(".copybtn");
+    //         copyBtn.textContent = "ĐÃ SAO CHÉP";
+    //         setTimeout(() => {
+    //             copyBtn.textContent = "Áp dụng";
+    //         }, 2000);
+    //     };
+
+    //     return promotions.map((promotion) => (
+    //         <div key={promotion.id} className={styles.promotionSection}>
+    //             <div className={styles.promotionCard}>
+    //                 <div className={styles.promotionLogo}>
+    //                     <img 
+    //                         src="https://logomaker.designfreelogoonline.com/media/productdesigner/logo/resized/00319_DIAMOND_Jewelry-03.png"
+    //                         alt="Promotion Icon"
+    //                         className={styles.promotionIcon}
+    //                     /> 
+    //                     <h2 className={styles.promotionLogoFont}>JeWellry</h2>
+    //                 </div>
+    //                 <div className={styles.promotionDetails}>
+    //                     <h3>{promotion.description}</h3>
+    //                     <p>{new Date(promotion.expiresTime).toLocaleDateString()}</p>
+    //                 </div>
+    //                 <div className={styles.promotionCodeSection}>
+    //                     <div className={styles.codeContainer}>
+    //                         <input
+    //                             type="text"
+    //                             id="copyvalue"
+    //                             defaultValue="DISCOUNT5"
+    //                             readOnly
+    //                             className={styles.copyInput}
+    //                         />
+    //                         <button className={`${styles.applyButton} copybtn`} onClick={copyIt}>
+    //                             Sao chép mã
+    //                         </button>
+    //                         <button onClick={() => {
+    //                             window.location.href = "/cart";
+    //                         }}>Đi tới giỏ hàng</button>
+    //                     </div>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     ));
+    // };
     const renderPromotion = () => {
+        // Tính tổng số trang
+        const totalPages = Math.ceil(promotions.length / promotionsPerPage);
+    
+        // Lấy khuyến mãi hiện tại
+        const indexOfLastPromotion = currentPage * promotionsPerPage;
+        const indexOfFirstPromotion = indexOfLastPromotion - promotionsPerPage;
+        const currentPromotions = promotions.slice(indexOfFirstPromotion, indexOfLastPromotion);
+
         const copyIt = () => {
             const copyInput = document.querySelector('#copyvalue');
             copyInput.select();
             document.execCommand("copy");
     
             const copyBtn = document.querySelector(".copybtn");
-            copyBtn.textContent = "COPIED";
+            copyBtn.textContent = "ĐÃ SAO CHÉP";
             setTimeout(() => {
                 copyBtn.textContent = "Áp dụng";
             }, 2000);
         };
-    
+
         return (
-            <div className={styles.promotionSection}>
-                <div className={styles.promotionCard}>
-                    <div className={styles.promotionLogo}>
-                    <img 
-                        src="https://logomaker.designfreelogoonline.com/media/productdesigner/logo/resized/00319_DIAMOND_Jewelry-03.png"
-                        alt="Promotion Icon"
-                        className={styles.promotionIcon}
-                    /> 
-                    <h2 className={styles.promotionLogoFont}>JeWellry</h2>
-                    </div>
-                    
-                    <div className={styles.promotionDetails}>
-                        <h3>Discount 5% - Necklaces</h3>
-                        <p>From dd.mm.yyyy to dd.mm.yyyy</p>
-                    </div>
-                    <div className={styles.promotionCodeSection}>
-                        <div className={styles.codeContainer}>
-                            <input
-                                type="text"
-                                id="copyvalue"
-                                defaultValue="DISCOUNT5"
-                                readOnly
-                                className={styles.copyInput}
-                            />
-                            <button className={`${styles.applyButton} copybtn`} onClick={copyIt}>
-                                Áp dụng
-                            </button>
-                            <button onClick={() => {
-                                window.location.href = "/cart";
-                            }}>Đi tới giỏ hàng</button>
-                        </div>
-                    </div>
+            <div>
+                <div className={styles.promotionsList}>
+                    {currentPromotions.length > 0 ? (
+                        currentPromotions.map((promotion) => (
+                            <div key={promotion.id} className={styles.promotionSection}>
+                                <div className={styles.promotionCard}>
+                                    <div className={styles.promotionLogo}>
+                                        <img 
+                                            src="https://logomaker.designfreelogoonline.com/media/productdesigner/logo/resized/00319_DIAMOND_Jewelry-03.png"
+                                            alt="Promotion Icon"
+                                            className={styles.promotionIcon}
+                                        /> 
+                                        <h2 className={styles.promotionLogoFont}>JeWellry</h2>
+                                    </div>
+                                    <div className={styles.promotionDetails}>
+                                        <h3>{promotion.description}</h3>
+                                        <p>{new Date(promotion.expiresTime).toLocaleDateString()}</p>
+                                    </div>
+                                    <div className={styles.promotionCodeSection}>
+                                        <div className={styles.codeContainer}>
+                                            <input
+                                                type="text"
+                                                id="copyvalue"
+                                                defaultValue="DISCOUNT5"
+                                                readOnly
+                                                className={styles.copyInput}
+                                            />
+                                            <button className={`${styles.applyButton} copybtn`} onClick={copyIt}>
+                                                Sao chép mã
+                                            </button>
+                                            <button onClick={() => {
+                                                window.location.href = "/cart";
+                                            }}>Đi tới giỏ hàng</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p className={styles.notFoundStatusHistory}>Không tìm thấy khuyến mãi.</p>
+                    )}
                 </div>
+        
+                {currentPromotions.length > 0 && (
+                    <div className={styles.pagination}>
+                        <button onClick={() => setCurrentPage(prevPage => Math.max(prevPage - 1, 1))} disabled={currentPage === 1}>
+                            Trước
+                        </button>
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <button key={index + 1} onClick={() => setCurrentPage(index + 1)} className={currentPage === index + 1 ? styles.active : ''}>
+                                {index + 1}
+                            </button>
+                        ))}
+                        <button onClick={() => setCurrentPage(prevPage => Math.min(prevPage + 1, totalPages))} disabled={currentPage === totalPages}>
+                            Sau
+                        </button>
+                    </div>
+                )}
             </div>
         );
-    }
-
+    };
     return (
         <div className={styles.container}>
             <button
