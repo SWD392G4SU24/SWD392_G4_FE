@@ -407,7 +407,12 @@ function Profile(props) {
                       <div className={styles.containerDateAndStatus}>
                         <p className={styles.orderDate}>Ngày: {new Date(order.pickupDate).toLocaleDateString()}</p>
                         <div className={`${styles.statusContainer} ${order.status === 'COMPLETED' ? styles.completed : ''} ${order.status === 'PAID' ? styles.processing : ''} ${order.status === 'REFUNDED' ? styles.cancelled : ''}`}>
-                          <p className={styles.status}>{order.status}</p>
+                                  <p className={styles.status}>
+                                      {order.status === 'COMPLETED' ? 'ĐÃ HOÀN THÀNH' :
+                                       order.status === 'PAID' ? 'ĐÃ THANH TOÁN' :
+                                       order.status === 'REFUNDED' ? 'ĐÃ HOÀN TRẢ' :
+                                       order.status}
+                                  </p>
                         </div>
                       </div>
                     </div>
