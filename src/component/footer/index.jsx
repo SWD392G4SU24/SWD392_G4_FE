@@ -14,24 +14,7 @@ const BannerImg = {
   height: "100%",
   width: "100%",
 };
-const FooterLinks = [
-  {
-    title: "Home",
-    link: "/#",
-  },
-  {
-    title: "About",
-    link: "/#about",
-  },
-  {
-    title: "Contact",
-    link: "/#contact",
-  },
-  {
-    title: "Blog",
-    link: "/#blog",
-  },
-];
+
 function Footer() {
   return (
     <div style={BannerImg} className="text-white">
@@ -62,34 +45,69 @@ function Footer() {
             <div>
               <div className="py-8 px-4">
                 <h1 className="sm:text-xl text-xl font-bold sm:text-left text-justify mb-3">
-                  Important Links
+                  VỀ JEWELLRY
                 </h1>
-                <ul className="flex flex-col gap-3">
-                  {FooterLinks.map((link) => (
+                <ul className="flex flex-col gap-3 items-start">
+                  <li
+                    className="cursor-pointer hover:text-primary hover:translate-x-1 duration-300 text-gray-200"
+                    onClick={() => (window.location.href = "/aboutus")}
+                  >
+                    Câu chuyện về JeWellry
+                  </li>
+                  <li
+                    className="cursor-pointer hover:text-primary hover:translate-x-1 duration-300 text-gray-200"
+                    onClick={() => (window.location.href = "/goldprice")}
+                  >
+                    Giá vàng
+                  </li>
+                  <li
+                    className="cursor-pointer hover:text-primary hover:translate-x-1 duration-300 text-gray-200"
+                    onClick={() => (window.location.href = "/diamondprice")}
+                  >
+                    Giá kim cương
+                  </li>
+
+                  {/* {FooterLinks.map((link) => (
                     <li
                       className="cursor-pointer hover:text-primary hover:translate-x-1 duration-300 text-gray-200"
                       key={link.title}
                     >
                       <span>{link.title}</span>
                     </li>
-                  ))}
+                  ))} */}
                 </ul>
               </div>
             </div>
             <div>
               <div className="py-8 px-4">
                 <h1 className="sm:text-xl text-xl font-bold sm:text-left text-justify mb-3">
-                  Links
+                  DỊCH VỤ KHÁCH HÀNG
                 </h1>
-                <ul className="flex flex-col gap-3">
-                  {FooterLinks.map((link) => (
-                    <li
-                      className="cursor-pointer hover:text-primary hover:translate-x-1 duration-300 text-gray-200"
-                      key={link.title}
-                    >
-                      <span>{link.title}</span>
-                    </li>
-                  ))}
+                <ul className="flex flex-col gap-3 items-start">
+                  <li
+                    className="cursor-pointer hover:text-primary hover:translate-x-1 duration-300 text-gray-200"
+                    onClick={() => (window.location.href = "/tutorial")}
+                  >
+                    Hướng dẫn đo size trang sức
+                  </li>
+                  <li
+                    className="cursor-pointer hover:text-primary hover:translate-x-1 duration-300 text-gray-200"
+                    onClick={() => (window.location.href = "/buytutor")}
+                  >
+                    Hướng dẫn mua hàng và thanh toán
+                  </li>
+                  <li
+                    className="cursor-pointer hover:text-primary hover:translate-x-1 duration-300 text-gray-200"
+                    onClick={() => (window.location.href = "/returnswar")}
+                  >
+                    Chính sách bảo hành, đổi trả sản phẩm
+                  </li>
+                  <li
+                    className="cursor-pointer hover:text-primary hover:translate-x-1 duration-300 text-gray-200"
+                    onClick={() => (window.location.href = "/securityinfo")}
+                  >
+                    Chính sách bảo mật thông tin khách hàng
+                  </li>
                 </ul>
               </div>
             </div>
