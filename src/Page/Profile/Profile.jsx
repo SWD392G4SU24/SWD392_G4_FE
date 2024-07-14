@@ -23,9 +23,7 @@ function Profile(props) {
     const contentRef = useRef(null); // Tham chiếu tới phần nội dung
     const [user, setUser] = useState(null);//setState getUser
 
-    const [newFullName, setNewFullName] = useState("");
-    const [newEmail, setNewEmail] = useState("");
-    const [newPhoneNumber, setNewPhoneNumber] = useState("");
+    const [submitComplete, setSubmitComplete] = useState(false);
     const [orderFilter, setOrderFilter] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
     // Reset the current page to 1 when the filter changes  
@@ -102,45 +100,76 @@ function Profile(props) {
     }, [])
    
 
-    const updateUserProfile = async () => {
-        try {
-          const formData = new FormData();
-          formData.append("UserID", userId); // Thêm UserID vào dữ liệu gửi đi
-          formData.append("fullName", values.fullName);
-          formData.append("email", values.email);
-          formData.append("phoneNumber", values.phoneNumber);
+    // const updateUserProfile = async () => {
+    //     try {
+    //       const formData = new FormData();
+    //       formData.append("UserID", userId); // Thêm UserID vào dữ liệu gửi đi
+    //       formData.append("fullName", values.fullName);
+    //       formData.append("email", values.email);
+    //       formData.append("phoneNumber", values.phoneNumber);
     
-          const response = await api.patch(`/user/update`, formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          });
-          setUser(response.data);
-          setAlertContent("Cập nhật thông tin thành công!");
-          // Lưu thông báo thành công vào localStorage
-          localStorage.setItem('Cập nhật thông tin thành công!', 'true');
-          console.log(response.data);
-        } catch (err) {
-          setError(err);
-          console.log("Error: ", err.response?.data || err.message);
-        }
-      }
-      useEffect(() => {
-        // Kiểm tra nếu có thông báo thành công trong localStorage
-        const storedMessage = localStorage.getItem('Cập nhật thông tin thành công!');
-        if (storedMessage === 'true') {
-            setAlertContent("Cập nhật thông tin thành công!");
-            // Xóa thông báo thành công sau khi hiển thị
-            localStorage.removeItem('Cập nhật thông tin thành công!');
-        }
-    }, []);
+    //       const response = await api.patch(`/user/update`, formData, {
+    //         headers: {
+    //           'Content-Type': 'multipart/form-data'
+    //         }
+    //       });
+    //       setUser(response.data);
+    //       setAlertContent("Cập nhật thông tin thành công!");
+    //       // Lưu thông báo thành công vào localStorage
+    //       localStorage.setItem('Cập nhật thông tin thành công!', 'true');
+    //       console.log(response.data);
+    //     } catch (err) {
+    //       setError(err);
+    //       console.log("Error: ", err.response?.data || err.message);
+    //     }
+    //   }
+     
    
-      const handleSubmit = (e) => {
-        // e.preventDefault();
-        updateUserProfile();
-        getUserProfile();
+    //   const handleSubmit = (e) => {
+    //     // e.preventDefault();
+    //     updateUserProfile();
+    //     getUserProfile();
  
      
+    //   };
+
+    
+
+    const updateUserProfile = async () => {
+        try {
+            const formData = new FormData();
+            formData.append("UserID", userId);
+            formData.append("fullName", values.fullName);
+            formData.append("email", values.email);
+            formData.append("phoneNumber", values.phoneNumber);
+    
+            const response = await api.patch(`/user/update`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+    
+            setUser(response.data);
+            console.log(response.data);
+            setSubmitComplete(true);
+            window.location.href = "/profile";
+        } catch (err) {
+            setError(err); // Hiển thị lỗi để debug
+            console.log("Error: ", err.response?.data || err.message);
+            // Hiển thị thông báo lỗi cho người dùng
+            setAlertContent("Đã xảy ra lỗi khi cập nhật thông tin. Vui lòng thử lại sau.");
+        }
+    };
+   
+      const handleSubmit = (e) => {
+         // Ngăn chặn mặc định của sự kiện form submit nếu chưa hoàn thành
+    if (!submitComplete) {
+        e.preventDefault();
+       
+    }
+    // Thực hiện cập nhật thông tin
+    updateUserProfile();
+
       };
 
     // render các mục lớn trong profile
