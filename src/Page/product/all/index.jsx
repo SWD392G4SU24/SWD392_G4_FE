@@ -105,7 +105,7 @@ function ProductAll() {
             {filterDC.map((dc) => (
               <SwiperSlide key={dc.id}>
                 <div
-                  className="pb-16 pt-5 w-36"
+                  className="pb-16 pt-5 w-36 cursor-pointer"
                   onClick={() => {
                     window.location.href = `/prodetail/${dc.id}`;
                   }}
@@ -162,7 +162,7 @@ function ProductAll() {
             {filterHT.map((ht) => (
               <SwiperSlide key={ht.id}>
                 <div
-                  className="pb-16 pt-5"
+                  className="pb-16 pt-5 cursor-pointer"
                   onClick={() => {
                     window.location.href = `/prodetail/${ht.id}`;
                   }}
@@ -219,7 +219,7 @@ function ProductAll() {
             {filterVT.map((vt) => (
               <SwiperSlide key={vt.id}>
                 <div
-                  className="pb-16 pt-5"
+                  className="pb-16 pt-5 cursor-pointer"
                   onClick={() => {
                     window.location.href = `/prodetail/${vt.id}`;
                   }}
@@ -276,7 +276,7 @@ function ProductAll() {
             {filterNh.map((n) => (
               <SwiperSlide key={n.id}>
                 <div
-                  className="pb-16 pt-5"
+                  className="pb-16 pt-5 cursor-pointer"
                   onClick={() => {
                     window.location.href = `/prodetail/${n.id}`;
                   }}
