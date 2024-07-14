@@ -464,3 +464,82 @@
           calc(-5*var(--w)) 0 #000, calc(-6*var(--w)) 0 #000, calc(-7*var(--w)) 0 #000, calc(-8*var(--w)) 0 #000, calc(-9*var(--w)) -10px #000 }
           
 }
+
+
+.promotionSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.promotionCard {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex-direction: row; // Đặt các mục theo chiều ngang
+    width: 80%; // Đặt độ rộng của box ở đây
+    justify-content: space-between;
+    margin-right: 50px;
+}
+
+.promotionLogo{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}   
+.promotionIcon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px; // Căn chỉnh khoảng cách bên dưới icon
+}
+.promotionLogoFont {
+    flex: 1; // Giúp phần chi tiết mở rộng để chiếm không gian còn lại
+    margin-right: 15px; // Khoảng cách giữa phần chi tiết và mã khuyến mãi
+    font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; // Áp dụng font-family
+    text-align: center;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+.promotionDetails {
+    text-align: center; // Căn giữa nội dung
+}
+
+.promotionCodeSection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px; // Khoảng cách bên trên mã khuyến mãi và nút
+
+}
+
+.codeContainer {
+    display: flex;
+    align-items: center;
+}
+
+.applyButton {
+    background-color: #B18165;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px; // Khoảng cách giữa mã khuyến mãi và nút
+}
+.applyButton:hover {
+    background-color:#9e8478;
+}
+.copyInput {
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+    width: 100px; // Độ rộng của ô mã khuyến mãi
+}
+

@@ -93,47 +93,18 @@ function Profile(props) {
         }
       };
 
+
     useEffect(() => {
-        getUserProfile();
-        getOrderHistory()
-  
-    }, [])
-   
-
-    // const updateUserProfile = async () => {
-    //     try {
-    //       const formData = new FormData();
-    //       formData.append("UserID", userId); // Thêm UserID vào dữ liệu gửi đi
-    //       formData.append("fullName", values.fullName);
-    //       formData.append("email", values.email);
-    //       formData.append("phoneNumber", values.phoneNumber);
+        const delay = 1500; // Delay in milliseconds (adjust as needed)
     
-    //       const response = await api.patch(`/user/update`, formData, {
-    //         headers: {
-    //           'Content-Type': 'multipart/form-data'
-    //         }
-    //       });
-    //       setUser(response.data);
-    //       setAlertContent("Cập nhật thông tin thành công!");
-    //       // Lưu thông báo thành công vào localStorage
-    //       localStorage.setItem('Cập nhật thông tin thành công!', 'true');
-    //       console.log(response.data);
-    //     } catch (err) {
-    //       setError(err);
-    //       console.log("Error: ", err.response?.data || err.message);
-    //     }
-    //   }
-     
-   
-    //   const handleSubmit = (e) => {
-    //     // e.preventDefault();
-    //     updateUserProfile();
-    //     getUserProfile();
- 
-     
-    //   };
-
+        const fetchData = async () => {
+            await new Promise(resolve => setTimeout(resolve, delay));
+            getUserProfile();
+            getOrderHistory();
+        };
     
+        fetchData();
+    }, []);
 
     const updateUserProfile = async () => {
         try {
@@ -296,7 +267,9 @@ function Profile(props) {
                     </div>
                 );
             case "Khuyến mãi":
-                return <div>Promotions content</div>;
+                return <div>
+                {renderPromotion()}
+                </div>;
             default:
                 return null;
         }
@@ -444,8 +417,57 @@ function Profile(props) {
           );
           
     };
-
+   
+    const renderPromotion = () => {
+        const copyIt = () => {
+            const copyInput = document.querySelector('#copyvalue');
+            copyInput.select();
+            document.execCommand("copy");
     
+            const copyBtn = document.querySelector(".copybtn");
+            copyBtn.textContent = "COPIED";
+            setTimeout(() => {
+                copyBtn.textContent = "Áp dụng";
+            }, 2000);
+        };
+    
+        return (
+            <div className={styles.promotionSection}>
+                <div className={styles.promotionCard}>
+                    <div className={styles.promotionLogo}>
+                    <img 
+                        src="https://logomaker.designfreelogoonline.com/media/productdesigner/logo/resized/00319_DIAMOND_Jewelry-03.png"
+                        alt="Promotion Icon"
+                        className={styles.promotionIcon}
+                    /> 
+                    <h2 className={styles.promotionLogoFont}>JeWellry</h2>
+                    </div>
+                    
+                    <div className={styles.promotionDetails}>
+                        <h3>Discount 5% - Necklaces</h3>
+                        <p>From dd.mm.yyyy to dd.mm.yyyy</p>
+                    </div>
+                    <div className={styles.promotionCodeSection}>
+                        <div className={styles.codeContainer}>
+                            <input
+                                type="text"
+                                id="copyvalue"
+                                defaultValue="DISCOUNT5"
+                                readOnly
+                                className={styles.copyInput}
+                            />
+                            <button className={`${styles.applyButton} copybtn`} onClick={copyIt}>
+                                Áp dụng
+                            </button>
+                            <button onClick={() => {
+                                window.location.href = "/cart";
+                            }}>Đi tới giỏ hàng</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.container}>
@@ -454,6 +476,7 @@ function Profile(props) {
                     window.location.href = "/";
                 }}
                 className="pb-2 pt-7 text-gray-500 pl-5 text-lg"
+                style={{ display: isSidebarHidden ? "none" : "block" }}
             >
                 Quay về
             </button>
