@@ -122,10 +122,6 @@ function App() {
           element: <VongTay />,
         },
         {
-          path: "/crudproduct",
-          element: <ManageProducts />,
-        },
-        {
           path: "/chart",
           element: <Chart />,
         },
@@ -178,6 +174,10 @@ function App() {
         {
           path: "/form",
           element: <Form />,
+        },
+        {
+          path: "/crudproduct",
+          element: <ManageProducts />,
         },
       ],
     },
