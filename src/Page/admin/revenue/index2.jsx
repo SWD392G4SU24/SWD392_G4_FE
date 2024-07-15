@@ -1,7 +1,7 @@
 import { Tabs } from "antd";
 import React from "react";
-import Revenue from ".";
 import Accounts from "../accounts";
+import Revenue from ".";
 
 function AdminPage2() {
   const items = [

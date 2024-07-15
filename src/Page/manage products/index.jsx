@@ -135,10 +135,9 @@ function ManageProducts() {
   );
   async function fetchProducts() {
     try {
-      const response = await api.get(
-        "https://dassie-living-bonefish.ngrok-free.app/Product"
-      );
-      setDataSource(response.data);
+      const response = await api.get("/Product");
+      const { value } = response.data;
+      setDataSource(value);
     } catch (e) {
       console.log(e);
     }
@@ -200,19 +199,16 @@ function ManageProducts() {
       const url = await uploadFile(values.imageURL.file.originFileObj);
       values.imageURL = url;
       console.log(values);
-      const response = await api.post(
-        "https://dassie-living-bonefish.ngrok-free.app/Product/create",
-        {
-          name: values.name,
-          goldWeight: values.goldWeight,
-          goldType: values.goldType,
-          diamondType: values.diamondType,
-          imageURL: values.imageURL,
-          quantity: values.quantity,
-          description: values.description,
-          categoryID: values.categoryID,
-        }
-      );
+      const response = await api.post("/Product/create", {
+        name: values.name,
+        goldWeight: values.goldWeight,
+        goldType: values.goldType,
+        diamondType: values.diamondType,
+        imageURL: values.imageURL,
+        quantity: values.quantity,
+        description: values.description,
+        categoryID: values.categoryID,
+      });
       toast.success("Tạo thành công!");
       console.log(response.data);
       setDataSource([...dataSource, response.data]);

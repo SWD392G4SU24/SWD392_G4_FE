@@ -9,7 +9,6 @@ function FillInformationForPurchase() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [payment, setPayment] = useState([]);
   const selectedProduct = useSelector((store) => store.cart.selectedItems);
   console.log(selectedProduct);
   const subtotal = selectedProduct.reduce((acc, item) => {
@@ -39,6 +38,19 @@ function FillInformationForPurchase() {
     }
   };
 
+  // const handleCreateOrder = async () => {
+  //   const orderDetails = selectedProduct.map((item) => ({
+  //     productID: item.id,
+  //     quantity: item.quantity,
+  //   }));
+  //   const orderResponse = await api.post("/customer-create", {
+  //     orderDetails: orderDetails,
+  //     promotionID: "",
+  //     paymentMethodID: 1,
+  //   });
+  //   console.log(orderResponse);
+  // };
+
   async function fetchCurrentUser() {
     try {
       const response = await api.get("/user-current");
@@ -52,19 +64,8 @@ function FillInformationForPurchase() {
     }
   }
 
-  async function fetchPaymentMethod() {
-    try {
-      const response = await api.get("/paymentMethod");
-      const { value } = response.data;
-      setPayment(value);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   useEffect(() => {
     fetchCurrentUser();
-    fetchPaymentMethod();
   }, []);
 
   return (
@@ -149,7 +150,11 @@ function FillInformationForPurchase() {
             </div>
             <div className="py-5">
               <div className="flex flex-col border bg-black text-white font-serif">
-                <button className="py-2 px-10" onClick={handlePayment}>
+                <button
+                  className="py-2 px-10"
+                  onClick={handlePayment}
+                  // onChange={handleCreateOrder}
+                >
                   Thanh Toán
                 </button>
               </div>

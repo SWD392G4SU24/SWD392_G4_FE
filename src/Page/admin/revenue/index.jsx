@@ -14,8 +14,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-// import { data } from "autoprefixer";
-// import { Bar } from "react-chartjs-2";
 import React, { useEffect, useState } from "react";
 import api from "../../../config/axios";
 
