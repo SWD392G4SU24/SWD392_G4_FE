@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Flamenco');
 
+
+.heart_icon:hover{
+    color: #B18165;
+}
+
+
 .container {
     // font-family: 'Flamenco', sans-serif;
     padding-top: 20px;
@@ -66,10 +72,17 @@
     flex: 3;
 }
 
-.infoSection, .favoritesSection {
+.headerFavorites{
+ font-size: 30px;
+ margin-left: 60px;
+ margin-bottom: 40px;
+ margin-top: -30px;
+}
+
+
+.infoSection{
     padding: 20px;
     margin-left: 50px;
-   
 }
 .point {
     color: #B18165;
@@ -200,19 +213,32 @@
     background-color: #9e8478;
     color: #8B0000; /* Màu chữ là màu đỏ đậm hơn và trầm hơn */
 }
+
+.favoritesSection{
+    border: solid 0.02px;
+    border-radius: 5px;
+    box-shadow: 5px 7px 5px 5px #cccaca;
+    background-color: #f9f9f9;
+    width: 80%;
+    height: 148px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+   margin-left: 60px;
+   margin-bottom: 10px;
+  }
+  
 .favoriteItem {
-    margin-top: 20px;
+    // margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between // cách đều 2 bên màn hình nhe
 }
 .favoriteItem_Img {
-    
+    width: 145px;
+    height: 145px;
 }
 .favoriteItem_Name_Item{
-    // margin-top: 145px;
-    // margin-right: 300px;
-    // margin-bottom: 10px;
   justify-content: space-between;
   align-items: center;
   margin-right: 400px;
@@ -229,12 +255,14 @@
 .favoriteButton {
     background-color: #B18165;
     color: white;
-    border: none;
-    padding: 5px 10px;
     cursor: pointer;
-    border-radius: 10px; /* Round the button */
+    border-radius: 3px; /* Round the button */
     transition: background-color 0.3s ease; /* Smooth background color transition */
-    margin-top: 100px;
+    margin-top: 50px;
+    margin-right: 70px;
+    width: 100px;
+    height: 40px;
+    
 }
 
 .favoriteButton:hover {

@@ -3,8 +3,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './Profile.module.scss';
-import { MailOutlined, UserOutlined, WhatsAppOutlined } from "@ant-design/icons";
-import { Input } from 'antd';
+import { MailOutlined, UserOutlined, WhatsAppOutlined,HeartFilled, HeartOutlined } from "@ant-design/icons";
+import { Input, Space, Card } from 'antd';
 // Formik này là để lấy dữ liệu từ ô mình nhập
 import { withFormik, Form } from 'formik';
 // Check validation
@@ -26,7 +26,9 @@ function Profile(props) {
     const [orderFilter, setOrderFilter] = useState('All');
     const [promotions, setPromotions] = useState([]);//setState Promotion
     const [currentPage, setCurrentPage] = useState(1);
+    const [favoriteProducts, setFavoriteProducts] = useState([]); // set Heart favorites
     // Reset the current page to 1 when the filter changes  
+    
     const handleFilterChange = (filter) => {   
         setOrderFilter(filter);       
          setCurrentPage(1);
@@ -34,8 +36,9 @@ function Profile(props) {
     const [orderHistory, setOrderHistory] = useState([]); // setState for order history
     const ordersPerPage = 3; // Số đơn hàng trên mỗi trang của page order
     const promotionsPerPage = 5; // Số đơn hàng trên mỗi trang của page promotion
+    const productsPerPage = 3;
     const [error, setError] = useState(null);
-
+  
     const userId = useSelector(selectId); // Lấy user ID từ Redux store 
     const [alertContent, setAlertContent] = useState("");
 
@@ -67,8 +70,20 @@ function Profile(props) {
     };
 
     const [isFocused, setIsFocused] = useState(false); // focues filter for promotion input
-
-
+     
+      //set heart favorite
+      const toggleFavorite = (productId) => {
+        const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
+        let newFavorites;
+        if (favorites.includes(productId)) {
+          newFavorites = favorites.filter((favId) => favId !== productId);
+        } else {
+          newFavorites = [...favorites, productId];
+        }
+        localStorage.setItem(`favorites_${userId}`, JSON.stringify(newFavorites));
+        fetchFavoriteProducts();
+      };
+    
     //  Api get infor user
     const getUserProfile = async () => {
         try {
@@ -79,6 +94,26 @@ function Profile(props) {
           setError(err);
         }
     };
+
+    //Api lấy sản phẩm yêu thích
+      
+    const getFavoriteProducts = async () => {
+        try {
+          const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
+          if (favorites.length === 0) {
+            setFavoriteProducts([]); // Nếu không có sản phẩm yêu thích
+            return;
+          }
+          const productRequests = favorites.map((productId) => api.get(`/Product/${productId}`));
+          const responses = await Promise.all(productRequests);
+          const products = responses
+            .map((response) => response.data)
+            .filter((product) => product); // Loại bỏ các sản phẩm không tìm thấy
+          setFavoriteProducts(products);
+        } catch (err) {
+          setError("Đã xảy ra lỗi khi lấy sản phẩm yêu thích");
+        }
+      };
     
     //Api get history order
     const getOrderHistory = async () => {
@@ -117,12 +152,13 @@ function Profile(props) {
         const fetchData = async () => {
             await new Promise(resolve => setTimeout(resolve, delay));
             getUserProfile();
+            getFavoriteProducts();
             getOrderHistory();
             getUserPromotion()
         };
     
         fetchData();
-    }, []);
+    }, [userId]);
 
     const updateUserProfile = async () => {
         try {
@@ -170,7 +206,7 @@ function Profile(props) {
             case "Tài Khoản":
                 return (
                     <div className={styles.infoSection} ref={contentRef}>
-                        <h2 className={styles.point} >Điểm tích lũy: {user.point}</h2>
+                        <h1 className={styles.point} >Điểm tích lũy: {user.point}</h1>
                         <label className={styles.fontstyle}>Biệt danh</label>
                         <div className={styles.infoItem}>
                             <p className={styles.infoItem_p}>
@@ -206,41 +242,10 @@ function Profile(props) {
                     </div>
                 );
             case "Yêu Thích":
-                return (
-                    <div className={styles.favoritesSection}>
-                        <h1>Sản phẩm yêu thích</h1>
-                        <div className={styles.favoriteItem}>
-                            <img
-                                className={styles.favoriteItem_Img}
-                                style={{ width: "200px", height: "170px" }}
-                                src="https://www.pnj.com.vn/blog/wp-content/uploads/2023/05/top-5-trang-suc-ecz-pnj-hot-nhat-thang-5-2023-than-nhien-net-yeu-thuong-2-1024x768.jpg"
-                                alt="ảnh"
-                            />
-                            <div className={styles.favoriteItem_Name_Item}>
-                                <img
-                                    style={{ marginBottom: "75px" }}
-                                    src="./img/imgProfile/icon/ph_heart-thin.svg"
-                                    alt="Heart icon"
-                                />
-                                <p>
-                                    LEAFY CHAIN
-                                    <br />
-                                    <span>$80.00</span>
-                                </p>
-                            </div>
-                            <div className={styles.favoriteItem_Info}>
-                                <button
-                                    className={styles.favoriteButton}
-                                    onClick={() => {
-                                        window.location.href = "/orderreview";
-                                    }}
-                                >
-                                    Mua ngay
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                );
+                return <div>
+                    <h1 className={styles.headerFavorites}>Sản phẩm yêu thích</h1>
+                    {renderProductFavorites()}
+                </div>
             case "Đơn hàng":
                 return (
                     <div className={styles.orderHistorySection}>
@@ -372,7 +377,101 @@ function Profile(props) {
         );
     };
 
+    // const renderProductFavorites = () => {
+    //     if (favoriteProducts.length > 0) {
+    //       return favoriteProducts.map((product) => (
+    //         <div key={product.id} className={styles.favoritesSection}>
+    //           <img
+    //             className={styles.favoriteItem_Img}
+    //             src={product.imageURL}
+    //             alt={product.name}
+    //           />
+    //           <div className={styles.favoriteItem_Name_Item}>
+    //             <Space className="heart_icon text-xl" onClick={() => toggleFavorite(product.id)}>
+    //               {favoriteProducts.some((favProduct) => favProduct.id === product.id) ? (
+    //                 <HeartFilled style={{ color: "#B18165" }} />
+    //               ) : (
+    //                 <HeartOutlined />
+    //               )}
+    //             </Space>
+    //             <p>{product.name}</p>
+    //             <p>{product.productCost} VNĐ</p>
+    //           </div>
+    //           <button
+    //             className={styles.favoriteButton}
+    //             onClick={() => {
+    //               window.location.href = "/orderreview";
+    //             }}
+    //           >
+    //             Mua ngay
+    //           </button>
+    //         </div>
+    //       ));
+    //     } else {
+    //       return <p>Không tìm thấy sản phẩm yêu thích</p>;
+    //     }
+    //   };
 
+    const renderProductFavorites = () => {
+        // Tính tổng số trang
+        const totalPages = Math.ceil(favoriteProducts.length / productsPerPage);
+    
+        // Lấy sản phẩm hiện tại
+        const indexOfLastProduct = currentPage * productsPerPage;
+        const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+        const currentProducts = favoriteProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+    
+        if (currentProducts.length > 0) {
+          return (
+            <div>
+              {currentProducts.map((product) => (
+                <div key={product.id} className={styles.favoritesSection}>
+                  <img
+                    className={styles.favoriteItem_Img}
+                    src={product.imageURL}
+                    alt={product.name}
+                  />
+                  <div className={styles.favoriteItem_Name_Item}>
+                    <Space className="heart_icon text-xl" onClick={() => toggleFavorite(product.id)}>
+                      {favoriteProducts.some((favProduct) => favProduct.id === product.id) ? (
+                        <HeartFilled style={{ color: "#B18165" }} />
+                      ) : (
+                        <HeartOutlined />
+                      )}
+                    </Space>
+                    <p>{product.name}</p>
+                    <p>{product.productCost} VNĐ</p>
+                  </div>
+                  <button
+                    className={styles.favoriteButton}
+                    onClick={() => {
+                      window.location.href = "/orderreview";
+                    }}
+                  >
+                    Mua ngay
+                  </button>
+                </div>
+              ))}
+              <div className={styles.pagination}>
+                <button onClick={() => setCurrentPage(prevPage => Math.max(prevPage - 1, 1))} disabled={currentPage === 1}>
+                  Trước
+                </button>
+                {Array.from({ length: totalPages }, (_, index) => (
+                  <button key={index + 1} onClick={() => setCurrentPage(index + 1)} className={currentPage === index + 1 ? styles.active : ''}>
+                    {index + 1}
+                  </button>
+                ))}
+                <button onClick={() => setCurrentPage(prevPage => Math.min(prevPage + 1, totalPages))} disabled={currentPage === totalPages}>
+                  Sau
+                </button>
+              </div>
+            </div>
+          );
+        } else {
+          return <p>Không tìm thấy sản phẩm yêu thích</p>;
+        }
+      };
+    
     const renderOrderContent = () => {
     
         const filtered = orderHistory.filter(

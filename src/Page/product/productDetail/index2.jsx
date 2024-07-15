@@ -4,19 +4,22 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./index.scss";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addProduct, clearAll } from "../../../redux/features/cartSlice";
+import { selectId } from "../../../redux/features/counterSlice";
 
 function ProductDetail2() {
-  const [prodetail, setProdDetail] = useState([]);
+  const [prodetail, setProdDetail] = useState({});
   const { id } = useParams();
   const [isFavor, setIsFavor] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
   const dispatch = useDispatch();
+  const userId = useSelector(selectId);
 
   useEffect(() => {
     fetchProductDetail();
-  }, [id]);
+    checkFavoriteStatus();
+  }, [id, userId]);
 
   const fetchProductDetail = () => {
     axios
@@ -25,25 +28,40 @@ function ProductDetail2() {
         setProdDetail(rs.data);
       });
   };
-  console.log(prodetail);
-  const toggleIcon = () => {
-    setIsFavor((prevFavor) => !prevFavor);
+
+  const checkFavoriteStatus = () => {
+    const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
+    setIsFavor(favorites.includes(id));
   };
+
+  const toggleIcon = () => {
+    const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
+    if (favorites.includes(id)) {
+      const newFavorites = favorites.filter(favId => favId !== id);
+      localStorage.setItem(`favorites_${userId}`, JSON.stringify(newFavorites));
+      setIsFavor(false);
+    } else {
+      favorites.push(id);
+      localStorage.setItem(`favorites_${userId}`, JSON.stringify(favorites));
+      setIsFavor(true);
+    }
+  };
+
   const toggleCart = () => {
     setIsAdd((prevAdd) => !prevAdd);
   };
 
   const text_1 = `
-  - Vàng 14k <br />
-  - Dài 20cm <br />
-  - Có thể điều chỉnh độ dài từ 16 đến 28 cm <br />
-`;
+    - Vàng 14k <br />
+    - Dài 20cm <br />
+    - Có thể điều chỉnh độ dài từ 16 đến 28 cm <br />
+  `;
 
   const text_2 = `
-  - Giữ trong hộp trang sức để bảo quản chất lượng <br />
-  - Tránh xa bể bơi để ngăn chặn sự đổi màu <br />
-  - Chúng tôi khuyên bạn nên làm sạch đồ trang sức của mình sau mỗi 3-4 tháng <br />
-`;
+    - Giữ trong hộp trang sức để bảo quản chất lượng <br />
+    - Tránh xa bể bơi để ngăn chặn sự đổi màu <br />
+    - Chúng tôi khuyên bạn nên làm sạch đồ trang sức của mình sau mỗi 3-4 tháng <br />
+  `;
 
   const items = [
     {

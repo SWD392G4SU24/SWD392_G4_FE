@@ -43,7 +43,7 @@ import { selectUser } from "./redux/features/counterSlice";
 import Profile1 from "./Page/Profile/Profile1";
 
 function App() {
-  const user = useSelector(selectUser);
+  //const user = useSelector(selectUser);
   const router = createBrowserRouter([
     {
       path: "/",
