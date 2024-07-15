@@ -40,6 +40,8 @@ import ReturnWarranty from "./Page/rule/returns";
 import BuyTutorial from "./Page/rule/tutorial/buyProduct";
 import SecurityInfo from "./Page/rule/security";
 import { selectUser } from "./redux/features/counterSlice";
+import Form from "./Page/form";
+
 
 function App() {
   const user = useSelector(selectUser);
@@ -121,10 +123,6 @@ function App() {
           element: <VongTay />,
         },
         {
-          path: "/crudproduct",
-          element: <ManageProducts />,
-        },
-        {
           path: "/chart",
           element: <Chart />,
         },
@@ -166,12 +164,16 @@ function App() {
           element: <Manager />,
         },
         {
-          path: "/revenue",
+          path: "/dashboard",
           element: <AdminPage2 />,
         },
         {
-          path: "/accounts",
-          element: <Accounts />,
+          path: "/form",
+          element: <Form />,
+        },
+        {
+          path: "/crudproduct",
+          element: <ManageProducts />,
         },
       ],
     },

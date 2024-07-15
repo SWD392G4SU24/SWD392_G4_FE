@@ -1,25 +1,36 @@
 import { Col, Row } from "antd";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./index.scss";
+import api from "../../../config/axios";
 
 function DayChuyen() {
   const [products, setProduct] = useState([]);
+  const [pagination, setPagination] = useState([]);
 
-  const fetchProductAll = async () => {
-    const rs = await axios.get(
-      "https://667cd2303c30891b865dc8d6.mockapi.io/productAll"
+  const fetchProductAll = async (pageNumber = 1, pageSize = 10) => {
+    const response = await api.get(
+      // "https://667cd2303c30891b865dc8d6.mockapi.io/productAll"
+      `/Product/filter-product?PageNumber=${pageNumber}&PageSize=${pageSize}&CategoryID=${7}`
     );
-    setProduct(rs.data);
-    console.log(rs.data);
+
+    setPagination({
+      ...pagination,
+      total: response.data.totalCount,
+      pageSize: response.data.pageSize,
+      current: pageNumber,
+    });
+
+    console.log(response.data.data);
+    setProduct(response.data.data);
   };
 
   useEffect(() => {
     fetchProductAll();
   }, []);
 
-  const filterDC = products.filter((prod) => prod.Cate === "Dây chuyền");
-  console.log(filterDC.map((ht) => ht.Name));
+  const handleDC = (pagination) => {
+    fetchProductAll(pagination.current);
+  };
 
   return (
     <div className="dark:bg-black/85 dark:text-white">
@@ -44,21 +55,20 @@ function DayChuyen() {
             32,
           ]}
         >
-          {filterDC.map((dc) => (
+          {products.map((dc) => (
             <Col
               key={dc.id}
               className="gutter-row justify-center flex flex-col pt-12 paper"
               span={6}
+              onChange={handleDC()}
               onClick={() => {
                 window.location.href = `/prodetail/${dc.id}`;
               }}
             >
-              <img src={dc.ImageURL} className="w-40 h-40 " />
-              <h3 className="absolute -bottom-5 font-medium w-40">
-                {dc.Name}
-              </h3>
+              <img src={dc.imageURL} className="w-40 h-40 " />
+              <h3 className="absolute -bottom-5 font-medium w-40">{dc.Nnme}</h3>
               <h3 className="absolute -bottom-10 text-gray-400 w-40">
-                {dc.Cost}
+                {dc.productCost}
               </h3>
             </Col>
           ))}

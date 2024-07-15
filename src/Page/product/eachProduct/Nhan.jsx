@@ -1,25 +1,36 @@
 import { Col, Row } from "antd";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./index.scss";
+import api from "../../../config/axios";
 
 function Nhan() {
   const [products, setProduct] = useState([]);
+  const [pagination, setPagination] = useState([]);
 
-  const fetchProductAll = async () => {
-    const rs = await axios.get(
-      "https://667cd2303c30891b865dc8d6.mockapi.io/productAll"
+  const fetchProductAll = async (pageNumber = 1, pageSize = 10) => {
+    const response = await api.get(
+      // "https://667cd2303c30891b865dc8d6.mockapi.io/productAll"
+      `/Product/filter-product?PageNumber=${pageNumber}&PageSize=${pageSize}&CategoryID=${8}`
     );
-    setProduct(rs.data);
-    console.log(rs.data);
+
+    setPagination({
+      ...pagination,
+      total: response.data.totalCount,
+      pageSize: response.data.pageSize,
+      current: pageNumber,
+    });
+
+    console.log(response.data.data);
+    setProduct(response.data.data);
   };
 
   useEffect(() => {
     fetchProductAll();
   }, []);
 
-  const filterNh = products.filter((prod) => prod.Cate === "Nhẫn");
-  console.log(filterNh.map((nh) => nh.Name));
+  const handleNh = (pagination) => {
+    fetchProductAll(pagination.current);
+  };
 
   return (
     <div className="dark:bg-black/85 dark:text-white">
@@ -44,19 +55,20 @@ function Nhan() {
             32,
           ]}
         >
-          {filterNh.map((n) => (
+          {products.map((n) => (
             <Col
               key={n.id}
               className="gutter-row justify-center flex flex-col pt-12 paper"
               span={6}
+              onChange={handleNh()}
               onClick={() => {
                 window.location.href = `/prodetail/${n.id}`;
               }}
             >
-              <img src={n.ImageURL} className="w-40 h-40 " />
-              <h3 className="absolute -bottom-5 font-medium w-40">{n.Name}</h3>
+              <img src={n.imageURL} className="w-40 h-40 " />
+              <h3 className="absolute -bottom-5 font-medium w-40">{n.name}</h3>
               <h3 className="absolute -bottom-10 text-gray-400 w-40">
-                {n.Cost}
+                {n.productCost}
               </h3>
             </Col>
           ))}

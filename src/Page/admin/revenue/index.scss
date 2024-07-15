@@ -15,9 +15,13 @@
 }
 
 div.ant-table-wrapper.table-revenue{
-    width: 400px !important;
+    width: 350px !important;
 }
 
 .table-staff .ant-table-wrapper{
     width: 90% !important;
+}
+
+.ant-tabs-tab-btn.dark *{
+    color: #fff;
 }
