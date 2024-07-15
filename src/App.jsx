@@ -4,7 +4,7 @@ import {
   Routes,
   createBrowserRouter,
 } from "react-router-dom";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store";
 import Layout from "./component/layout";
@@ -26,15 +26,24 @@ import Nhan from "./Page/product/eachProduct/Nhan";
 import VongTay from "./Page/product/eachProduct/VongTay";
 import ProductDetail2 from "./Page/product/productDetail/index2";
 import DiamondPrice from "./Page/diamondPrice";
-import Admin from "./Page/admin";
 import ManageProducts from "./Page/manage products";
 import Accounts from "./Page/admin/accounts";
 import Chart from "./component/chart/Chart";
-// import Revenue from "./Page/admin/revenue";
 import Manager from "./Page/manager";
+import LayoutOfAdmin from "./component/layout/index2";
+import AdminPage2 from "./Page/admin/revenue/index2";
+import Tutorial from "./Page/rule/tutorial";
+import TutorialSize from "./Page/rule/tutorial/ringSize";
+import BracletSize from "./Page/rule/tutorial/bracletSize";
+import NecklaceSize from "./Page/rule/tutorial/necklaceSize";
+import ReturnWarranty from "./Page/rule/returns";
+import BuyTutorial from "./Page/rule/tutorial/buyProduct";
+import SecurityInfo from "./Page/rule/security";
+import { selectUser } from "./redux/features/counterSlice";
 import Profile1 from "./Page/Profile/Profile1";
 
 function App() {
+  const user = useSelector(selectUser);
   const router = createBrowserRouter([
     {
       path: "/",
@@ -117,29 +126,58 @@ function App() {
           element: <VongTay />,
         },
         {
-          path: "/admin",
-          element: <Admin />,
-        },
-        {
           path: "/crudproduct",
           element: <ManageProducts />,
-        },
-        {
-          path: "/accounts",
-          element: <Accounts />,
         },
         {
           path: "/chart",
           element: <Chart />,
         },
         {
+          path: "/tutorial",
+          element: <Tutorial />,
+        },
+        {
+          path: "/ringtutor",
+          element: <TutorialSize />,
+        },
+        {
+          path: "/braceletutor",
+          element: <BracletSize />,
+        },
+        {
+          path: "/necklacetutor",
+          element: <NecklaceSize />,
+        },
+        {
+          path: "/returnswar",
+          element: <ReturnWarranty />,
+        },
+        {
+          path: "/buytutor",
+          element: <BuyTutorial />,
+        },
+        {
+          path: "/securityinfo",
+          element: <SecurityInfo />,
+        },
+      ],
+    },
+    {
+      element: <LayoutOfAdmin />,
+      children: [
+        {
           path: "/manager",
           element: <Manager />,
         },
-        // {
-        //   path: "/revenue",
-        //   element: <Revenue />,
-        // },
+        {
+          path: "/revenue",
+          element: <AdminPage2 />,
+        },
+        {
+          path: "/accounts",
+          element: <Accounts />,
+        },
       ],
     },
   ]);
@@ -150,9 +188,9 @@ function App() {
         <RouterProvider router={router}>
           <Routes>
             <Route path="/" element={<Layout />}>
+              <Route path="/" element={<HomePage />} />
               <Route path="/login1" element={<Login1 />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/accounts" element={<Accounts />} />
             </Route>
           </Routes>
         </RouterProvider>

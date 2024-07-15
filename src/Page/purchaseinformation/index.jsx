@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import api from "../../config/axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
 
 function FillInformationForPurchase() {
-  const [payment, setPayment] = useState([]);
+  const [userCurrent, setUserCurrent] = useState([]);
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const selectedProduct = useSelector((store) => store.cart.selectedItems);
   console.log(selectedProduct);
   const subtotal = selectedProduct.reduce((acc, item) => {
@@ -33,18 +38,34 @@ function FillInformationForPurchase() {
     }
   };
 
-  async function fetchPaymentMethod() {
+  // const handleCreateOrder = async () => {
+  //   const orderDetails = selectedProduct.map((item) => ({
+  //     productID: item.id,
+  //     quantity: item.quantity,
+  //   }));
+  //   const orderResponse = await api.post("/customer-create", {
+  //     orderDetails: orderDetails,
+  //     promotionID: "",
+  //     paymentMethodID: 1,
+  //   });
+  //   console.log(orderResponse);
+  // };
+
+  async function fetchCurrentUser() {
     try {
-      const response = await api.get("/paymentMethod");
-      const { value } = response.data;
-      setPayment(value);
+      const response = await api.get("/user-current");
+      console.log(response.data);
+      setUserCurrent(response.data);
+      setFullName(response.data.fullName);
+      setEmail(response.data.email);
+      setPhoneNumber(response.data.phoneNumber);
     } catch (e) {
       console.log(e);
     }
   }
 
   useEffect(() => {
-    fetchPaymentMethod();
+    fetchCurrentUser();
   }, []);
 
   return (
@@ -65,44 +86,47 @@ function FillInformationForPurchase() {
             <div className="py-3">
               <input
                 type="text"
+                name="fullName"
                 placeholder=" Họ và tên"
                 className="py-1 border border-gray-300 px-2"
                 style={{ width: "100%" }}
-              />
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+              ></input>
             </div>
             <div className="py-3">
               <input
                 type="email"
+                name="email"
                 placeholder=" Email"
                 className="py-1 border border-gray-300 px-2"
                 style={{ width: "100%" }}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="py-3">
               <input
                 type="text"
+                name="phoneNumber"
                 placeholder=" Số Điện Thoại"
                 className="py-1 border border-gray-300 px-2"
                 style={{ width: "100%" }}
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
-            <div className="py-3 flex justify-around">
-              {payment.map((method) => (
-                <div className="flex items-center" key={method.id}>
-                  <input
-                    type="radio"
-                    id={method.id === 1 ? "vnPay" : "tienMat"}
-                    name="paymentMethod"
-                    className="pr-2"
-                  />
-                  <label
-                    htmlFor={method.id === 1 ? "vnPay" : "tienMat"}
-                    className="pl-2"
-                  >
-                    {method.name}
-                  </label>
+            <div className="py-3">
+              <div className="bg-gray-100 border border-gray-300 rounded-md p-4 hover:shadow-lg transition duration-300">
+                <p className="font-bold text-lg">Hình thức thanh toán:</p>
+                <div className="flex items-center mt-2">
+                  <span className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md flex items-center transition duration-300">
+                    <FontAwesomeIcon icon={faCreditCard} className="mr-2" />
+                    VNPay
+                  </span>
+                  <p className="ml-2">Chọn hình thức thanh toán VNPay</p>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </div>
@@ -126,7 +150,11 @@ function FillInformationForPurchase() {
             </div>
             <div className="py-5">
               <div className="flex flex-col border bg-black text-white font-serif">
-                <button className="py-2 px-10" onClick={handlePayment}>
+                <button
+                  className="py-2 px-10"
+                  onClick={handlePayment}
+                  // onChange={handleCreateOrder}
+                >
                   Thanh Toán
                 </button>
               </div>

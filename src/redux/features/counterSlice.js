@@ -14,6 +14,7 @@ export const counterSlice = createSlice({
       return state;
     },
     logout: () => {
+      localStorage.removeItem("token");
       return null;
     },
   },

@@ -13,6 +13,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Col, Row } from "antd";
 import "./index.scss";
+import api from "../../config/axios";
 
 function Carousel({ numOfSlide, isUseNavigate }) {
   const [pics, setPics] = useState([]);
@@ -28,10 +29,11 @@ function Carousel({ numOfSlide, isUseNavigate }) {
   };
 
   const fetchCate = async () => {
-    const response = await axios.get(
+    const response = await api.get(
       "https://665aa0df003609eda45e5ea3.mockapi.io/category"
+      // "/category"
     );
-    console.log(response.data);
+    // const { value } = response.data;
     setCates(response.data);
   };
 
@@ -133,14 +135,12 @@ function Carousel({ numOfSlide, isUseNavigate }) {
       </Swiper>
 
       <>
-        {/* <div className=""> */}
-        <h1 className="text-3xl text-center mt-10 font-serif">
-          Shop by categories
+        <h1 className="text-3xl text-center mt-20 font-serif">
+          Phân loại sản phẩm
         </h1>
         <h3 className="text-center mt-2 mb-10">
           Xin hãy thưởng thức những gì chúng tôi có
         </h3>
-        {/* </div> */}
         <Row justify="space-evenly">
           {cates.map((cate) => (
             <Col
@@ -150,20 +150,22 @@ function Carousel({ numOfSlide, isUseNavigate }) {
                 handleOnClickCate(cate.id);
               }}
             >
-              <img src={cate.pic_path} alt="" />
-              <h2 className="font-medium text-center text-xl font-serif">
-                {cate.name}
-              </h2>
+              <a className="cateLink">
+                <img src={cate.pic_path} alt="" />
+                <h2 className="font-medium text-center text-xl font-serif">
+                  {cate.name}
+                </h2>
+              </a>
             </Col>
           ))}
         </Row>
       </>
 
       <>
-        <h1 className="text-center text-3xl mt-10 font-serif">
+        <h1 className="text-center text-3xl mt-20 font-serif">
           Sản phẩm bán chạy
         </h1>
-        <h3 className="text-center mt-2 mb-10">
+        <h3 className="text-center mt-2 mb-5">
           Sản phẩm bán chạy trong mùa xuân
         </h3>
         <Swiper
@@ -171,7 +173,10 @@ function Carousel({ numOfSlide, isUseNavigate }) {
           spaceBetween={10}
           freeMode={true}
           navigation={true}
-          modules={[Navigation, Pagination]}
+          autoplay={{
+            delay: 3500,
+          }}
+          modules={[Navigation, Pagination, Autoplay]}
         >
           {products.map((prd) => (
             <SwiperSlide
@@ -181,7 +186,7 @@ function Carousel({ numOfSlide, isUseNavigate }) {
                 console.log(prd.id);
               }}
             >
-              <div className="ml-20 pb-16 pt-5">
+              <div className="ml-20 pb-16 pt-2 swiper-img-container cursor-pointer">
                 <img src={prd.jw_image} />
                 <h3 className="font-medium">{prd.jw_name}</h3>
                 <h4>{prd.price}</h4>

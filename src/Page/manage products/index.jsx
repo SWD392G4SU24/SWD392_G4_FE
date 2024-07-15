@@ -135,10 +135,9 @@ function ManageProducts() {
   );
   async function fetchProducts() {
     try {
-      const response = await api.get(
-        "https://dassie-living-bonefish.ngrok-free.app/Product"
-      );
-      setDataSource(response.data);
+      const response = await api.get("/Product");
+      const { value } = response.data;
+      setDataSource(value);
     } catch (e) {
       console.log(e);
     }
@@ -200,19 +199,16 @@ function ManageProducts() {
       const url = await uploadFile(values.imageURL.file.originFileObj);
       values.imageURL = url;
       console.log(values);
-      const response = await api.post(
-        "https://dassie-living-bonefish.ngrok-free.app/Product/create",
-        {
-          name: values.name,
-          goldWeight: values.goldWeight,
-          goldType: values.goldType,
-          diamondType: values.diamondType,
-          imageURL: values.imageURL,
-          quantity: values.quantity,
-          description: values.description,
-          categoryID: values.categoryID,
-        }
-      );
+      const response = await api.post("/Product/create", {
+        name: values.name,
+        goldWeight: values.goldWeight,
+        goldType: values.goldType,
+        diamondType: values.diamondType,
+        imageURL: values.imageURL,
+        quantity: values.quantity,
+        description: values.description,
+        categoryID: values.categoryID,
+      });
       toast.success("Tạo thành công!");
       console.log(response.data);
       setDataSource([...dataSource, response.data]);
@@ -220,8 +216,17 @@ function ManageProducts() {
       handleHideModal();
 
       form.resetFields();
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        const { errors } = error.response.data;
+        if (errors) {
+          Object.keys(errors).forEach((key) => {
+            errors[key].forEach((errorMessage) => {
+              toast.error(errorMessage);
+            });
+          });
+        }
+      }
     }
   }
 
@@ -286,11 +291,7 @@ function ManageProducts() {
               {fileList.length >= 6 ? null : uploadButton}
             </Upload>
           </Form.Item>
-          <Form.Item
-            label="Gold Type"
-            name="goldType"
-            rules={[{ required: true }]}
-          >
+          <Form.Item label="Gold Type" name="goldType">
             <Select>
               {golds.map((gold) => (
                 <Option key={gold.name} value={gold.name}>
@@ -299,18 +300,10 @@ function ManageProducts() {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item
-            label="Gold Weight"
-            name="goldWeight"
-            rules={[{ required: true }]}
-          >
+          <Form.Item label="Gold Weight" name="goldWeight">
             <InputNumber />
           </Form.Item>
-          <Form.Item
-            label="Diamond Type"
-            name="diamondType"
-            rules={[{ required: true }]}
-          >
+          <Form.Item label="Diamond Type" name="diamondType">
             <Select>
               {diamonds.map((diamond) => (
                 <Option key={diamond.name} value={diamond.name}>
