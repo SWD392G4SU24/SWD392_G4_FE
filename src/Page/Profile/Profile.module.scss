@@ -300,10 +300,10 @@
     padding: 4px;
     position: relative; /* Ensure positioning context for absolute positioning */
     border: solid 0.02px;
-    border-radius: 0.5;
+    border-radius: 5px;
     box-shadow: 5px 7px 5px 5px #cccaca;
     background-color: #f9f9f9;
-
+    
 }
 .orderInfo {
     flex: 2;
@@ -316,7 +316,7 @@
 }
 .orderImage {
     width: 120px; /* Adjust the width as per your design */
-    height: 120px; /* Adjust the height as per your design */
+    height: 138px; /* Adjust the height as per your design */
     margin-right: 20px;
     object-fit: cover; /* Ensure the image covers the specified dimensions */
     border-radius: 5px; /* Optional: Add rounded corners */
@@ -324,23 +324,28 @@
 }
 
 .orderName{
-    font-weight:400;
+    font-weight:600;
     font-size: 20px;
+   margin-top: -10px;
 }
 .orderDate{
-    font-size: 14px;
+    font-size: 16px;
     color: #000000; /* Màu chữ cho ngày */
     margin-bottom: 60px;
-}
+    margin-right: 10px;
+    font-weight: bold;
+}  
 .orderQuantity{
-    font-weight:300;
+    font-weight:400;
 }
 .orderPrice{
-    font-weight:300;
+    font-weight:400;
 }
 .orderTotalPrice{
     font-size: 20px;
     font-weight: 600;
+    margin-bottom: -35px;
+    margin-top: 20px;
 }
 
 .containerDateAndStatus{
@@ -348,6 +353,8 @@
     justify-content: flex-end; /* Canh phải các phần tử bên trong */
     align-items: center; /* Canh giữa theo chiều dọc */
     gap: 50px; /* Khoảng cách giữa ngày và trạng thái */
+    padding-right: 20px;
+    margin-top: 10px;
 }
 
 .statusContainer {
@@ -389,7 +396,7 @@
 .pagination {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 45px;
 }
 
 .pagination button {
@@ -555,3 +562,14 @@
     filter: none;
 }
 
+.loctionCart{
+  padding-left: 10px;
+  display: inline-block;
+  font-weight: bold;
+}
+.loctionCart:hover{
+    font-weight: bold;
+    color: #3498db; /* Thay đổi mã màu này theo ý bạn */
+    text-decoration: underline;
+    
+}

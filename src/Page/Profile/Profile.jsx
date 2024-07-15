@@ -84,7 +84,7 @@ function Profile(props) {
     const getOrderHistory = async () => {
         try {
           const pageNumber = 1; // Trang đầu tiên
-          const pageSize = 10; // Số lượng đơn hàng trên mỗi trang
+          const pageSize = 100; // Số lượng đơn hàng trên mỗi trang
       
           const response = await api.get(`/order/get-by-userID?PageNumber=${pageNumber}&PageSize=${pageSize}&UserID=${userId}`);
           setOrderHistory(response.data.data); // Assuming API returns the order history data
@@ -98,8 +98,8 @@ function Profile(props) {
     //Api get promotion
     const getUserPromotion = async () => {
         try {
-            const pageNumber = 5; // Trang đầu tiên
-            const pageSize = 10; // Số lượng đơn hàng trên mỗi trang
+            const pageNumber = 1; // Trang đầu tiên
+            const pageSize = 100; // Số lượng đơn hàng trên mỗi trang
 
             // Make API call with token and ID
             const prom = await api.get(`/Promotion`);
@@ -501,7 +501,7 @@ function Profile(props) {
                                             </button>
                                             <button onClick={() => {
                                                 window.location.href = "/cart";
-                                            }}>Đi tới giỏ hàng</button>
+                                            }} className={styles.loctionCart}>Đi tới giỏ hàng</button>
                                         </div>
                                     </div>
                                 </div>
