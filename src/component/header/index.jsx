@@ -5,26 +5,57 @@ import {
 } from "@ant-design/icons";
 import DarkMode from "./darkmode";
 import { Link } from "react-router-dom";
-import { Badge } from "antd";
+import { Badge, Dropdown, Space } from "antd";
 import { useSelector } from "react-redux";
 import { store } from "../../redux/store";
 
 function Header() {
   const carts = useSelector((store) => store.cart.products);
+
+  const items = [
+    {
+      key: "1",
+      label: <a href="/proall">Xem tất cả</a>,
+    },
+    {
+      key: "2",
+      label: <a href="/dc">Dây Chuyền</a>,
+    },
+    {
+      key: "3",
+      label: <a href="/vt">Vòng tay</a>,
+    },
+    {
+      key: "4",
+      label: <a href="/n">Nhẫn</a>,
+    },
+    {
+      key: "5",
+      label: <a href="/ht">Hoa tai</a>,
+    },
+  ];
+
   return (
     //
     <div className="header shadow-md bg-white dark:bg-black/85 dark:text-white duration-200 relative z-40">
       <div className="py-2">
         <div className="container flex justify-between items-center">
-          <Link to={``}>
-            <div className="header__logo font-serif text-2xl sm:text-3xl flex gap-2 items-center">
-              <img
-                src="https://logomaker.designfreelogoonline.com/media/productdesigner/logo/resized/00319_DIAMOND_Jewelry-03.png"
-                width={80}
-              />
-              JeWellry
-            </div>
-          </Link>
+          <div className="flex gap-10">
+            <Link to={``}>
+              <div className="header__logo font-serif text-2xl sm:text-3xl flex gap-2 items-center">
+                <img
+                  src="https://logomaker.designfreelogoonline.com/media/productdesigner/logo/resized/00319_DIAMOND_Jewelry-03.png"
+                  width={80}
+                />
+                JeWellry
+              </div>
+            </Link>
+
+            <Dropdown menu={{ items, selectable: true }}>
+              <Space className="font-semibold cursor-pointer hover:text-amber-700 dark:text-white">Sản phẩm</Space>
+            </Dropdown>
+          </div>
+
           <div className="flex justify-between items-center gap-4">
             <div className="header__search relative group hidden sm:block">
               <input

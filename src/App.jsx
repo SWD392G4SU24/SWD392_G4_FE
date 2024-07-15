@@ -41,6 +41,7 @@ import NecklaceSize from "./Page/rule/tutorial/necklaceSize";
 import ReturnWarranty from "./Page/rule/returns";
 import BuyTutorial from "./Page/rule/tutorial/buyProduct";
 import SecurityInfo from "./Page/rule/security";
+import Form from "./Page/form";
 
 function App() {
   const router = createBrowserRouter([
@@ -170,18 +171,14 @@ function App() {
           element: <Manager />,
         },
         {
-          path: "/revenue",
+          path: "/dashboard",
           // element: <Revenue />,
           element: <AdminPage2 />,
         },
         {
-          path: "/accounts",
-          element: <Accounts />,
+          path: "/form",
+          element: <Form />,
         },
-        // {
-        //   path: "/revenue",
-        //   element: <Revenue />,
-        // },
       ],
     },
   ]);

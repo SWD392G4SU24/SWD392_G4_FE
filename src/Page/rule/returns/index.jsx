@@ -19,10 +19,7 @@ function ReturnWarranty() {
         giao dịch.
         <br />
         <br />
-        3. Khách hàng được đổi, bảo hành sản phẩm tại tất cả các Cửa hàng của
-        JeWellry trên toàn quốc.
-        <br />
-        <br />
+        
         4. Mỗi sản phẩm Khách hàng chỉ được đổi 01 (một) lần duy nhất trong vòng
         48h và áp dụng đối với những trường hợp được quy định đổi nêu tại quy
         chế này.

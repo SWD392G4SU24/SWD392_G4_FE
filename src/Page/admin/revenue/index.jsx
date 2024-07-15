@@ -21,120 +21,86 @@ import api from "../../../config/axios";
 
 function Revenue() {
   const [revenues, setRevenue] = useState([]);
+  const [counter, setCounter] = useState([]);
+  const [staff, setStaff] = useState([]);
   const [tag, setTag] = useState("Doanh thu");
 
-  const fetchDataRevenue = async () => {
-    // const rs = await api.get(`/revenue/get-data`); //api revenue cua Nam
-    const rs = await api.get(
-      `https://667cd2303c30891b865dc8d6.mockapi.io/revenue`
-    ); //api revenue cua Nam
-    setRevenue(rs.data);
-    console.log(rs.data);
+  // const fetchDataRevenue = async () => {
+  //   // const rs = await api.get(`/revenue/get-data`); //api revenue cua Nam
+  //   const rs = await api.get(
+  //     `https://667cd2303c30891b865dc8d6.mockapi.io/revenue`
+  //   ); //api revenue cua Nam
+  //   setRevenue(rs.data);
+  //   console.log(rs.data);
+  // };
+
+  const fetchCounterRevenue = async (
+    startDate = "2024-07-10",
+    endDate = "2024-08-14"
+  ) => {
+    const response = await api.get(
+      `/counter/filter-revenue?StartDate=${startDate}&EndDate=${endDate}`
+    );
+    setCounter(response.data);
+    console.log(response.data);
+  };
+
+  const fetchRevenue = async (year = "2024") => {
+    const response = await api.get(`/order/get-revenue?Year=${year}`);
+    setRevenue(response.data);
+  };
+
+  const fetchStaffRevenue = async (
+    startDate = "2024-07-10",
+    endDate = "2024-08-14"
+  ) => {
+    const response = await api.get(
+      `staff/filter-revenue?StartDate=${startDate}&EndDate=${endDate}`
+    );
+    setStaff(response.data);
+    console.log(response.data);
   };
 
   useEffect(() => {
-    fetchDataRevenue();
+    fetchRevenue();
+    fetchCounterRevenue();
+    fetchStaffRevenue();
   }, []);
 
-  const dataRevenue = [
-    {
-      name: "01",
-      revenue: 4000,
-    },
-    {
-      name: "05",
-      revenue: 3000,
-    },
-    {
-      name: "10",
-      revenue: 2000,
-    },
-    {
-      name: "15",
-      revenue: 2780,
-    },
-    {
-      name: "20",
-      revenue: 1890,
-    },
-    {
-      name: "25",
-      revenue: 2390,
-    },
-    {
-      name: "30",
-      revenue: 3490,
-    },
-  ];
+  const sum = Object.keys(revenues);
+  const lastKey = sum[sum.length - 1];
+  const lastData = revenues[lastKey];
 
-  const dataRevenueBar = [
-    {
-      name: "T1",
-      revenue: 4000,
-    },
-    {
-      name: "T2",
-      revenue: 2800,
-    },
-    {
-      name: "T3",
-      revenue: 1890,
-    },
-    {
-      name: "T4",
-      revenue: 3500,
-    },
-    {
-      name: "T5",
-      revenue: 2900,
-    },
-    {
-      name: "T6",
-      revenue: 4500,
-    },
-    {
-      name: "T7",
-      revenue: 3490,
-    },
-    {
-      name: "T8",
-      revenue: 2790,
-    },
-    {
-      name: "T9",
-      revenue: 2990,
-    },
-    {
-      name: "T10",
-      revenue: 3890,
-    },
-    {
-      name: "T11",
-      revenue: 4090,
-    },
-    {
-      name: "T12",
-      revenue: 2990,
-    },
-  ];
+  const dataSource = Object.keys(revenues)
+    .slice(0, -1)
+    .map((key) => ({
+      key: key,
+      revenue: revenues[key].revenue,
+      totalReOrder: revenues[key].totalReOrder,
+      completeOrers: revenues[key].completeOrers,
+      refundOrders: revenues[key].refundOrders,
+      reOrders: revenues[key].reOrders,
+    }));
 
   const column = [
     {
       title: "Kỳ",
-      dataIndex: "month",
+      dataIndex: "key",
+      align: "center",
     },
     {
       title: "Lượt bán",
-      dataIndex: "totalRevenue",
+      dataIndex: "revenue",
       align: "center",
-      sorter: (a, b) => a.totalRevenue - b.totalRevenue,
+      sorter: (a, b) => a.revenue - b.revenue,
+      render: (text, record) => formatCurrency(record.revenue),
     },
   ];
 
   const staffTable = [
     {
       title: "Tên nhân viên",
-      dataIndex: "staffName",
+      dataIndex: "fullName",
     },
     {
       title: "Email",
@@ -150,53 +116,79 @@ function Revenue() {
     },
     {
       title: "Doanh thu",
-      dataIndex: "staffRevenue",
-      sorter: (a, b) => a.staffRevenue - b.staffRevenue,
+      dataIndex: "totalPrice",
+      sorter: (a, b) => a.totalPrice - b.totalPrice,
       align: "center",
+      render: (text, record) => formatCurrency(record.totalPrice)
     },
   ];
 
-  const sumRevenue = revenues.reduce((acc, curr) => acc + curr.totalRevenue, 0);
-  const sumCounter = revenues.reduce(
-    (acc, curr) => acc + curr.counterRevenue,
-    0
-  );
-  const sumStaff = revenues.reduce((acc, curr) => acc + curr.staffRevenue, 0);
+  const counterTable = [
+    {
+      title: "Tên quầy",
+      dataIndex: "name",
+      align: "center",
+    },
+    {
+      title: "Số lượng đơn hàng bán ra",
+      dataIndex: "ordersNumber",
+      align: "center",
+    },
+    {
+      title: "Doanh thu",
+      dataIndex: "totalPrice",
+      sorter: (a, b) => a.totalPrice - b.totalPrice,
+      align: "center",
+      render: (text, record) => formatCurrency(record.totalPrice),
+    },
+  ];
 
-  const handleOnClick = (record) => {
-    console.log(record.id);
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
+  };
+
+  const sumCounter = counter.reduce((acc, curr) => acc + curr?.totalPrice, 0);
+  const sumStaff = staff.reduce((acc, curr) => acc + curr?.totalPrice, 0);
+
+  const handleOnClick = (id) => {
+    console.log(id);
   };
 
   return (
-    <div className="pb-10">
+    <div className="pb-10 dark:text-white dark:bg-black">
       <Segmented
         options={["Doanh thu", "Doanh thu nhân viên", "Doanh thu quầy hàng"]}
         onChange={(value) => {
           setTag(value);
           console.log(value);
         }}
-        className="ml-16"
+        className="ml-16 dark:bg-gray-700 dark:text-white "
       />
 
       {tag == "Doanh thu" ? (
-        <div>
+        <div className=" dark:text-white dark:bg-black/85">
           <div className="mt-10 flex justify-center gap-10">
             <div className="border w-72 rounded-md pl-5 p-4 shadow-md">
               <h3>Tổng doanh thu</h3>
               <h2 className="text-2xl font-bold my-2">
-                {sumRevenue * 1000} VNĐ
+                {formatCurrency(lastData?.revenue)}
               </h2>
               <h3 className="text-gray-500">+20% so với tháng trước</h3>
             </div>
             <div className="border w-72 rounded-md pl-5 p-4 shadow-md">
               <h3>Tổng doanh thu của nhân viên</h3>
-              <h2 className="text-2xl font-bold my-2">{sumStaff * 1000} VNĐ</h2>
+              <h2 className="text-2xl font-bold my-2">
+                {formatCurrency(sumStaff)}
+              </h2>
               <h3 className="text-gray-500">+10% so với tháng trước</h3>
             </div>
             <div className="border w-72 rounded-md pl-5 p-4 shadow-md">
               <h3>Tổng doanh thu của từng quầy</h3>
               <h2 className="text-2xl font-bold my-2">
-                {sumCounter * 1000} VNĐ
+                {formatCurrency(sumCounter)}
               </h2>
               <h3 className="text-gray-500">-8% so với tháng trước</h3>
             </div>
@@ -209,7 +201,7 @@ function Revenue() {
               <LineChart
                 width={500}
                 height={200}
-                data={dataRevenue}
+                data={dataSource}
                 syncId="anyId"
                 margin={{
                   top: 10,
@@ -219,27 +211,27 @@ function Revenue() {
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
+                <XAxis dataKey="key" />
                 <YAxis />
-                <Tooltip />
+                <Tooltip formatter={(value) => formatCurrency(value)} />
                 <Line
                   type="monotone"
                   dataKey="revenue"
-                  stroke="#000"
-                  fill="#000"
+                  stroke="#3399ff"
+                  fill="#3399ff"
                 />
               </LineChart>
             </ResponsiveContainer>
           </div>
-          <div className="flex justify-evenly pl-28 gap-5 pb-5">
+          <div className="flex justify-evenly pl-28 gap-3 pb-5">
             <div className="shadow border mt-10 p-5 w-fit rounded-md">
               <h3 className="font-bold">Thống kê số lượt bán theo từng kỳ</h3>
               <Table
-                dataSource={revenues}
+                dataSource={dataSource}
                 columns={column}
                 pagination={false}
                 size="small"
-                className="table-revenue p-5"
+                className="table-revenue p-5 "
               />
             </div>
 
@@ -247,18 +239,23 @@ function Revenue() {
               <h3 className="font-bold">
                 Sơ đồ cột tổng quan từng tháng trong năm
               </h3>
-              <ResponsiveContainer width="100%" height={544} className="pt-5">
+              <ResponsiveContainer
+                width="100%"
+                height={544}
+                className="pt-5 pl-5"
+              >
                 <BarChart
-                  data={dataRevenueBar}
+                  data={dataSource}
                   margin={{ top: 5, right: 30, left: 5, bottom: 5 }}
                   barSize={30}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
+                  <XAxis dataKey="key" />
+                  {/* <YAxis tickFormatter={(value) => formatCurrency(value)} /> */}
                   <YAxis />
-                  <Tooltip />
+                  <Tooltip formatter={(value) => formatCurrency(value)} />
                   <Legend />
-                  <Bar dataKey="revenue" fill="#000" />
+                  <Bar dataKey="revenue" fill="#3399ff" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -275,7 +272,7 @@ function Revenue() {
               <LineChart
                 width={500}
                 height={200}
-                data={dataRevenue}
+                data={counter}
                 syncId="anyId"
                 margin={{
                   top: 10,
@@ -290,7 +287,7 @@ function Revenue() {
                 <Tooltip />
                 <Line
                   type="monotone"
-                  dataKey="revenue"
+                  dataKey="totalPrice"
                   stroke="#000"
                   fill="#000"
                 />
@@ -302,7 +299,7 @@ function Revenue() {
             <h3 className="font-bold pb-3">
               Danh sách doanh thu các quầy hàng
             </h3>
-            <Table />
+            <Table columns={counterTable} dataSource={counter} />
           </div>
         </div>
       ) : (
@@ -316,7 +313,7 @@ function Revenue() {
               <LineChart
                 width={500}
                 height={200}
-                data={dataRevenue}
+                data={staff}
                 syncId="anyId"
                 margin={{
                   top: 10,
@@ -331,7 +328,7 @@ function Revenue() {
                 <Tooltip />
                 <Line
                   type="monotone"
-                  dataKey="revenue"
+                  dataKey="totalPrice"
                   stroke="#000"
                   fill="#000"
                 />
@@ -345,9 +342,9 @@ function Revenue() {
             </h3>
             <Table
               columns={staffTable}
-              dataSource={revenues}
+              dataSource={staff}
               rowKey="id"
-              onRow={(record) => ({ onClick: () => handleOnClick(record) })}
+              onRow={(record) => ({ onClick: () => handleOnClick(record.id) })}
             />
           </div>
         </div>

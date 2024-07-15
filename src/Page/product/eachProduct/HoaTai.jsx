@@ -1,25 +1,36 @@
 import { Col, Row } from "antd";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./index.scss";
+import api from "../../../config/axios";
 
 function HoaTai() {
   const [products, setProduct] = useState([]);
+  const [pagination, setPagination] = useState([]);
 
-  const fetchProductAll = async () => {
-    const rs = await axios.get(
-      "https://667cd2303c30891b865dc8d6.mockapi.io/productAll"
+  const fetchProductAll = async (pageNumber = 1, pageSize = 10) => {
+    const response = await api.get(
+      // "https://667cd2303c30891b865dc8d6.mockapi.io/productAll"
+      `/Product/filter-product?PageNumber=${pageNumber}&PageSize=${pageSize}&CategoryID=${9}`
     );
-    setProduct(rs.data);
-    console.log(rs.data);
+
+    setPagination({
+      ...pagination,
+      total: response.data.totalCount,
+      pageSize: response.data.pageSize,
+      current: pageNumber,
+    });
+
+    console.log(response.data.data);
+    setProduct(response.data.data);
   };
 
   useEffect(() => {
     fetchProductAll();
   }, []);
 
-  const filterHT = products.filter((prod) => prod.Cate === "Hoa tai");
-  console.log(filterHT.map((ht) => ht.Name));
+  const handleHT = (pagination) => {
+    fetchProductAll(pagination.current);
+  };
 
   return (
     <div className="dark:bg-black/85 dark:text-white">
@@ -44,21 +55,20 @@ function HoaTai() {
             32,
           ]}
         >
-          {filterHT.map((ht) => (
+          {products.map((ht) => (
             <Col
               key={ht.id}
               className="gutter-row justify-center flex flex-col pt-12 paper"
               span={6}
+              onChange={handleHT()}
               onClick={() => {
                 window.location.href = `/prodetail/${ht.id}`;
               }}
             >
-              <img src={ht.ImageURL} className="w-40 h-40 " />
-              <h3 className="absolute -bottom-5 font-medium w-40">
-                {ht.Name}
-              </h3>
+              <img src={ht.imageURL} className="w-40 h-40 " />
+              <h3 className="absolute -bottom-5 font-medium w-40">{ht.name}</h3>
               <h3 className="absolute -bottom-10 text-gray-400 w-40">
-                {ht.Cost}
+                {ht.productCost}
               </h3>
             </Col>
           ))}
