@@ -1,7 +1,7 @@
-import { Table } from "antd";
+import { Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import api from "../../config/axios";
-import { format, formatDistanceToNow } from "date-fns";
+import { addDays, format, formatDate } from "date-fns";
 
 function Form() {
   const [form, setForm] = useState([]);
@@ -35,6 +35,9 @@ function Form() {
     {
       title: "Trạng thái",
       dataIndex: "status",
+      render: (text, record) => {
+        return <Tag color="blue">{record.status}</Tag>;
+      },
     },
     {
       title: "Ngày hẹn",
@@ -44,15 +47,10 @@ function Form() {
       //     format(new Date(record.appoinmentDate), "yyyy-MM-dd");
       //   },
       render: (date) => {
-        return (
-          date && (
-            <span>
-              {formatDistanceToNow(new Date(date), {
-                addSuffix: true,
-              })}
-            </span>
-          )
-        );
+        const twoDaysAfter = addDays(new Date(date), 2);
+        const formattedTwoDaysAfter = format(twoDaysAfter, "yyyy-MM-dd");
+
+        return date && <span>{formattedTwoDaysAfter}</span>;
       },
     },
   ];
