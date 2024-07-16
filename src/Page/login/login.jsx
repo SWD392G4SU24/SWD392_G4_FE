@@ -30,7 +30,7 @@ function Login1() {
     console.log(user);
     dispatch(login(result.data));
     const response = await api.get(
-      "https://dassie-living-bonefish.ngrok-free.app/login"
+      "/login"
     );
     console.log(response.data);
     dispatch(logout());
@@ -39,7 +39,7 @@ function Login1() {
     e.preventDefault();
     try {
       const res = await api.post(
-        "https://dassie-living-bonefish.ngrok-free.app/login",
+        "/login",
         {
           user: {
             username: username,

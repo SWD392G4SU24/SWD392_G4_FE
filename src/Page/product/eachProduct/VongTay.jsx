@@ -5,31 +5,44 @@ import api from "../../../config/axios";
 
 function VongTay() {
   const [products, setProduct] = useState([]);
-  const [pagination, setPagination] = useState([]);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0
+  });
 
   const fetchProductAll = async (pageNumber = 1, pageSize = 10) => {
-    const response = await api.get(
-      // "https://667cd2303c30891b865dc8d6.mockapi.io/productAll"
-      `/Product/filter-product?PageNumber=${pageNumber}&PageSize=${pageSize}&CategoryID=${7}`
-    );
+    try {
+      const response = await api.get(
+        `/Product/filter-product?PageNumber=${pageNumber}&PageSize=${pageSize}&CategoryID=${10}`
+      );
 
-    setPagination({
-      ...pagination,
-      total: response.data.totalCount,
-      pageSize: response.data.pageSize,
-      current: pageNumber,
-    });
+      setPagination({
+        ...pagination,
+        total: response.data.totalCount,
+        pageSize: response.data.pageSize,
+        current: pageNumber,
+      });
 
-    console.log(response.data.data);
-    setProduct(response.data.data);
+      setProducts(response.data.data);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
   };
 
   useEffect(() => {
     fetchProductAll();
   }, []);
 
-  const handleVT = (pagination) => {
-    fetchProductAll(pagination.current);
+  const handlePageChange = (page, pageSize) => {
+    fetchProductAll(page);
+  };
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
   };
 
   return (
@@ -58,23 +71,32 @@ function VongTay() {
           {products.map((vt) => (
             <Col
               key={vt.id}
-              className="gutter-row justify-center flex flex-col pt-12 paper"
+              className="gutter-row justify-between flex flex-col pt-12 paper"
               span={6}
-              onChange={handleVT()}
               onClick={() => {
                 window.location.href = `/prodetail/${vt.id}`;
               }}
             >
-              <img src={vt.imageURL} className="w-40 h-40 " />
-              <h3 className="absolute -bottom-5 font-medium w-40">{vt.name}</h3>
-              <h3 className="absolute -bottom-10 text-gray-400 w-40">
-                {vt.productCost}
+              <img src={vt.imageURL} className="w-50 h-50 " />
+              <h3 className="absolute -bottom-5 font-medium w-50">{vt.name}</h3>
+              <h3 className="absolute -bottom-10 text-amber-700 w-50">
+                {formatCurrency(vt.productCost)}
               </h3>
             </Col>
           ))}
         </Row>
-        <Pagination defaultCurrent={1} total={10} pageSize={10} />;
       </div>
+
+      {pagination.total > 0 && (
+        <div className="text-center my-4">
+          <Pagination
+            current={pagination.current}
+            pageSize={pagination.pageSize}
+            total={pagination.total}
+            onChange={handlePageChange}
+          />
+        </div>
+      )}
     </div>
   );
 }

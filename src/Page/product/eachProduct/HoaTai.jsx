@@ -5,31 +5,44 @@ import api from "../../../config/axios";
 
 function HoaTai() {
   const [products, setProduct] = useState([]);
-  const [pagination, setPagination] = useState([]);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0
+  });
 
   const fetchProductAll = async (pageNumber = 1, pageSize = 10) => {
-    const response = await api.get(
-      // "https://667cd2303c30891b865dc8d6.mockapi.io/productAll"
-      `/Product/filter-product?PageNumber=${pageNumber}&PageSize=${pageSize}&CategoryID=${9}`
-    );
+    try {
+      const response = await api.get(
+        `/Product/filter-product?PageNumber=${pageNumber}&PageSize=${pageSize}&CategoryID=${9}`
+      );
 
-    setPagination({
-      ...pagination,
-      total: response.data.totalCount,
-      pageSize: response.data.pageSize,
-      current: pageNumber,
-    });
+      setPagination({
+        ...pagination,
+        total: response.data.totalCount,
+        pageSize: response.data.pageSize,
+        current: pageNumber,
+      });
 
-    console.log(response.data.data);
-    setProduct(response.data.data);
+      setProducts(response.data.data);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
   };
 
   useEffect(() => {
     fetchProductAll();
   }, []);
 
-  const handleHT = (pagination) => {
-    fetchProductAll(pagination.current);
+  const handlePageChange = (page, pageSize) => {
+    fetchProductAll(page);
+  };
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
   };
 
   return (
@@ -60,20 +73,30 @@ function HoaTai() {
               key={ht.id}
               className="gutter-row justify-center flex flex-col pt-12 paper"
               span={6}
-              onChange={handleHT()}
               onClick={() => {
                 window.location.href = `/prodetail/${ht.id}`;
               }}
             >
-              <img src={ht.imageURL} className="w-40 h-40 " />
-              <h3 className="absolute -bottom-5 font-medium w-40">{ht.name}</h3>
-              <h3 className="absolute -bottom-10 text-gray-400 w-40">
-                {ht.productCost}
+              <img src={ht.imageURL} className="w-50 h-50 " />
+              <h3 className="absolute -bottom-5 font-medium w-50">{ht.name}</h3>
+              <h3 className="absolute -bottom-10 text-amber-700 w-50">
+                {formatCurrency(ht.productCost)}
               </h3>
             </Col>
           ))}
         </Row>
       </div>
+
+      {pagination.total > 0 && (
+        <div className="text-center my-4">
+          <Pagination
+            current={pagination.current}
+            pageSize={pagination.pageSize}
+            total={pagination.total}
+            onChange={handlePageChange}
+          />
+        </div>
+      )}
     </div>
   );
 }
