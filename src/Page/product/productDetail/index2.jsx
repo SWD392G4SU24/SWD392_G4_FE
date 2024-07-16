@@ -6,6 +6,7 @@ import "./index.scss";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addProduct, clearAll } from "../../../redux/features/cartSlice";
+import api from "../../../config/axios";
 
 function ProductDetail2() {
   const [prodetail, setProdDetail] = useState([]);
@@ -14,21 +15,25 @@ function ProductDetail2() {
   const [isAdd, setIsAdd] = useState(false);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    fetchProductDetail();
-  }, [id]);
-
   const fetchProductDetail = () => {
-    axios
-      .get(`https://667cd2303c30891b865dc8d6.mockapi.io/productAll/${id}`)
+    api 
+      .get(`/Product/${id}`)
       .then((rs) => {
         setProdDetail(rs.data);
       });
   };
   console.log(prodetail);
+
+  useEffect(() => {
+    fetchProductDetail();
+  }, [id]);
+  
+
   const toggleIcon = () => {
     setIsFavor((prevFavor) => !prevFavor);
   };
+  
+  
   const toggleCart = () => {
     setIsAdd((prevAdd) => !prevAdd);
   };
@@ -72,19 +77,26 @@ function ProductDetail2() {
     console.log(key);
   };
 
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
+  };
+
   return (
     <div className="pt-14 pb-14 w-full h-full block m-auto dark:bg-black/85 dark:text-white">
       {prodetail && (
         <div key={prodetail?.id} className="flex justify-center">
           <div className="img_pd mb-20">
-            <img src={prodetail?.ImageURL} alt={prodetail.id} />
+            <img src={prodetail?.imageURL} alt={prodetail.id} />
           </div>
           <div className="pl-20 w-2/5">
-            <h1 className="text-3xl title_3">{prodetail?.Name}</h1>
+            <h1 className="text-3xl title_3">{prodetail?.name}</h1>
 
-            <h3 className="text-gray-500 mt-3">{prodetail?.Cost} VNĐ</h3>
+            <h3 className="text-gray-500 mt-3">{formatCurrency(prodetail?.productCost)}</h3>
 
-            <h3 className="mt-3">{prodetail?.Description}</h3>
+            <h3 className="mt-3">{prodetail?.description}</h3>
 
             <div className="btn_cart mt-7 w-full flex justify-start">
               <Button

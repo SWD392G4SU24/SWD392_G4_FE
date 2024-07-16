@@ -1,10 +1,12 @@
-import { Table, Tag } from "antd";
+import { Button, DatePicker, Modal, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import api from "../../config/axios";
 import { addDays, format, formatDate } from "date-fns";
+import { render } from "@testing-library/react";
 
 function Form() {
   const [form, setForm] = useState([]);
+  const [open, setOpen] = useState([]);
 
   const fetchForm = async () => {
     const response = await api.get(`/Form`);
@@ -16,12 +18,24 @@ function Form() {
     fetchForm();
   }, []);
 
-  //   const formatDate = (dateStr) => {
-  //     const date = new Date(dateStr);
-  //     return date.toISOString().split(0, 10);
+  const showModal = (id) => {
+    setOpen(true);
+    console.log(id);
+  };
 
-  //     // return date.toLocaleDateString("en-US"); // Adjust locale as per your requirement
-  //   };
+  const handleOk = (e) => {
+    console.log(e);
+    setOpen(false);
+  };
+
+  const handleCancel = (e) => {
+    console.log(e);
+    setOpen(false);
+  };
+
+  const onChange = (date, dateString) => {
+    console.log(date, dateString);
+  };
 
   const column = [
     {
@@ -53,11 +67,40 @@ function Form() {
         return date && <span>{formattedTwoDaysAfter}</span>;
       },
     },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Button onClick={showModal(record.id)}>Chỉnh sửa</Button>
+      ),
+    },
   ];
   return (
     <div>
       <h1 className="text-4xl text-amber-700 pb-5 pl-5">Quản lý đơn</h1>
       <Table columns={column} dataSource={form} />
+
+      <Modal
+        title="Chỉnh sửa/Duyệt đơn"
+        open={open}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <Form>
+          {/* {form.map((f) => ( */}
+          <Form.Item label="Loại đơn">MAINTANANCE</Form.Item>
+          <Form.Item label="Nội dung đơn">
+            <p>fiuuhehfnanvjdkjvhuheignvnven</p>
+          </Form.Item>
+          <Form.Item label="Ngày hẹn">
+            <DatePicker onChange={onChange} />
+          </Form.Item>
+          <Form.Item label="Trạng thái">
+            <Tag color="blue">PENDING</Tag>
+          </Form.Item>
+          {/* ))} */}
+        </Form>
+      </Modal>
     </div>
   );
 }

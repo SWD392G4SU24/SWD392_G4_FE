@@ -1,35 +1,52 @@
-import { Col, Row } from "antd";
+import { Col, Row, Pagination } from "antd";
 import React, { useEffect, useState } from "react";
 import "./index.scss";
 import api from "../../../config/axios";
 
 function DayChuyen() {
-  const [products, setProduct] = useState([]);
-  const [pagination, setPagination] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0
+  });
 
   const fetchProductAll = async (pageNumber = 1, pageSize = 10) => {
-    const response = await api.get(
-      // "https://667cd2303c30891b865dc8d6.mockapi.io/productAll"
-      `/Product/filter-product?PageNumber=${pageNumber}&PageSize=${pageSize}&CategoryID=${7}`
-    );
+    try {
+      const response = await api.get(
+        `/Product/filter-product?PageNumber=${pageNumber}&PageSize=${pageSize}&CategoryID=${7}`
+      );
 
-    setPagination({
-      ...pagination,
-      total: response.data.totalCount,
-      pageSize: response.data.pageSize,
-      current: pageNumber,
-    });
+      setPagination({
+        ...pagination,
+        total: response.data.totalCount,
+        pageSize: response.data.pageSize,
+        current: pageNumber,
+      });
 
-    console.log(response.data.data);
-    setProduct(response.data.data);
+      setProducts(response.data.data);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
   };
 
   useEffect(() => {
     fetchProductAll();
   }, []);
 
-  const handleDC = (pagination) => {
-    fetchProductAll(pagination.current);
+  const handlePageChange = (page, pageSize) => {
+    fetchProductAll(page);
+  };
+
+  const handleClick = (dc) => {
+    window.location.href = `/prodetail/${dc.id}`;
+  };
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
   };
 
   return (
@@ -58,22 +75,30 @@ function DayChuyen() {
           {products.map((dc) => (
             <Col
               key={dc.id}
-              className="gutter-row justify-center flex flex-col pt-12 paper"
+              className="gutter-row justify-between flex flex-col pt-12 paper  "
               span={6}
-              onChange={handleDC()}
-              onClick={() => {
-                window.location.href = `/prodetail/${dc.id}`;
-              }}
+              onClick={() => handleClick(dc)}
             >
-              <img src={dc.imageURL} className="w-40 h-40 " />
-              <h3 className="absolute -bottom-5 font-medium w-40">{dc.Nnme}</h3>
-              <h3 className="absolute -bottom-10 text-gray-400 w-40">
-                {dc.productCost}
+              <img src={dc.imageURL} className="w-50 h-50 " alt={dc.name} />
+              <h3 className="absolute -bottom-5 font-medium w-50">{dc.name}</h3>
+              <h3 className="absolute -bottom-10 text-amber-700 w-50">
+                {formatCurrency(dc.productCost)}
               </h3>
             </Col>
           ))}
         </Row>
       </div>
+
+      {pagination.total > 0 && (
+        <div className="text-center my-4 ">
+          <Pagination
+            current={pagination.current}
+            pageSize={pagination.pageSize}
+            total={pagination.total}
+            onChange={handlePageChange}
+          />
+        </div>
+      )}
     </div>
   );
 }
