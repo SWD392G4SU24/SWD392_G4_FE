@@ -31,13 +31,10 @@ const cartSlice = createSlice({
     },
 
     increaseQuantity: (state, action) => {
-      const { id } = action.payload;
-      const product = state.products.find((item) => item.id === id);
+      const product = state.products.find((item) => item.id === action.payload);
 
-      if (product) {
-        if (product.quantity < product.quantity_available) {
-          product.quantity += 1;
-        }
+      if (product && product.quantity < action.payload.quantity) {
+        product.quantity += 1;
       }
     },
 
@@ -55,7 +52,7 @@ const cartSlice = createSlice({
     },
 
     clearAll: (state) => {
-      return (state.products = []);
+      state.products = initialCartValue;
     },
 
     selectProduct: (state, action) => {
@@ -63,9 +60,8 @@ const cartSlice = createSlice({
     },
 
     deselectProduct: (state, action) => {
-      const { id } = action.payload;
       state.selectedItems = state.selectedItems.filter(
-        (item) => item.id !== id
+        (item) => item.id !== action.payload
       );
     },
   },

@@ -17,7 +17,7 @@ function AdminPage2() {
     },
   ];
   return (
-    <div>
+    <div className=" dark:text-white  dark:bg-black">
       <Tabs
         centered
         defaultActiveKey="1"
@@ -25,6 +25,7 @@ function AdminPage2() {
         onChange={(value) => {
           console.log(value);
         }}
+        className="dark:text-white"
       />
     </div>
   );
