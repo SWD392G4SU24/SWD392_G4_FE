@@ -152,13 +152,17 @@ function Profile(props) {
         const fetchData = async () => {
             await new Promise(resolve => setTimeout(resolve, delay));
             getUserProfile();
-            getFavoriteProducts();
             getOrderHistory();
             getUserPromotion()
         };
     
         fetchData();
     }, [userId]);
+    
+    // useEffect(() => {
+    //         getFavoriteProducts();
+    // }, [userId]);
+    
 
     const updateUserProfile = async () => {
         try {
@@ -376,41 +380,6 @@ function Profile(props) {
             </div>
         );
     };
-
-    // const renderProductFavorites = () => {
-    //     if (favoriteProducts.length > 0) {
-    //       return favoriteProducts.map((product) => (
-    //         <div key={product.id} className={styles.favoritesSection}>
-    //           <img
-    //             className={styles.favoriteItem_Img}
-    //             src={product.imageURL}
-    //             alt={product.name}
-    //           />
-    //           <div className={styles.favoriteItem_Name_Item}>
-    //             <Space className="heart_icon text-xl" onClick={() => toggleFavorite(product.id)}>
-    //               {favoriteProducts.some((favProduct) => favProduct.id === product.id) ? (
-    //                 <HeartFilled style={{ color: "#B18165" }} />
-    //               ) : (
-    //                 <HeartOutlined />
-    //               )}
-    //             </Space>
-    //             <p>{product.name}</p>
-    //             <p>{product.productCost} VNĐ</p>
-    //           </div>
-    //           <button
-    //             className={styles.favoriteButton}
-    //             onClick={() => {
-    //               window.location.href = "/orderreview";
-    //             }}
-    //           >
-    //             Mua ngay
-    //           </button>
-    //         </div>
-    //       ));
-    //     } else {
-    //       return <p>Không tìm thấy sản phẩm yêu thích</p>;
-    //     }
-    //   };
 
     const renderProductFavorites = () => {
         // Tính tổng số trang
