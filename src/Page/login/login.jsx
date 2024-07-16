@@ -29,24 +29,19 @@ function Login1() {
     console.log(token);
     console.log(user);
     dispatch(login(result.data));
-    const response = await api.get(
-      "https://dassie-living-bonefish.ngrok-free.app/login"
-    );
+    const response = await api.get("/login");
     console.log(response.data);
     dispatch(logout());
   };
   const Login = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post(
-        "https://dassie-living-bonefish.ngrok-free.app/login",
-        {
-          user: {
-            username: username,
-            password: password,
-          },
-        }
-      );
+      const res = await api.post("/login", {
+        user: {
+          username: username,
+          password: password,
+        },
+      });
       toast.success("Đăng nhập thành công!");
       dispatch(login(res.data));
       localStorage.setItem("token", res.data.token);
