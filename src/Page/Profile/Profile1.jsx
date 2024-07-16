@@ -1,165 +1,155 @@
-// import React, { useEffect, useState } from "react";
-// import { useSelector } from "react-redux";
-// import { selectId } from "../../redux/features/counterSlice";
-// import api from "../../config/axios";
-// import { Space, Card } from "antd";
-// import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 
-// function Profile1() {
-//   const userId = useSelector(selectId); // Lấy user ID từ Redux store nếu có
-//   const [favoriteProducts, setFavoriteProducts] = useState([]);
-//   const [error, setError] = useState(null);
-
-//   useEffect(() => {
-//     fetchFavoriteProducts();
-//   }, [userId]);
-
-//   const fetchFavoriteProducts = async () => {
-//     try {
-//       const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
-//       if (favorites.length === 0) {
-//         setFavoriteProducts([]); // Nếu không có sản phẩm yêu thích
-//         return;
-//       }
-//       const productRequests = favorites.map((productId) => api.get(`/Product/${productId}`));
-//       const responses = await Promise.all(productRequests);
-//       const products = responses
-//         .map((response) => response.data)
-//         .filter((product) => product); // Loại bỏ các sản phẩm không tìm thấy
-//       setFavoriteProducts(products);
-//     } catch (err) {
-//       setError("Đã xảy ra lỗi khi lấy sản phẩm yêu thích");
-//     }
-//   };
-
-//   const toggleFavorite = (productId) => {
-//     const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
-//     let newFavorites;
-//     if (favorites.includes(productId)) {
-//       newFavorites = favorites.filter((favId) => favId !== productId);
-//     } else {
-//       newFavorites = [...favorites, productId];
-//     }
-//     localStorage.setItem(`favorites_${userId}`, JSON.stringify(newFavorites));
-//     fetchFavoriteProducts();
-//   };
-
-//   return (
-//     <div>
-//       {favoriteProducts.length > 0 ? (
-//         favoriteProducts.map((product) => (
-//           <Card key={product.id} style={{ marginBottom: 20 }}>
-//             <h1>{product.name}</h1>
-//             <img src={product.imageURL} alt={product.name} width="100" />
-//             <p>{product.productCost} VNĐ</p>
-//             <Space className="heart_icon text-xl" onClick={() => toggleFavorite(product.id)}>
-//               {favoriteProducts.some((favProduct) => favProduct.id === product.id) ? (
-//                 <HeartFilled style={{ color: "#B18165" }} />
-//               ) : (
-//                 <HeartOutlined />
-//               )}
-//             </Space>
-//           </Card>
-//         ))
-//       ) : (
-//         <p>Không tìm thấy sản phẩm yêu thích</p>
-//       )}
-//       {error && <p>{error}</p>}
-//     </div>
-//   );
-// }
-
-// export default Profile1;
-
-
-
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { selectId } from "../../redux/features/counterSlice";
 import api from "../../config/axios";
-import { Space } from "antd";
-import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import styles from './Profile.module.scss';
 
 function Profile1() {
-  const userId = useSelector(selectId); // Lấy user ID từ Redux store nếu có
-  const [favoriteProducts, setFavoriteProducts] = useState([]);
-  const [error, setError] = useState(null);
+  const userId = useSelector(selectId);
+  const [promotions, setPromotions] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const promotionsPerPage = 5;
+  
+  const [focusedItemId, setFocusedItemId] = useState(null);
+  const [copiedItemId, setCopiedItemId] = useState(null);
+  const itemRefs = useRef({});
 
   useEffect(() => {
-    fetchFavoriteProducts();
+    getUserPromotion();
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, [userId]);
 
-  const fetchFavoriteProducts = async () => {
-    try {
-      const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
-      if (favorites.length === 0) {
-        setFavoriteProducts([]); // Nếu không có sản phẩm yêu thích
-        return;
+  const handleClickOutside = (event) => {
+    if (focusedItemId) {
+      const focusedItemElement = itemRefs.current[focusedItemId];
+      if (focusedItemElement && !focusedItemElement.contains(event.target)) {
+        setFocusedItemId(null);
       }
-      const productRequests = favorites.map((productId) => api.get(`/Product/${productId}`));
-      const responses = await Promise.all(productRequests);
-      const products = responses
-        .map((response) => response.data)
-        .filter((product) => product); // Loại bỏ các sản phẩm không tìm thấy
-      setFavoriteProducts(products);
+    }
+  };
+
+  const getUserPromotion = async () => {
+    try {
+      const pageNumber = 1;
+      const pageSize = 50;
+      const prom = await api.get(`/Promotion/get-by-userID?PageNumber=${pageNumber}&PageSize=${pageSize}&UserId=${userId}`);
+      setPromotions(prom.data.value.data);
     } catch (err) {
-      setError("Đã xảy ra lỗi khi lấy sản phẩm yêu thích");
+      console.error(err);
     }
   };
 
-  const toggleFavorite = (productId) => {
-    const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
-    let newFavorites;
-    if (favorites.includes(productId)) {
-      newFavorites = favorites.filter((favId) => favId !== productId);
-    } else {
-      newFavorites = [...favorites, productId];
+  const copyIt = async (promotionId) => {
+    const copyInput = document.querySelector(`#copyvalue-${promotionId}`);
+  
+    try {
+      await navigator.clipboard.writeText(copyInput.value);
+      setFocusedItemId(promotionId);
+      setCopiedItemId(promotionId);
+      setTimeout(() => {
+        setCopiedItemId(null);
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
     }
-    localStorage.setItem(`favorites_${userId}`, JSON.stringify(newFavorites));
-    fetchFavoriteProducts();
   };
 
-  const renderProductFavorites = () => {
-    if (favoriteProducts.length > 0) {
-      return favoriteProducts.map((product) => (
-        <div key={product.id} className={styles.favoritesSection}>
-          <img
-            className={styles.favoriteItem_Img}
-            src={product.imageURL}
-            alt={product.name}
-          />
-          <div className={styles.favoriteItem_Name_Item}>
-            <Space className="heart_icon text-xl" onClick={() => toggleFavorite(product.id)}>
-              {favoriteProducts.some((favProduct) => favProduct.id === product.id) ? (
-                <HeartFilled style={{ color: "#B18165" }} />
-              ) : (
-                <HeartOutlined />
-              )}
-            </Space>
-            <p>{product.name}</p>
-            <p>{product.productCost} VNĐ</p>
-          </div>
-          <button
-            className={styles.favoriteButton}
-            onClick={() => {
-              window.location.href = "/orderreview";
-            }}
-          >
-            Mua ngay
-          </button>
+  const renderPromotion = () => {
+    const totalPages = Math.ceil(promotions.length / promotionsPerPage);
+    const indexOfLastPromotion = currentPage * promotionsPerPage;
+    const indexOfFirstPromotion = indexOfLastPromotion - promotionsPerPage;
+    const currentPromotions = promotions.slice(indexOfFirstPromotion, indexOfLastPromotion);
+    const copyIt = async (promotionId) => {
+      const copyInput = document.querySelector(`#copyvalue-${promotionId}`);
+    
+      try {
+        await navigator.clipboard.writeText(copyInput.value);
+        setFocusedItemId(promotionId);
+        setCopiedItemId(promotionId);
+        setTimeout(() => {
+          setCopiedItemId(null);
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy: ', err);
+      }
+    }; 
+    return (
+      <div>
+        <div className={styles.promotionsList}>
+          {currentPromotions.length > 0 ? (
+            currentPromotions.map((promotion) => (
+              <div 
+                key={promotion.id} 
+                className={styles.promotionSection}
+                ref={el => itemRefs.current[promotion.id] = el}
+              >
+                <div className={styles.promotionCard}>
+                  <div className={styles.promotionLogo}>
+                    <img 
+                      src="https://logomaker.designfreelogoonline.com/media/productdesigner/logo/resized/00319_DIAMOND_Jewelry-03.png"
+                      alt="Promotion Icon"
+                      className={styles.promotionIcon}
+                    /> 
+                    <h2 className={styles.promotionLogoFont}>JeWellry</h2>
+                  </div>
+                  <div className={styles.promotionDetails}>
+                    <h2>{promotion.description}</h2>
+                    <h3>Cho đơn từ {promotion.conditionsOfUse}K</h3>
+                    <p>Ngày hết hạn: {new Date(promotion.expiresTime).toLocaleDateString()}</p>
+                  </div>
+                  <div className={styles.promotionCodeSection}>
+                    <div className={styles.codeContainer}>
+                      <input
+                        type="text"
+                        id={`copyvalue-${promotion.id}`}
+                        defaultValue={promotion.id}
+                        readOnly
+                        className={`${styles.copyInput} ${focusedItemId === promotion.id ? styles.focused : ''}`}
+                      />
+                      <button 
+                        className={`${styles.applyButton} ${copiedItemId === promotion.id ? styles.copied : ''}`}
+                        onClick={() => copyIt(promotion.id)}
+                      >
+                        {copiedItemId === promotion.id ? "Đã sao chép" : "Sao chép mã"}
+                      </button>
+                      <button onClick={() => {
+                        window.location.href = "/cart";
+                      }} className={styles.loctionCart}>Đi tới giỏ hàng</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className={styles.notFoundStatusHistory}>Không tìm thấy khuyến mãi.</p>
+          )}
         </div>
-      ));
-    } else {
-      return <p>Không tìm thấy sản phẩm yêu thích</p>;
-    }
+        {currentPromotions.length > 0 && (
+          <div className={styles.pagination}>
+            <button onClick={() => setCurrentPage(prevPage => Math.max(prevPage - 1, 1))} disabled={currentPage === 1}>
+              Trước
+            </button>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button key={index + 1} onClick={() => setCurrentPage(index + 1)} className={currentPage === index + 1 ? styles.active : ''}>
+                {index + 1}
+              </button>
+            ))}
+            <button onClick={() => setCurrentPage(prevPage => Math.min(prevPage + 1, totalPages))} disabled={currentPage === totalPages}>
+              Sau
+            </button>
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
     <div>
-      {renderProductFavorites()}
-      {error && <p>{error}</p>}
+      {renderPromotion()}
     </div>
   );
 }

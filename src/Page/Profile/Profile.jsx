@@ -25,6 +25,9 @@ function Profile(props) {
     const [submitComplete, setSubmitComplete] = useState(false); //setState submit complete
     const [orderFilter, setOrderFilter] = useState('All');
     const [promotions, setPromotions] = useState([]);//setState Promotion
+    const [focusedItemId, setFocusedItemId] = useState(null); //set focus for 1 item when select copy
+    const [copiedItemId, setCopiedItemId] = useState(null); // set color buttuon for copied
+    const itemRefs = useRef({});
     const [currentPage, setCurrentPage] = useState(1);
     const [favoriteProducts, setFavoriteProducts] = useState([]); // set Heart favorites
     // Reset the current page to 1 when the filter changes  
@@ -35,7 +38,7 @@ function Profile(props) {
     }; 
     const [orderHistory, setOrderHistory] = useState([]); // setState for order history
     const ordersPerPage = 3; // Số đơn hàng trên mỗi trang của page order
-    const promotionsPerPage = 5; // Số đơn hàng trên mỗi trang của page promotion
+    const promotionsPerPage = 3; // Số đơn hàng trên mỗi trang của page promotion
     const productsPerPage = 3;
     const [error, setError] = useState(null);
   
@@ -133,18 +136,15 @@ function Profile(props) {
     //Api get promotion
     const getUserPromotion = async () => {
         try {
-            const pageNumber = 1; // Trang đầu tiên
-            const pageSize = 100; // Số lượng đơn hàng trên mỗi trang
-
-            // Make API call with token and ID
-            const prom = await api.get(`/Promotion`);
-            // const prom = await api.get(`/Promotion/get-by-userID?PageNumber=${pageNumber}&PageSize=${pageSize}&UserId=${userId}`);
-            setPromotions(prom.data.value); // Assuming API returns user data directly
-            console.log(prom.data.value)
-          } catch (err) {
-            setError(err);
-          }
-    }
+          const pageNumber = 1; // Trang đầu tiên
+          const pageSize = 50; // Số lượng đơn hàng trên mỗi trang
+          const response = await api.get(`/Promotion/get-by-userID?PageNumber=${pageNumber}&PageSize=${pageSize}&UserId=${userId}`);
+          setPromotions(response.data.value.data); // Assuming API returns user data directly
+          console.log(response.data.value.data);
+        } catch (err) {
+          setError(err);
+        }
+      };
 
     useEffect(() => {
         const delay = 1500; // Delay in milliseconds (adjust as needed)
@@ -295,6 +295,7 @@ function Profile(props) {
                 );
             case "Khuyến mãi":
                 return <div>
+                 <h1 className={styles.headerPromotion}>Khuyến mãi</h1>   
                 {renderPromotion()}
                 </div>;
             default:
@@ -437,7 +438,7 @@ function Profile(props) {
             </div>
           );
         } else {
-          return <p>Không tìm thấy sản phẩm yêu thích</p>;
+          return <p className={styles.notFoundStatusHistory}>Không tìm thấy sản phẩm yêu thích</p>;
         }
       };
     
@@ -510,94 +511,98 @@ function Profile(props) {
           
     };
    
-    const renderPromotion = () => {
-        // Tính tổng số trang
-        const totalPages = Math.ceil(promotions.length / promotionsPerPage);
+    // Hàm tính toán và hiển thị các khuyến mãi hiện tại và phân trang
+   
+  const renderPromotion = () => {
+    const totalPages = Math.ceil(promotions.length / promotionsPerPage);
+    const indexOfLastPromotion = currentPage * promotionsPerPage;
+    const indexOfFirstPromotion = indexOfLastPromotion - promotionsPerPage;
+    const currentPromotions = promotions.slice(indexOfFirstPromotion, indexOfLastPromotion);
+    const copyIt = async (promotionId) => {
+      const copyInput = document.querySelector(`#copyvalue-${promotionId}`);
     
-        // Lấy khuyến mãi hiện tại
-        const indexOfLastPromotion = currentPage * promotionsPerPage;
-        const indexOfFirstPromotion = indexOfLastPromotion - promotionsPerPage;
-        const currentPromotions = promotions.slice(indexOfFirstPromotion, indexOfLastPromotion);
-
-        const copyIt = () => {
-            const copyInput = document.querySelector('#copyvalue');
-            copyInput.select();
-            document.execCommand("copy");
-            
-            const copyBtn = document.querySelector(".copybtn");
-            copyBtn.textContent = "Đã sao chép";
-            setTimeout(() => {
-                copyBtn.textContent = "Sao chép mã";
-                setIsFocused(false)
-            }, 2000);
-        };
-        
-    
-        return (
-            <div>
-                <div className={styles.promotionsList}>
-                    {currentPromotions.length > 0 ? (
-                        currentPromotions.map((promotion) => (
-                            <div key={promotion.id} className={styles.promotionSection}>
-                                <div className={styles.promotionCard}>
-                                    <div className={styles.promotionLogo}>
-                                        <img 
-                                            src="https://logomaker.designfreelogoonline.com/media/productdesigner/logo/resized/00319_DIAMOND_Jewelry-03.png"
-                                            alt="Promotion Icon"
-                                            className={styles.promotionIcon}
-                                        /> 
-                                        <h2 className={styles.promotionLogoFont}>JeWellry</h2>
-                                    </div>
-                                    <div className={styles.promotionDetails}>
-                                        <h3>{promotion.description}</h3>
-                                        <p>Ngày hết hạn: {new Date(promotion.expiresTime).toLocaleDateString()}</p>
-                                    </div>
-                                    <div className={styles.promotionCodeSection}>
-                                        <div className={styles.codeContainer}>
-                                            <input
-                                                type="text"
-                                                id="copyvalue"
-                                                defaultValue={promotion.id}
-                                                readOnly
-                                            
-                                                className={`${styles.copyInput} ${isFocused ? styles.focused : ''}`}
-                                                onFocus={() => setIsFocused(true)}
-                                                onBlur={() => setIsFocused(false)}
-                                            />
-                                            <button className={`${styles.applyButton} copybtn`} onClick={copyIt}>
-                                                Sao chép mã
-                                            </button>
-                                            <button onClick={() => {
-                                                window.location.href = "/cart";
-                                            }} className={styles.loctionCart}>Đi tới giỏ hàng</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        <p className={styles.notFoundStatusHistory}>Không tìm thấy khuyến mãi.</p>
-                    )}
-                </div>
-        
-                {currentPromotions.length > 0 && (
-                    <div className={styles.pagination}>
-                        <button onClick={() => setCurrentPage(prevPage => Math.max(prevPage - 1, 1))} disabled={currentPage === 1}>
-                            Trước
-                        </button>
-                        {Array.from({ length: totalPages }, (_, index) => (
-                            <button key={index + 1} onClick={() => setCurrentPage(index + 1)} className={currentPage === index + 1 ? styles.active : ''}>
-                                {index + 1}
-                            </button>
-                        ))}
-                        <button onClick={() => setCurrentPage(prevPage => Math.min(prevPage + 1, totalPages))} disabled={currentPage === totalPages}>
-                            Sau
-                        </button>
+      try {
+        await navigator.clipboard.writeText(copyInput.value);
+        setFocusedItemId(promotionId);
+        setCopiedItemId(promotionId);
+        setTimeout(() => {
+          setCopiedItemId(null);
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy: ', err);
+      }
+    }; 
+    return (
+      <div>
+        <div className={styles.promotionsList}>
+          {currentPromotions.length > 0 ? (
+            currentPromotions.map((promotion) => (
+              <div 
+                key={promotion.id} 
+                className={styles.promotionSection}
+                ref={el => itemRefs.current[promotion.id] = el}
+              >
+                <div className={styles.promotionCard}>
+                  <div className={styles.promotionLogo}>
+                    <img 
+                      src="https://logomaker.designfreelogoonline.com/media/productdesigner/logo/resized/00319_DIAMOND_Jewelry-03.png"
+                      alt="Promotion Icon"
+                      className={styles.promotionIcon}
+                    /> 
+                    <h2 className={styles.promotionLogoFont}>JeWellry</h2>
+                  </div>
+                  <div className={styles.promotionDetails}>
+                    <h2>{promotion.description}</h2>
+                    <h3>Cho đơn từ {promotion.conditionsOfUse}K</h3>
+                    <p>Ngày hết hạn: {new Date(promotion.expiresTime).toLocaleDateString()}</p>
+                  </div>
+                  <div className={styles.promotionCodeSection}>
+                    <div className={styles.codeContainer}>
+                      <input
+                        type="text"
+                        id={`copyvalue-${promotion.id}`}
+                        defaultValue={promotion.id}
+                        readOnly
+                        className={`${styles.copyInput} ${focusedItemId === promotion.id ? styles.focused : ''}`}
+                      />
+                      <button 
+                        className={`${styles.applyButton} ${copiedItemId === promotion.id ? styles.copied : ''}`}
+                        onClick={() => copyIt(promotion.id)}
+                      >
+                        {copiedItemId === promotion.id ? "Đã sao chép" : "Sao chép mã"}
+                      </button>
+                      <button onClick={() => {
+                        window.location.href = "/cart";
+                      }} className={styles.loctionCart}>Đi tới giỏ hàng</button>
                     </div>
-                )}
-            </div>
-        );
-    };
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className={styles.notFoundStatusHistory}>Không tìm thấy khuyến mãi.</p>
+          )}
+        </div>
+        {currentPromotions.length > 0 && (
+          <div className={styles.pagination}>
+            <button onClick={() => setCurrentPage(prevPage => Math.max(prevPage - 1, 1))} disabled={currentPage === 1}>
+              Trước
+            </button>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button key={index + 1} onClick={() => setCurrentPage(index + 1)} className={currentPage === index + 1 ? styles.active : ''}>
+                {index + 1}
+              </button>
+            ))}
+            <button onClick={() => setCurrentPage(prevPage => Math.min(prevPage + 1, totalPages))} disabled={currentPage === totalPages}>
+              Sau
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
+  
+  
     return (
         <div className={styles.container}>
             <button

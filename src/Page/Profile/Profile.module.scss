@@ -78,7 +78,13 @@
  margin-bottom: 40px;
  margin-top: -30px;
 }
-
+.headerPromotion{
+    font-size: 30px;
+    margin-left: 60px;
+    margin-bottom: 40px;
+    margin-top: -30px;
+   }
+   
 
 .infoSection{
     padding: 20px;
@@ -429,16 +435,27 @@
 
 .pagination button {
     margin: 0 5px;
+    // padding: 8px 16px;
+    // background-color: #f0f0f0;
+    // border: 1px solid #ccc;
+    // cursor: pointer;
     padding: 8px 16px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
+    border: 1px solid #B18165;
+    background-color: #fff;
+    color: #B18165;
     cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
 }
 
-.pagination button:hover {
-    background-color: #e0e0e0;
+.pagination button:hover, .pagination button.active {
+    background-color: #B18165;
+    color: #fff;
 }
-
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 .pagination button.active {
     background-color: #b18165;
     color: #fff;
@@ -507,13 +524,123 @@
 }
 
 
+// .promotionSection {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     margin-top: 20px;
+// }
+
+// .promotionCard {
+//     display: flex;
+//     align-items: center;
+//     border: 1px solid #ccc;
+//     border-radius: 10px;
+//     padding: 10px;
+//     background-color: #fff;
+//     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//     flex-direction: row; // Đặt các mục theo chiều ngang
+//     width: 80%; // Đặt độ rộng của box ở đây
+//     justify-content: space-between;
+//     margin-right: 50px;
+// }
+
+// .promotionLogo{
+//     display: flex;
+//     justify-content: center;
+//     text-align: center;
+// }   
+// .promotionIcon {
+//     width: 40px;
+//     height: 40px;
+//     margin-bottom: 10px; // Căn chỉnh khoảng cách bên dưới icon
+// }
+// .promotionLogoFont {
+//     flex: 1; // Giúp phần chi tiết mở rộng để chiếm không gian còn lại
+//     margin-right: 15px; // Khoảng cách giữa phần chi tiết và mã khuyến mãi
+//     font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; // Áp dụng font-family
+//     text-align: center;
+//     justify-content: center;
+//     padding-top: 10px;
+// }
+
+// .promotionDetails {
+//     text-align: center; // Căn giữa nội dung
+// }
+
+// .promotionCodeSection {
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     margin-top: 5px; // Khoảng cách bên trên mã khuyến mãi và nút
+
+// }
+
+// .codeContainer {
+//     display: flex;
+//     align-items: center;
+// }
+
+// .applyButton {
+//     background-color: #B18165;
+//     color: #fff;
+//     border: none;
+//     padding: 5px 10px;
+//     border-radius: 5px;
+//     cursor: pointer;
+//     margin-left: 20px; // Khoảng cách giữa mã khuyến mãi và nút
+//     margin-right: 20px;
+// }
+// .applyButton:hover {
+//     background-color:#9e8478;
+// }
+// .copyInput {
+//     border: 1px solid #ccc;
+//     padding: 5px;
+//     border-radius: 5px;
+//     text-align: center;
+//     width: 200px; // Độ rộng của ô mã khuyến mãi
+//     filter: blur(2px)
+// }
+
+// .copyInput.focused {
+//     filter: none;
+// }
+
+// .loctionCart{
+//   padding-left: 10px;
+//   display: inline-block;
+//   font-weight: bold;
+// }
+// .loctionCart:hover{
+//     font-weight: bold;
+//     color: #3498db; /* Thay đổi mã màu này theo ý bạn */
+//     text-decoration: underline;
+    
+// }
+
+
 .promotionSection {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 20px;
 }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 768px) {
+    .promotionCard {
+        width: 90%;
+        flex-direction: column;
+    }
 
+    .promotionLogo, .promotionDetails, .promotionCodeSection {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
 .promotionCard {
     display: flex;
     align-items: center;
@@ -522,13 +649,18 @@
     padding: 10px;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    flex-direction: row; // Đặt các mục theo chiều ngang
-    width: 80%; // Đặt độ rộng của box ở đây
+    flex-direction: row;
+    width: 70%;
     justify-content: space-between;
     margin-right: 50px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 0.5s ease-out;
 }
-
-.promotionLogo{
+.promotionCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+.promotionLogo {
     display: flex;
     justify-content: center;
     text-align: center;
@@ -536,27 +668,55 @@
 .promotionIcon {
     width: 40px;
     height: 40px;
-    margin-bottom: 10px; // Căn chỉnh khoảng cách bên dưới icon
+    margin-bottom: 10px;
 }
 .promotionLogoFont {
-    flex: 1; // Giúp phần chi tiết mở rộng để chiếm không gian còn lại
-    margin-right: 15px; // Khoảng cách giữa phần chi tiết và mã khuyến mãi
-    font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; // Áp dụng font-family
+    flex: 1;
+    margin-right: 15px;
+    font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
     text-align: center;
     justify-content: center;
     padding-top: 10px;
 }
 
+// .promotionDetails {
+//     text-align: center;
+// }
 .promotionDetails {
-    text-align: center; // Căn giữa nội dung
+    text-align: Center;
+    padding: 10px 15px;
+    border-radius: 8px;
+
 }
 
+.promotionDetails h2 {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.promotionDetails p {
+    color: #666;
+    font-size: 14px;
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+.promotionDetails .conditionText {
+    color: #B18165;
+    font-weight: 600;
+}
+
+.promotionDetails .expiryDate {
+    font-style: italic;
+    color: #888;
+}
 .promotionCodeSection {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 5px; // Khoảng cách bên trên mã khuyến mãi và nút
-
+    margin-top: 5px;
 }
 
 .codeContainer {
@@ -567,37 +727,54 @@
 .applyButton {
     background-color: #B18165;
     color: #fff;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
     cursor: pointer;
-    margin-left: 20px; // Khoảng cách giữa mã khuyến mãi và nút
-    margin-right: 20px;
 }
 .applyButton:hover {
-    background-color:#9e8478;
+    background-color: #9e8478;
+}
+
+.applyButton, .loctionCart {
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 8px 15px;
+    border-radius: 15px;
+    font-weight: bold;
 }
 .copyInput {
     border: 1px solid #ccc;
     padding: 5px;
     border-radius: 5px;
     text-align: center;
-    width: 200px; // Độ rộng của ô mã khuyến mãi
-    filter: blur(2px)
+    width: 200px;
+    filter: blur(2px);
+    transition: all 0.3s ease;
 }
 
 .copyInput.focused {
     filter: none;
+    box-shadow: 0 0 0 2px #B18165;
+}
+.applyButton.copied {
+    background-color: #d1b1a1; // Màu nhạt hơn khi đã sao chép
+}
+// .loctionCart {
+//     padding-left: 10px;
+//     display: inline-block;
+//     font-weight: bold;
+// }
+// .loctionCart:hover {
+//     font-weight: bold;
+//     color: #3498db;
+//     text-decoration: underline;
+// }
+
+.loctionCart {
+    margin-left: 10px;
+    background-color: transparent;
+    color: #B18165;
+    border: 2px solid #B18165;
 }
 
-.loctionCart{
-  padding-left: 10px;
-  display: inline-block;
-  font-weight: bold;
-}
-.loctionCart:hover{
-    font-weight: bold;
-    color: #3498db; /* Thay đổi mã màu này theo ý bạn */
-    text-decoration: underline;
-    
+.loctionCart:hover {
+    background-color: #B18165;
+    color: #fff;
 }
