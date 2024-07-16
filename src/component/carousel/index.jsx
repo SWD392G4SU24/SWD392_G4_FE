@@ -30,11 +30,11 @@ function Carousel({ numOfSlide, isUseNavigate }) {
 
   const fetchCate = async () => {
     const response = await api.get(
-      "https://665aa0df003609eda45e5ea3.mockapi.io/category"
-      // "/category"
+      // "https://665aa0df003609eda45e5ea3.mockapi.io/category"
+      "/category"
     );
-    // const { value } = response.data;
-    setCates(response.data);
+    const { value } = response.data;
+    setCates(value);
   };
 
   const fetchProduct = async () => {
@@ -52,11 +52,11 @@ function Carousel({ numOfSlide, isUseNavigate }) {
   }, []);
 
   const handleOnClickCate = (id) => {
-    id === "1"
+    id === "7"
       ? (window.location.href = `/dc`)
-      : id === "2"
+      : id === "9"
       ? (window.location.href = `/ht`)
-      : id === "3"
+      : id === "10"
       ? (window.location.href = `/vt`)
       : (window.location.href = `/n`);
   };
@@ -151,7 +151,16 @@ function Carousel({ numOfSlide, isUseNavigate }) {
               }}
             >
               <a className="cateLink">
-                <img src={cate.pic_path} alt="" />
+                {cate.id === "7" ? (
+                  <img src="https://i.imgur.com/RNxL7JQ.png" />
+                ) : cate.id === "8" ? (
+                  <img src="https://i.imgur.com/BLPmNge.png" />
+                ) : cate.id === "9" ? (
+                  <img src="https://i.imgur.com/cdocnbx.png" />
+                ) : (
+                  <img src="https://i.imgur.com/laou9su.png" />
+                )}
+                {/* <img src={cate.pic_path} alt="" /> */}
                 <h2 className="font-medium text-center text-xl font-serif">
                   {cate.name}
                 </h2>

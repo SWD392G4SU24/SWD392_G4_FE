@@ -39,6 +39,7 @@ import NecklaceSize from "./Page/rule/tutorial/necklaceSize";
 import ReturnWarranty from "./Page/rule/returns";
 import BuyTutorial from "./Page/rule/tutorial/buyProduct";
 import SecurityInfo from "./Page/rule/security";
+import Form from "./Page/form";
 import UserSearch from "./Page/staff/index2";
 import StaffOrder from "./Page/staff/order";
 
@@ -121,10 +122,6 @@ function App() {
           element: <VongTay />,
         },
         {
-          path: "/crudproduct",
-          element: <ManageProducts />,
-        },
-        {
           path: "/chart",
           element: <Chart />,
         },
@@ -166,12 +163,16 @@ function App() {
           element: <Manager />,
         },
         {
-          path: "/revenue",
+          path: "/dashboard",
           element: <AdminPage2 />,
         },
         {
-          path: "/accounts",
-          element: <Accounts />,
+          path: "/form",
+          element: <Form />,
+        },
+        {
+          path: "/crudproduct",
+          element: <ManageProducts />,
         },
         {
           path: "/staffsearch",
