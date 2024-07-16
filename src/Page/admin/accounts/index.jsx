@@ -24,6 +24,11 @@ function Accounts() {
       key: "email",
     },
     {
+      title: "Role",
+      dataIndex: "role",
+      key: "role",
+    },
+    {
       title: "Phone Number",
       dataIndex: "phoneNumber",
       key: "phoneNumber",
@@ -48,10 +53,9 @@ function Accounts() {
       setDatasource(response.data.data);
       setPagination({
         ...pagination,
-        total: response.data.data.totalCount,
-        pageCount: response.data.data.pageCount,
-        current: response.data.data.pageNumber,
-        pageSize: response.data.data.pageSize,
+        total: response.data.totalCount,
+        pageSize: response.data.pageSize,
+        current: pageNumber,
       });
     } catch (error) {
       console.log(error);

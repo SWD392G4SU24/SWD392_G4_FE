@@ -1,16 +1,13 @@
 import { CloseOutlined, ShoppingOutlined } from "@ant-design/icons";
 import { Button, Image, Popconfirm, Table } from "antd";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { store } from "../../redux/store";
 import {
   decreaseQuantity,
   increaseQuantity,
   removeProduct,
   selectProduct,
 } from "../../redux/features/cartSlice";
-
 function Cart() {
   const [checked, setChecked] = useState([]);
   const dispatch = useDispatch();
@@ -86,7 +83,7 @@ function Cart() {
 
   console.log(count);
   return (
-    <div className="justify-items-center flex flex-col items-center ">
+    <div className="">
       <div className="rounded-xl shadow-md duration-200 relative z-40 bg-white/50 bottom-1 w-full">
         <div className="flex justify-between items-center py-6 px-6">
           <div className="flex justify-center items-center">
@@ -102,7 +99,6 @@ function Cart() {
           columns={columns}
           dataSource={carts}
           bordered
-          className="w-11/12 m-auto"
           rowKey="id"
           rowSelection={{
             onChange: (id, value) => {
@@ -111,7 +107,6 @@ function Cart() {
           }}
         />
       </div>
-      <div></div>
       <div className="flex justify-between w-full px-40 py-20">
         <h1>Tong So Luong Mua: </h1>
         <button

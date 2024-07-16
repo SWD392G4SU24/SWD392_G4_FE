@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./index.scss";
 import { useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
 function Payment() {
   const location = useLocation();
@@ -33,6 +35,7 @@ function Payment() {
       </div>
     );
   }
+
   return (
     <div className="payment">
       <button
@@ -56,6 +59,17 @@ function Payment() {
           </div>
         </div>
         <div>
+          {paymentData && (
+            <div className="success-message">
+              <FontAwesomeIcon
+                icon={faCheckCircle}
+                className="text-green-500 mr-2"
+              />
+              <span className="text-green-500 font-bold">
+                Thanh toán thành công!
+              </span>
+            </div>
+          )}
           <h1>
             Nếu bạn chọn{" "}
             <strong style={{ color: "blue" }}>
