@@ -69,10 +69,11 @@ const StaffOrder = () => {
       };
       const response = await api.post("/order/staff-create", payload);
       const { value } = response.data;
-      setPaymentUrl(value);
-      setPaymentCompleted(true);
       toast.success("Mua thành công!");
-      console.log(response.data);
+      if (selectedPaymentMethod === "vnPayMethodIdHere") {
+        setPaymentUrl(value);
+        setPaymentCompleted(true);
+      }
     } catch (e) {
       toast.error(e.response.data.detail);
     }
@@ -91,14 +92,18 @@ const StaffOrder = () => {
   }, []);
 
   function addToCart(product) {
-    const existingItem = carts.find((item) => item.id === product.id);
-    if (existingItem && existingItem.quantity >= product.quantity) {
-      toast.warn(
-        `Sản phẩm ${product.name} đã đạt đến giới hạn số lượng có thể thêm.`
-      );
+    if (product.quantity === 0) {
+      toast.warn(`Sản phẩm ${product.name} hiện đã hết hàng.`);
     } else {
-      dispatch(addProduct(product));
-      toast.success(`${product.name} đã được thêm vào giỏ hàng.`);
+      const existingItem = carts.find((item) => item.id === product.id);
+      if (existingItem && existingItem.quantity >= product.quantity) {
+        toast.warn(
+          `Sản phẩm ${product.name} đã đạt đến giới hạn số lượng có thể thêm.`
+        );
+      } else {
+        dispatch(addProduct(product));
+        toast.success(`${product.name} đã được thêm vào giỏ hàng.`);
+      }
     }
   }
 

@@ -22,20 +22,20 @@ function Cart() {
   const columns = [
     {
       title: "San Pham",
-      dataIndex: "Name",
-      key: "Name",
+      dataIndex: "name",
+      key: "name",
     },
     {
       title: "Hinh anh mo ta",
-      dataIndex: "ImageURL",
-      key: "ImageURL",
+      dataIndex: "imageURL",
+      key: "imageURL",
       align: "center",
       render: (poster_path) => <Image src={poster_path} width={200} />,
     },
     {
       title: "Chi tiet",
-      dataIndex: "Cate",
-      key: "Cate",
+      dataIndex: "description",
+      key: "description",
       align: "center",
     },
     {
