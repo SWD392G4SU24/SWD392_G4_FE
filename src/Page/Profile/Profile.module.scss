@@ -1,11 +1,18 @@
 @import url('https://fonts.googleapis.com/css?family=Flamenco');
 
 
-.heart_icon:hover{
-    color: #B18165;
+.anticon svg {
+    width: 50px;
+    height: 50px;
 }
-
-
+.heartIcon{
+    color: #B18165;
+    cursor: pointer;
+    width: 200px;
+}
+.hearIcon:hover{
+    color: #ccc;
+}
 .container {
     // font-family: 'Flamenco', sans-serif;
     padding-top: 20px;
@@ -220,62 +227,71 @@
     color: #8B0000; /* Màu chữ là màu đỏ đậm hơn và trầm hơn */
 }
 
-.favoritesSection{
-    border: solid 0.02px;
-    border-radius: 5px;
-    box-shadow: 5px 7px 5px 5px #cccaca;
-    background-color: #f9f9f9;
-    width: 80%;
-    height: 148px;
+.favoritesSection {
+    border: solid 1px #cccaca; /* Thicker border */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 3px 5px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #fff;
+    width: 80%; /* Adjust width as needed */
+    height: 150px; /* Adjust height as needed */
     display: flex;
     align-items: center;
-    justify-content: space-between; 
-   margin-left: 60px;
-   margin-bottom: 10px;
+    margin-bottom: 15px; /* More spacing between items */
+    margin-left: 100px;
+    padding: 10px; /* Add padding for better spacing */
+    justify-content: space-between;
+    animation: fadeIn 0.5s ease-out;
   }
   
-.favoriteItem {
-    // margin-top: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between // cách đều 2 bên màn hình nhe
-}
-.favoriteItem_Img {
-    width: 145px;
-    height: 145px;
-}
-.favoriteItem_Name_Item{
-  justify-content: space-between;
-  align-items: center;
-  margin-right: 400px;
 
-}
-.favoriteItem_Name_Item_P{
-    display: flex;
+.favoritesSection:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.favoriteItem_Info{
-    margin-right: 90px;
+.favoriteInfor {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  margin-left: -40%; /* Space between image and info */
+  margin-top: 20px;
+  
 }
+
+.favoriteInfor h2 {
+    margin-top: 60px;
+    color: #666;
+    font-size: 25px;
+    margin: 5px 0;
+    line-height: 1.4;
+    font-weight: bold;
+}
+
+.favoriteInfor p {
+    color: #666;
+    font-size: 20px;
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
 
 .favoriteButton {
-    background-color: #B18165;
-    color: white;
+    background-color: transparent;
+    color: #B18165;
+    border: 2px solid #B18165;
     cursor: pointer;
-    border-radius: 3px; /* Round the button */
-    transition: background-color 0.3s ease; /* Smooth background color transition */
-    margin-top: 50px;
-    margin-right: 70px;
-    width: 100px;
     height: 40px;
-    
-}
+    width: 200px;
+    margin-top: 10px; /* Space above button */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-weight: bold;
+  }
 
-.favoriteButton:hover {
-    background-color: #9e8478; /* Change background color on hover */
+  .favoriteButton:hover {
+    background-color: #B18165;
+    color: #fff;
     cursor: pointer; /* Change cursor to pointer on hover */
-}
-
+  }
+  
 
 .likeIcon {
     cursor: pointer;
@@ -337,8 +353,14 @@
     border-radius: 5px;
     box-shadow: 5px 7px 5px 5px #cccaca;
     background-color: #f9f9f9;
-    
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 0.5s ease-out;
 }
+.orderDetails:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+  
 .orderInfo {
     flex: 2;
     padding-bottom: 30px;
@@ -524,102 +546,6 @@
 }
 
 
-// .promotionSection {
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     margin-top: 20px;
-// }
-
-// .promotionCard {
-//     display: flex;
-//     align-items: center;
-//     border: 1px solid #ccc;
-//     border-radius: 10px;
-//     padding: 10px;
-//     background-color: #fff;
-//     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-//     flex-direction: row; // Đặt các mục theo chiều ngang
-//     width: 80%; // Đặt độ rộng của box ở đây
-//     justify-content: space-between;
-//     margin-right: 50px;
-// }
-
-// .promotionLogo{
-//     display: flex;
-//     justify-content: center;
-//     text-align: center;
-// }   
-// .promotionIcon {
-//     width: 40px;
-//     height: 40px;
-//     margin-bottom: 10px; // Căn chỉnh khoảng cách bên dưới icon
-// }
-// .promotionLogoFont {
-//     flex: 1; // Giúp phần chi tiết mở rộng để chiếm không gian còn lại
-//     margin-right: 15px; // Khoảng cách giữa phần chi tiết và mã khuyến mãi
-//     font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; // Áp dụng font-family
-//     text-align: center;
-//     justify-content: center;
-//     padding-top: 10px;
-// }
-
-// .promotionDetails {
-//     text-align: center; // Căn giữa nội dung
-// }
-
-// .promotionCodeSection {
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     margin-top: 5px; // Khoảng cách bên trên mã khuyến mãi và nút
-
-// }
-
-// .codeContainer {
-//     display: flex;
-//     align-items: center;
-// }
-
-// .applyButton {
-//     background-color: #B18165;
-//     color: #fff;
-//     border: none;
-//     padding: 5px 10px;
-//     border-radius: 5px;
-//     cursor: pointer;
-//     margin-left: 20px; // Khoảng cách giữa mã khuyến mãi và nút
-//     margin-right: 20px;
-// }
-// .applyButton:hover {
-//     background-color:#9e8478;
-// }
-// .copyInput {
-//     border: 1px solid #ccc;
-//     padding: 5px;
-//     border-radius: 5px;
-//     text-align: center;
-//     width: 200px; // Độ rộng của ô mã khuyến mãi
-//     filter: blur(2px)
-// }
-
-// .copyInput.focused {
-//     filter: none;
-// }
-
-// .loctionCart{
-//   padding-left: 10px;
-//   display: inline-block;
-//   font-weight: bold;
-// }
-// .loctionCart:hover{
-//     font-weight: bold;
-//     color: #3498db; /* Thay đổi mã màu này theo ý bạn */
-//     text-decoration: underline;
-    
-// }
-
-
 .promotionSection {
     display: flex;
     justify-content: center;
@@ -631,7 +557,7 @@
     to { opacity: 1; transform: translateY(0); }
 }
 @media (max-width: 768px) {
-    .promotionCard {
+    .promotionCard, .favoritesSection, .orderDetails {
         width: 90%;
         flex-direction: column;
     }
@@ -648,7 +574,7 @@
     border-radius: 10px;
     padding: 10px;
     background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
     flex-direction: row;
     width: 70%;
     justify-content: space-between;
@@ -728,6 +654,7 @@
     background-color: #B18165;
     color: #fff;
     cursor: pointer;
+    margin-left: 10px;
 }
 .applyButton:hover {
     background-color: #9e8478;
@@ -778,3 +705,41 @@
     background-color: #B18165;
     color: #fff;
 }
+
+
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px  black;
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #B18165;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -150px;
+  }
+  
+  .tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #B18165 transparent transparent transparent;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }

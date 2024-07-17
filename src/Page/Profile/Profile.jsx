@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './Profile.module.scss';
-import { MailOutlined, UserOutlined, WhatsAppOutlined,HeartFilled, HeartOutlined } from "@ant-design/icons";
+import { MailOutlined, UserOutlined, WhatsAppOutlined,HeartFilled, HeartOutlined, CopyOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import { Input, Space, Card } from 'antd';
 // Formik này là để lấy dữ liệu từ ô mình nhập
 import { withFormik, Form } from 'formik';
@@ -13,6 +13,7 @@ import { display } from '@mui/system';
 import api from "../../config/axios";
 import { selectId } from "../../redux/features/counterSlice";
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 
 function Profile(props) {
@@ -74,19 +75,7 @@ function Profile(props) {
 
     const [isFocused, setIsFocused] = useState(false); // focues filter for promotion input
      
-      //set heart favorite
-      const toggleFavorite = (productId) => {
-        const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
-        let newFavorites;
-        if (favorites.includes(productId)) {
-          newFavorites = favorites.filter((favId) => favId !== productId);
-        } else {
-          newFavorites = [...favorites, productId];
-        }
-        localStorage.setItem(`favorites_${userId}`, JSON.stringify(newFavorites));
-        fetchFavoriteProducts();
-      };
-    
+  
     //  Api get infor user
     const getUserProfile = async () => {
         try {
@@ -98,25 +87,6 @@ function Profile(props) {
         }
     };
 
-    //Api lấy sản phẩm yêu thích
-      
-    const getFavoriteProducts = async () => {
-        try {
-          const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
-          if (favorites.length === 0) {
-            setFavoriteProducts([]); // Nếu không có sản phẩm yêu thích
-            return;
-          }
-          const productRequests = favorites.map((productId) => api.get(`/Product/${productId}`));
-          const responses = await Promise.all(productRequests);
-          const products = responses
-            .map((response) => response.data)
-            .filter((product) => product); // Loại bỏ các sản phẩm không tìm thấy
-          setFavoriteProducts(products);
-        } catch (err) {
-          setError("Đã xảy ra lỗi khi lấy sản phẩm yêu thích");
-        }
-      };
     
     //Api get history order
     const getOrderHistory = async () => {
@@ -159,10 +129,6 @@ function Profile(props) {
         fetchData();
     }, [userId]);
     
-    // useEffect(() => {
-    //         getFavoriteProducts();
-    // }, [userId]);
-    
 
     const updateUserProfile = async () => {
         try {
@@ -182,6 +148,7 @@ function Profile(props) {
             console.log(response.data);
             setSubmitComplete(true);
             window.location.href = "/profile";
+            toast.success("Cập nhật thành công!");
         } catch (err) {
             setError(err); // Hiển thị lỗi để debug
             console.log("Error: ", err.response?.data || err.message);
@@ -382,44 +349,87 @@ function Profile(props) {
         );
     };
 
+       
+  useEffect(() => {
+    const getFavoriteProducts = () => {
+      const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
+      return favorites.map(favorite => ({
+        id: favorite.id,
+        name: favorite.name,
+        productCost: favorite.productCost,
+        imageURL: favorite.imageURL
+      }));
+    };
+
+    if (userId) {
+      const products = getFavoriteProducts();
+      setFavoriteProducts(products);
+    }
+  }, [userId]);
+     
+
+    const toggleFavorite = (productId) => {
+      const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
+      const itemIndex = favorites.findIndex(favorite => favorite.id === productId);
+  
+      let updatedFavorites;
+      if (itemIndex !== -1) {
+        // Remove the item if it's already in the favorites
+        updatedFavorites = favorites.filter(favorite => favorite.id !== productId);
+      } else {
+        // Add the item to the favorites
+        const productToAdd = favoriteProducts.find(product => product.id === productId);
+        updatedFavorites = [...favorites, productToAdd];
+      }
+  
+      localStorage.setItem(`favorites_${userId}`, JSON.stringify(updatedFavorites));
+      setFavoriteProducts(updatedFavorites);
+    };
+  
+    const checkFavoriteStatus = (productId) => {
+      const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
+      return favorites.some(favorite => favorite.id === productId);
+    };
+
     const renderProductFavorites = () => {
-        // Tính tổng số trang
-        const totalPages = Math.ceil(favoriteProducts.length / productsPerPage);
-    
-        // Lấy sản phẩm hiện tại
-        const indexOfLastProduct = currentPage * productsPerPage;
-        const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-        const currentProducts = favoriteProducts.slice(indexOfFirstProduct, indexOfLastProduct);
-    
-        if (currentProducts.length > 0) {
-          return (
+      const totalPages = Math.ceil(favoriteProducts.length / productsPerPage);
+  
+      // Lấy sản phẩm hiện tại trên trang currentPage
+      const indexOfLastProduct = currentPage * productsPerPage;
+      const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+      const currentProducts = favoriteProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  
+      return (
+        <div>
+          {currentProducts.length > 0 ? (
             <div>
-              {currentProducts.map((product) => (
-                <div key={product.id} className={styles.favoritesSection}>
-                  <img
-                    className={styles.favoriteItem_Img}
-                    src={product.imageURL}
-                    alt={product.name}
-                  />
-                  <div className={styles.favoriteItem_Name_Item}>
+              {currentProducts.map(product => (
+                <div className={styles.favoritesSection} key={product.id}>
+                  <div><img src={product.imageURL} alt={product.name} width="110" /></div>
+                  
+
+                  <div className={styles.favoriteInfor}>
                     <Space className="heart_icon text-xl" onClick={() => toggleFavorite(product.id)}>
-                      {favoriteProducts.some((favProduct) => favProduct.id === product.id) ? (
-                        <HeartFilled style={{ color: "#B18165" }} />
+                      {checkFavoriteStatus(product.id) ? (
+                        <div class={styles.tooltip}>
+                          
+                        <HeartFilled className={styles.heartIcon}  />  
+                        <span class={styles.tooltiptext}> Bỏ Thích</span>
+                        </div>
                       ) : (
-                        <HeartOutlined />
+                        <HeartOutlined className={styles.heartIcon}/>
                       )}
                     </Space>
-                    <p>{product.name}</p>
-                    <p>{product.productCost} VNĐ</p>
+                    <h2>{product.name}</h2>
+                    <p>Giá: {product.productCost}</p>
                   </div>
-                  <button
-                    className={styles.favoriteButton}
-                    onClick={() => {
-                      window.location.href = "/orderreview";
-                    }}
-                  >
-                    Mua ngay
-                  </button>
+                  <div>
+                    <button className={styles.favoriteButton} onClick={() => {
+                        window.location.href = `/prodetail/${product.id}`;
+                      }} >
+                        Xem chi tiết sản phẩm
+                    </button>
+                  </div>
                 </div>
               ))}
               <div className={styles.pagination}>
@@ -436,12 +446,13 @@ function Profile(props) {
                 </button>
               </div>
             </div>
-          );
-        } else {
-          return <p className={styles.notFoundStatusHistory}>Không tìm thấy sản phẩm yêu thích</p>;
-        }
-      };
-    
+          ) : (
+            <p className={styles.notFoundStatusHistory}>Không tìm thấy sản phẩm yêu thích</p>
+          )}
+        </div>
+      );
+    };
+  
     const renderOrderContent = () => {
     
         const filtered = orderHistory.filter(
@@ -569,7 +580,7 @@ function Profile(props) {
                         className={`${styles.applyButton} ${copiedItemId === promotion.id ? styles.copied : ''}`}
                         onClick={() => copyIt(promotion.id)}
                       >
-                        {copiedItemId === promotion.id ? "Đã sao chép" : "Sao chép mã"}
+                        {copiedItemId === promotion.id ? <CheckCircleOutlined /> : <CopyOutlined />}
                       </button>
                       <button onClick={() => {
                         window.location.href = "/cart";
@@ -658,6 +669,13 @@ const ProfileWithFormik = withFormik({
     }),
     validationSchema: Yup.object().shape({
         fullName: Yup.string()
+        .test('Biệt danh là bắt buộc', value => {
+          if (!value) {
+              toast.err('Biệt danh là bắt buộc');
+              return false;
+          }
+          return true;
+      })
         .required('Biệt danh là bắt buộc')
         .max(50, 'Biệt danh tối đa 50 ký tự'),
     email: Yup.string()

@@ -8,20 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { addProduct, clearAll } from "../../../redux/features/cartSlice";
 import api from "../../../config/axios";
 import { selectId } from "../../../redux/features/counterSlice";
-
 function ProductDetail2() {
-  const [prodetail, setProdDetail] = useState({});
+  const [prodetail, setProdDetail] = useState([]);
   const { id } = useParams();
   const [isFavor, setIsFavor] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
   const dispatch = useDispatch();
   const userId = useSelector(selectId);
-
-  useEffect(() => {
-    fetchProductDetail();
-    checkFavoriteStatus();
-  }, [id, userId]);
-
   const fetchProductDetail = () => {
     api 
       .get(`/Product/${id}`)
@@ -33,47 +26,58 @@ function ProductDetail2() {
 
   useEffect(() => {
     fetchProductDetail();
-  }, [id]);
+    checkFavoriteStatus();
+  }, [id, userId]);
   
-
-
   const checkFavoriteStatus = () => {
     const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
-    setIsFavor(favorites.includes(id));
+    const isFavorite = favorites.some(favorite => favorite.id === id);
+    setIsFavor(isFavorite);
   };
-
+  
   const toggleIcon = () => {
-    setIsFavor((prevFavor) => !prevFavor);
-  };
-  
-  
     const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
-    if (favorites.includes(id)) {
-      const newFavorites = favorites.filter(favId => favId !== id);
-      localStorage.setItem(`favorites_${userId}`, JSON.stringify(newFavorites));
+    const itemIndex = favorites.findIndex(favorite => favorite.id === id);
+  
+    if (itemIndex !== -1) {
+      // Remove the item if it's already in the favorites
+      favorites.splice(itemIndex, 1);
       setIsFavor(false);
     } else {
-      favorites.push(id);
-      localStorage.setItem(`favorites_${userId}`, JSON.stringify(favorites));
+      // Add the item to the favorites
+      const newItem = {
+        id: id,
+        name: prodetail.name,
+        productCost: prodetail.productCost,
+        imageURL: prodetail.imageURL
+      };
+      favorites.push(newItem);
       setIsFavor(true);
     }
+  
+    localStorage.setItem(`favorites_${userId}`, JSON.stringify(favorites));
   };
-
+  
+  // const toggleIcon = () => {
+  //   setIsFavor((prevFavor) => !prevFavor);
+  // };
+  
+  
   const toggleCart = () => {
     setIsAdd((prevAdd) => !prevAdd);
   };
 
   const text_1 = `
-    - Vàng 14k <br />
-    - Dài 20cm <br />
-    - Có thể điều chỉnh độ dài từ 16 đến 28 cm <br />
-  `;
+  - Vàng 14k <br />
+  - Dài 20cm <br />
+  - Có thể điều chỉnh độ dài từ 16 đến 28 cm <br />
+`;
 
   const text_2 = `
-    - Giữ trong hộp trang sức để bảo quản chất lượng <br />
-    - Tránh xa bể bơi để ngăn chặn sự đổi màu <br />
-    - Chúng tôi khuyên bạn nên làm sạch đồ trang sức của mình sau mỗi 3-4 tháng <br />
-  `;
+  - Giữ trong hộp trang sức để bảo quản chất lượng <br />
+  - Tránh xa bể bơi để ngăn chặn sự đổi màu <br />
+  - Chúng tôi khuyên bạn nên làm sạch đồ trang sức của mình sau mỗi 3-4 tháng <br />
+`;
 
   const items = [
     {

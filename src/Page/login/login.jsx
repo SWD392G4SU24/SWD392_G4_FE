@@ -49,6 +49,7 @@ function Login1() {
       dispatch(login(res.data));
       localStorage.setItem("token", res.data.token);
       navigate("/");
+      window.location.reload(); // Reload trang sau khi đăng nhập thành công để thay đổi dc icon đăng nhập trên header
     } catch (error) {
       toast.error(error.response.data.detail);
     }
