@@ -3,6 +3,7 @@ import "./index.scss";
 import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import api from "../../../config/axios";
 
 function Payment() {
   const location = useLocation();
@@ -10,7 +11,22 @@ function Payment() {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
+    console.log(urlParams);
     const transactionStatus = urlParams.get("vnp_TransactionStatus");
+
+    async function fetchHandleCallBack() {
+      const response = api.get(
+        `/payment-callback?vnp_Amount=${paymentData.vnp_Amount}&vnp_BankCode=${paymentData.vnp_BankCode}&vnp_BankTranNo=${paymentData.vnp_BankTranNo}&vnp_CardType=${paymentData.vnp_CardType}&vnp_OrderInfo=${paymentData.vnp_OrderInfo}&vnp_PayDate=${paymentData.vnp_PayDate}&vnp_ResponseCode=${paymentData.vnp_ResponseCode}&vnp_TmnCode=${paymentData.vnp_TmnCode}&vnp_TransactionNo=${paymentData.vnp_TransactionNo}&vnp_TransactionStatus=${paymentData.vnp_TransactionStatus}&vnp_TxnRef=${paymentData.vnp_TxnRef}&vnp_SecureHash=${paymentData.vnp_SecureHash}`
+      );
+      const { value } = response.data;
+      console.log(value);
+    }
+
+    async function handleCallBackAfterPayment() {
+      await api.put("/order/callback-after-payment", {
+        id: paymentData.vnp_OrderInfo,
+      });
+    }
 
     if (transactionStatus === "00") {
       const paymentInfo = {
@@ -20,11 +36,17 @@ function Payment() {
         vnp_CardType: urlParams.get("vnp_CardType"),
         vnp_OrderInfo: urlParams.get("vnp_OrderInfo"),
         vnp_PayDate: urlParams.get("vnp_PayDate"),
+        vnp_ResponseCode: urlParams.get("vnp_ResponseCode"),
         vnp_TmnCode: urlParams.get("vnp_TmnCode"),
         vnp_TransactionNo: urlParams.get("vnp_TransactionNo"),
+        vnp_TransactionStatus: urlParams.get("vnp_TransactionStatus"),
         vnp_TxnRef: urlParams.get("vnp_TxnRef"),
+        vnp_SecureHash: urlParams.get("vnp_SecureHash"),
       };
       setPaymentData(paymentInfo);
+      console.log(paymentInfo);
+      fetchHandleCallBack();
+      handleCallBackAfterPayment();
     }
   }, [location.search]);
 

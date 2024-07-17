@@ -11,7 +11,7 @@ import {
   increaseQuantity,
   removeProduct,
 } from "../../../redux/features/cartSlice";
-import { Badge, Radio, Tooltip } from "antd";
+import { Badge, Button, Popconfirm, Radio, Tooltip } from "antd";
 import { resetSelectedCustomer } from "../../../redux/features/customerSlice";
 import QRCode from "qrcode.react";
 
@@ -141,16 +141,19 @@ const StaffOrder = () => {
       <div className="container mx-auto p-4 flex-1">
         <div className="flex ">
           <h1 className="text-3xl font-semibold mb-4">Tìm kiếm sản phẩm</h1>
-          <button
-            onClick={() => {
+          <Popconfirm
+            title="Hủy quá trình mua hàng"
+            description="Bạn có muốn hủy quá trình mua hàng?"
+            onConfirm={() => {
               dispatch(resetSelectedCustomer());
               dispatch(clearAll());
               window.location.href = "/staffsearch";
             }}
-            className="border rounded px-3 py-1 bg-red-500 text-white"
+            okText="Yes"
+            cancelText="No"
           >
-            Hủy mua hàng
-          </button>
+            <Button danger>Hủy mua hàng</Button>
+          </Popconfirm>
         </div>
 
         <div className="flex space-x-4 mb-4">
@@ -231,7 +234,7 @@ const StaffOrder = () => {
           </div>
           {/* Cart Items */}
           {showCart && (
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-4 max-h-80 overflow-y-auto">
               {carts.length === 0 ? (
                 <p className="text-gray-600">Giỏ hàng của bạn đang trống.</p>
               ) : (
