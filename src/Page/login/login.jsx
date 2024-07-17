@@ -29,7 +29,9 @@ function Login1() {
     console.log(token);
     console.log(user);
     dispatch(login(result.data));
+
     const response = await api.get("/login");
+
     console.log(response.data);
     dispatch(logout());
   };
@@ -42,6 +44,7 @@ function Login1() {
           password: password,
         },
       });
+
       toast.success("Đăng nhập thành công!");
       dispatch(login(res.data));
       localStorage.setItem("token", res.data.token);

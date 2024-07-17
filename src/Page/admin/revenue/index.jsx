@@ -100,18 +100,10 @@ function Revenue() {
       title: "Tên nhân viên",
       dataIndex: "fullName",
     },
-    {
-      title: "Email",
-      dataIndex: "email",
-    },
-    {
-      title: "Số điện thoại",
-      dataIndex: "phoneNumber",
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "status",
-    },
+    // {
+    //   title: "Trạng thái",
+    //   dataIndex: "status",
+    // },
     {
       title: "Doanh thu",
       dataIndex: "totalPrice",

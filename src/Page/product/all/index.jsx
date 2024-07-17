@@ -21,7 +21,6 @@ function ProductAll() {
 
   const fetchProductAll = async () => {
     const rs = await api.get(
-      // "https://667cd2303c30891b865dc8d6.mockapi.io/productAll"
       `/Product`
     );
     setProduct(rs.data);
