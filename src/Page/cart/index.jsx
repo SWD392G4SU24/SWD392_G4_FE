@@ -8,8 +8,11 @@ import {
   removeProduct,
   selectProduct,
 } from "../../redux/features/cartSlice";
+import api from "../../config/axios";
+import { toast } from "react-toastify";
 function Cart() {
   const [checked, setChecked] = useState([]);
+  const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
   const handleDeleteProduct = async (id) => {
     console.log(id);
@@ -19,6 +22,29 @@ function Cart() {
   const carts = useSelector((store) => store.cart.products);
   console.log(carts);
   console.log(carts);
+
+  async function fetchProducts() {
+    const response = await api.get("/Product");
+    setProducts(response.data);
+  }
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  async function increaseItemQuantity(id) {
+    const product = carts.find((item) => item.id === id);
+    const product2 = products.filter((item) => item.id === id);
+    if (product && product.quantity < product2[0].quantity) {
+      dispatch(increaseQuantity(id));
+    } else {
+      toast.warn(`Số lượng sản phẩm "${product.name}" đã đạt đến giới hạn.`);
+    }
+  }
+
+  async function decreaseItemQuantity(id) {
+    dispatch(decreaseQuantity(id));
+  }
   const columns = [
     {
       title: "San Pham",
@@ -49,14 +75,14 @@ function Cart() {
             shape="circle"
             icon="-"
             onClick={() => {
-              dispatch(decreaseQuantity(record.id));
+              decreaseItemQuantity(record.id);
             }}
           />
           <span style={{ margin: "0 8px" }}>{quantity}</span>
           <Button
             shape="circle"
             icon="+"
-            onClick={() => dispatch(increaseQuantity(record.id))}
+            onClick={() => increaseItemQuantity(record.id)}
           />
         </div>
       ),

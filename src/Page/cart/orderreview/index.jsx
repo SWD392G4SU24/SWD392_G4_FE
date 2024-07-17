@@ -3,9 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import api from "../../../config/axios";
 import { selectUser } from "../../../redux/features/counterSlice";
 import { setOrderID } from "../../../redux/features/orderSlice";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function OrderReview() {
+  const navigate = useNavigate();
   const selectedProduct = useSelector((store) => store.cart.selectedItems);
+  const existOrderID = useSelector((store) => store.order.orderID);
   const [promotions, setPromotions] = useState([]);
   const [selectedPromotion, setSelectedPromotion] = useState("");
   const user = useSelector(selectUser);
@@ -39,15 +43,31 @@ function OrderReview() {
   };
 
   async function handleCreateOrder() {
-    const response = await api.post("/order/customer-create", {
-      orderDetails: selectedProduct.map((product) => ({
-        productID: product.id,
-        quantity: product.quantity,
-      })),
-      promotionID: selectedPromotion,
-    });
-    const orderID = response.data.value;
-    dispatch(setOrderID(orderID));
+    if (existOrderID) {
+      dispatch(setOrderID(existOrderID));
+      navigate(`/purchaseinformation`);
+      const res = await api.put("/order/update", {
+        id: existOrderID,
+        promotionID: selectedPromotion,
+        orderDetails: selectedProduct.map((product) => ({
+          productID: product.id,
+          quantity: product.quantity,
+        })),
+      });
+      toast.success("Cập nhật đơn hàng thành công!");
+      console.log("res.data");
+    } else {
+      const response = await api.post("/order/customer-create", {
+        orderDetails: selectedProduct.map((product) => ({
+          productID: product.id,
+          quantity: product.quantity,
+        })),
+        promotionID: selectedPromotion,
+      });
+      const orderID = response.data.value;
+      dispatch(setOrderID(orderID));
+      console.log("create");
+    }
   }
 
   useEffect(() => {
@@ -80,7 +100,7 @@ function OrderReview() {
                     <div>
                       <img
                         src={product.imageURL}
-                        style={{ width: "full", height: "300px" }}
+                        style={{ width: "full", height: "200px" }}
                       />
                     </div>
                     <div className="flex flex-col font-mono pr-64">
@@ -142,17 +162,17 @@ function OrderReview() {
             </div>
           </div>
         </div>
-        <div className="pr-16 mt-24">
-          <div className="rounded-sm border-black bg-white/70 shadow-md ">
-            <div className="py-7 px-7 flex flex-col justify-center items-start">
-              <div className="flex justify-center px-36 pb-5">
+        <div className="mr-28 mt-24">
+          <div className="rounded-sm border-black bg-white/70 shadow-md w-full">
+            <div className="py-7 flex flex-col justify-center items-start">
+              <div className="mx-32 mb-7">
                 <h1 className="text-2xl font-serif">Tổng đơn mua</h1>
               </div>
-              <div>
+              <div className="mx-14">
                 <hr />
                 {selectedProduct?.map((product) => (
                   <div key={product.id}>
-                    <div className="flex justify-between py-3">
+                    <div className="flex justify-between py-3 gap-7">
                       <h1 className="">
                         {product.name} x {product.quantity}
                       </h1>
@@ -198,12 +218,12 @@ function OrderReview() {
                   <h1>Tổng tiền: </h1>
                   <h1>{formattedSubtotal}</h1>
                 </div>
-                <div className="rounded-sm bg-black text-white py-1 px-28 flex justify-center items-center">
-                  <div>
+                <div className="rounded-sm bg-black text-white py-1 flex justify-center items-center">
+                  <div className="text-center">
                     <button
                       onClick={() => {
                         handleCreateOrder();
-                        window.location.href = "/purchaseinformation";
+                        navigate(`/purchaseinformation`);
                       }}
                     >
                       Điền Thông Tin

@@ -28,6 +28,7 @@ const StaffOrder = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const [paymentUrl, setPaymentUrl] = useState("");
   const [paymentCompleted, setPaymentCompleted] = useState(false);
+  const [disableIncrease, setDisableIncrease] = useState(false);
   function toggleCart() {
     setShowCart(!showCart);
   }
@@ -119,11 +120,17 @@ const StaffOrder = () => {
     );
   }
 
-  function increaseItemQuantity(id) {
-    dispatch(increaseQuantity(id));
+  async function increaseItemQuantity(id) {
+    const product = carts.find((item) => item.id === id);
+    const product2 = products.filter((item) => item.id === id);
+    if (product && product.quantity < product2[0].quantity) {
+      dispatch(increaseQuantity(id));
+    } else {
+      toast.warn(`Số lượng sản phẩm "${product.name}" đã đạt đến giới hạn.`);
+    }
   }
 
-  function decreaseItemQuantity(id) {
+  async function decreaseItemQuantity(id) {
     dispatch(decreaseQuantity(id));
   }
 
@@ -268,6 +275,7 @@ const StaffOrder = () => {
                       <span>{item.quantity}</span>
 
                       <button
+                        disabled={disableIncrease}
                         onClick={() => increaseItemQuantity(item.id)}
                         className="text-green-500 hover:text-green-600 focus:outline-none"
                       >

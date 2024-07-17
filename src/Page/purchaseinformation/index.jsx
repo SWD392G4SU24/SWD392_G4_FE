@@ -37,29 +37,14 @@ function FillInformationForPurchase() {
   const handlePayment = async () => {
     try {
       const response = await api.post("/create-payment-url", {
-        orderType: "VNPay",
+        orderType: orderID,
         amount: formattedSubtotal1,
-        orderDescription: "string",
-        name: "string",
       });
       window.location.href = response.data;
     } catch (e) {
       console.log(e);
     }
   };
-
-  // const handleCreateOrder = async () => {
-  //   const orderDetails = selectedProduct.map((item) => ({
-  //     productID: item.id,
-  //     quantity: item.quantity,
-  //   }));
-  //   const orderResponse = await api.post("/customer-create", {
-  //     orderDetails: orderDetails,
-  //     promotionID: "",
-  //     paymentMethodID: 1,
-  //   });
-  //   console.log(orderResponse);
-  // };
 
   async function fetchCurrentUser() {
     try {
@@ -143,27 +128,6 @@ function FillInformationForPurchase() {
         <div className="px-28 w-5/12 mt-14">
           <div className="border border-gray-400 shadow-md py-4 px-10">
             <h1 className="px-16 pb-7 font-serif text-2xl">Đơn mua hàng</h1>
-            {/* <hr />
-            <div className="pt-5 pb-12">
-              {promotions.length > 0 && (
-                <div>
-                  <h2 className="pb-2">Mã khuyến mãi (nếu có)</h2>
-                  <select
-                    value={selectedPromotion}
-                    onChange={handlePromotionSelection}
-                    className="border border-gray-300 py-2 px-2"
-                    style={{ width: "100%" }}
-                  >
-                    <option value="">Chọn mã khuyến mãi</option>
-                    {promotions.map((promo) => (
-                      <option key={promo.id} value={promo.id}>
-                        {promo.id}-{promo.description}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-            </div> */}
             <hr className="py-3" />
             <div className="flex justify-between py-3 font-bold text-xl">
               <h2>Tổng:</h2>

@@ -42,6 +42,11 @@ import SecurityInfo from "./Page/rule/security";
 import Form from "./Page/form";
 import UserSearch from "./Page/staff/index2";
 import StaffOrder from "./Page/staff/order";
+import {
+  ValidRouteAdmin,
+  ValidRouteManager,
+  ValidRouteStaff,
+} from "./route/protectedRoute";
 
 function App() {
   const router = createBrowserRouter([
@@ -160,27 +165,27 @@ function App() {
       children: [
         {
           path: "/manager",
-          element: <Manager />,
+          element: <ValidRouteManager element={<Manager />} />,
         },
         {
           path: "/dashboard",
-          element: <AdminPage2 />,
+          element: <ValidRouteAdmin element={<AdminPage2 />} />,
         },
         {
           path: "/form",
-          element: <Form />,
+          element: <ValidRouteManager element={<Form />} />,
         },
         {
           path: "/crudproduct",
-          element: <ManageProducts />,
+          element: <ValidRouteManager element={<ManageProducts />} />,
         },
         {
           path: "/staffsearch",
-          element: <UserSearch />,
+          element: <ValidRouteStaff element={<UserSearch />} />,
         },
         {
           path: "/stafforder",
-          element: <StaffOrder />,
+          element: <ValidRouteStaff element={<StaffOrder />} />,
         },
       ],
     },
