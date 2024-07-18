@@ -39,14 +39,18 @@ import NecklaceSize from "./Page/rule/tutorial/necklaceSize";
 import ReturnWarranty from "./Page/rule/returns";
 import BuyTutorial from "./Page/rule/tutorial/buyProduct";
 import SecurityInfo from "./Page/rule/security";
-import Form from "./Page/form";
 import UserSearch from "./Page/staff/index2";
 import StaffOrder from "./Page/staff/order";
+import ManageForm from "./Page/form";
+import ManagePromotion from "./Page/promotion";
 import {
   ValidRouteAdmin,
   ValidRouteManager,
   ValidRouteStaff,
 } from "./route/protectedRoute";
+
+
+
 
 function App() {
   //const user = useSelector(selectUser);
@@ -159,6 +163,10 @@ function App() {
           path: "/securityinfo",
           element: <SecurityInfo />,
         },
+        {
+          path: "/promotion",
+          element: <ManagePromotion />,
+        },
       ],
     },
     {
@@ -174,7 +182,7 @@ function App() {
         },
         {
           path: "/form",
-          element: <ValidRouteManager element={<Form />} />,
+          element: <ValidRouteManager element={<ManageForm />} />,
         },
         {
           path: "/crudproduct",
