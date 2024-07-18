@@ -39,7 +39,7 @@ function HeaderAdmin() {
     },
   ];
   return (
-    <div className="flex justify-between border py-3 px-10 mb-7 shadow-md dark:bg-black dark:text-white ">
+    <div className="flex justify-between border py-3 px-10 shadow-md dark:bg-black dark:text-white ">
       <h2 className="font-bold text-xl">Trang tổng quan về JeWellry</h2>
       <div className="flex gap-3">
         <div className="flex gap-1">
