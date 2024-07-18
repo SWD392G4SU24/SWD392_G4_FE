@@ -173,7 +173,7 @@ function App() {
         },
         {
           path: "/form",
-          element: <ValidRouteManager element={<Form />} />,
+          element: <Form />,
         },
         {
           path: "/crudproduct",

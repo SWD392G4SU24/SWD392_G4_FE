@@ -54,7 +54,6 @@ function OrderReview() {
           quantity: product.quantity,
         })),
       });
-      toast.success("Cập nhật đơn hàng thành công!");
       console.log("res.data");
     } else {
       const response = await api.post("/order/customer-create", {
