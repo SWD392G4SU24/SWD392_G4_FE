@@ -38,8 +38,9 @@ function Carousel({ numOfSlide, isUseNavigate }) {
   };
 
   const fetchProduct = async () => {
-    const response = await axios.get(
-      "https://6663df16932baf9032a93456.mockapi.io/SP_BanChay"
+    const response = await api.get(
+      // "https://6663df16932baf9032a93456.mockapi.io/SP_BanChay"
+      "/Product"
     );
     console.log(response.data);
     setProducts(response.data);
@@ -69,6 +70,13 @@ function Carousel({ numOfSlide, isUseNavigate }) {
 
   const handleOnClickDetail = (id) => {
     window.location.href = `/prodetail/${id}`;
+  };
+
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
   };
 
   return (
@@ -150,7 +158,7 @@ function Carousel({ numOfSlide, isUseNavigate }) {
 
         <Swiper
           slidesPerView={4}
-          spaceBetween={10}
+          spaceBetween={8}
           freeMode={true}
           navigation={true}
           modules={[Navigation, Pagination]}
@@ -216,10 +224,12 @@ function Carousel({ numOfSlide, isUseNavigate }) {
                 console.log(prd.id);
               }}
             >
-              <div className="ml-20 pb-16 pt-2 swiper-img-container cursor-pointer">
-                <img src={prd.jw_image} />
-                <h3 className="font-medium">{prd.jw_name}</h3>
-                <h4>{prd.price}</h4>
+              <div className="ml-20 pb-16 pt-2 swiper-img-container cursor-pointer spLink">
+                <img src={prd.imageURL} />
+                <h3 className="font-medium w-48">{prd.name}</h3>
+                <h4 className="text-amber-700">
+                  {formatCurrency(prd.productCost)}
+                </h4>
               </div>
             </SwiperSlide>
           ))}
