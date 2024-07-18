@@ -4,7 +4,7 @@ import {
   Routes,
   createBrowserRouter,
 } from "react-router-dom";
-import { Provider, useSelector } from "react-redux";
+import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./redux/store";
 import Layout from "./component/layout";
@@ -39,12 +39,12 @@ import NecklaceSize from "./Page/rule/tutorial/necklaceSize";
 import ReturnWarranty from "./Page/rule/returns";
 import BuyTutorial from "./Page/rule/tutorial/buyProduct";
 import SecurityInfo from "./Page/rule/security";
-import { selectUser } from "./redux/features/counterSlice";
+import UserSearch from "./Page/staff/index2";
+import StaffOrder from "./Page/staff/order";
 import ManageForm from "./Page/form";
 import ManagePromotion from "./Page/promotion";
 
 function App() {
-  // const user = useSelector(selectUser);
   const router = createBrowserRouter([
     {
       path: "/",
@@ -179,6 +179,14 @@ function App() {
           path: "/crudproduct",
           element: <ManageProducts />,
         },
+        {
+          path: "/staffsearch",
+          element: <UserSearch />,
+        },
+        {
+          path: "/stafforder",
+          element: <StaffOrder />,
+        },
       ],
     },
   ]);
@@ -189,9 +197,9 @@ function App() {
         <RouterProvider router={router}>
           <Routes>
             <Route path="/" element={<Layout />}>
-              <Route path="/" element={<HomePage />} />
               <Route path="/login1" element={<Login1 />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/accounts" element={<Accounts />} />
             </Route>
           </Routes>
         </RouterProvider>
