@@ -1,15 +1,15 @@
 import { DownOutlined, SmileOutlined } from "@ant-design/icons";
-import { Avatar, Dropdown, Space } from "antd";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, selectUser } from "../../redux/features/counterSlice";
-import DarkMode from "./darkmode";
 import { useNavigate } from "react-router-dom";
+import { logout, selectUser } from "../../redux/features/counterSlice";
 import { clearCart } from "../../redux/features/cartSlice";
 import { clearOrderID } from "../../redux/features/orderSlice";
 import { resetSelectedCustomer } from "../../redux/features/customerSlice";
+import { Avatar, Dropdown, Space } from "antd";
+import DarkMode from "./darkmode";
 
-function HeaderAdmin() {
+function HeaderStaff() {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const navigate = useNavigate();
@@ -39,9 +39,10 @@ function HeaderAdmin() {
     },
   ];
   return (
-    <div className="flex justify-between border py-3 px-10 shadow-md dark:bg-black dark:text-white ">
-      <h2 className="font-bold text-xl">Trang tổng quan về JeWellry</h2>
+    <div className="flex justify-between border py-3 px-10 mb-7 shadow-md dark:bg-black dark:text-white ">
+      <h2 className="font-bold text-xl">Trang quầy nhân viên JeWellry</h2>
       <div className="flex gap-3">
+        <a href="/reorder">Mua lại hàng</a>
         <div className="flex gap-1">
           <Dropdown menu={{ items }} trigger={["click"]}>
             <Space>
@@ -58,4 +59,4 @@ function HeaderAdmin() {
   );
 }
 
-export default HeaderAdmin;
+export default HeaderStaff;

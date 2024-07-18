@@ -16,11 +16,9 @@ function ProductDetail2() {
   const dispatch = useDispatch();
   const userId = useSelector(selectId);
   const fetchProductDetail = () => {
-    api 
-      .get(`/Product/${id}`)
-      .then((rs) => {
-        setProdDetail(rs.data);
-      });
+    api.get(`/Product/${id}`).then((rs) => {
+      setProdDetail(rs.data);
+    });
   };
   console.log(prodetail);
 
@@ -28,17 +26,19 @@ function ProductDetail2() {
     fetchProductDetail();
     checkFavoriteStatus();
   }, [id, userId]);
-  
+
   const checkFavoriteStatus = () => {
-    const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
-    const isFavorite = favorites.some(favorite => favorite.id === id);
+    const favorites =
+      JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
+    const isFavorite = favorites.some((favorite) => favorite.id === id);
     setIsFavor(isFavorite);
   };
-  
+
   const toggleIcon = () => {
-    const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
-    const itemIndex = favorites.findIndex(favorite => favorite.id === id);
-  
+    const favorites =
+      JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
+    const itemIndex = favorites.findIndex((favorite) => favorite.id === id);
+
     if (itemIndex !== -1) {
       // Remove the item if it's already in the favorites
       favorites.splice(itemIndex, 1);
@@ -49,20 +49,15 @@ function ProductDetail2() {
         id: id,
         name: prodetail.name,
         productCost: prodetail.productCost,
-        imageURL: prodetail.imageURL
+        imageURL: prodetail.imageURL,
       };
       favorites.push(newItem);
       setIsFavor(true);
     }
-  
+
     localStorage.setItem(`favorites_${userId}`, JSON.stringify(favorites));
   };
-  
-  // const toggleIcon = () => {
-  //   setIsFavor((prevFavor) => !prevFavor);
-  // };
-  
-  
+
   const toggleCart = () => {
     setIsAdd((prevAdd) => !prevAdd);
   };
@@ -123,7 +118,9 @@ function ProductDetail2() {
           <div className="pl-20 w-2/5">
             <h1 className="text-3xl title_3">{prodetail?.name}</h1>
 
-            <h3 className="text-gray-500 mt-3">{formatCurrency(prodetail?.productCost)}</h3>
+            <h3 className="text-gray-500 mt-3">
+              {formatCurrency(prodetail?.productCost)}
+            </h3>
 
             <h3 className="mt-3">{prodetail?.description}</h3>
 
@@ -162,13 +159,13 @@ function ProductDetail2() {
               <Space className="heart_icon text-xl ml-5" onClick={toggleIcon}>
                 {isFavor ? (
                   <div class="tooltip">
-                  <HeartFilled style={{ color: "#B18165" }} />
-                  <span class="tooltiptext"> Bỏ Thích</span>
+                    <HeartFilled style={{ color: "#B18165" }} />
+                    <span class="tooltiptext"> Bỏ Thích</span>
                   </div>
                 ) : (
                   <div class="tooltip">
-                  <HeartOutlined />
-                  <span class="tooltiptext"> Yêu thích</span>
+                    <HeartOutlined />
+                    <span class="tooltiptext"> Yêu thích</span>
                   </div>
                 )}
               </Space>

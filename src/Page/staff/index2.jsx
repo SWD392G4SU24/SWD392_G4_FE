@@ -5,6 +5,7 @@ import { Button, Form, Modal, Input } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useDispatch } from "react-redux";
 import { setSelectedCustomer } from "../../redux/features/customerSlice";
+import { useNavigate } from "react-router-dom";
 
 const UserSearch = () => {
   const [form] = useForm();
@@ -13,6 +14,7 @@ const UserSearch = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [searchResults, setSearchResults] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSearch = async (event) => {
     event.preventDefault();

@@ -1,5 +1,3 @@
-
-
 import { createSlice } from "@reduxjs/toolkit";
 
 export const counterSlice = createSlice({
@@ -25,8 +23,3 @@ export const selectToken = (store) => store.user.token;
 export const selectId = (store) => store.user?.id;
 export const selectUserName = (store) => store.user.username;
 export default counterSlice.reducer;
-
-
-
-
-

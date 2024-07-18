@@ -17,8 +17,6 @@ import uploadFile from "../../utils/upload";
 import { useForm } from "antd/es/form/Form";
 import api from "../../config/axios";
 import { Option } from "antd/es/mentions";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/features/counterSlice";
 import { toast } from "react-toastify";
 
 function ManageProducts() {
@@ -30,8 +28,8 @@ function ManageProducts() {
   const [cates, setCates] = useState([]);
   const handleDeleteProduct = async (id) => {
     console.log("delete product", id);
-    const response = await axios.delete(
-      `https://dassie-living-bonefish.ngrok-free.app/Product/delete/${id}`
+    const response = await api.delete(
+      `/Product/delete/${id}`
     );
 
     console.log(response);
@@ -154,9 +152,7 @@ function ManageProducts() {
 
   async function fetchGolds() {
     try {
-      const response = await api.get(
-        "https://dassie-living-bonefish.ngrok-free.app/goldBtmc/get-price"
-      );
+      const response = await api.get("/goldBtmc/get-price");
       setGolds(response.data);
     } catch (error) {
       console.log(error);
