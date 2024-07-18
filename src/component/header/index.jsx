@@ -33,6 +33,18 @@ function Header() {
       key: "5",
       label: <a href="/ht">Hoa tai</a>,
     },
+    {
+      key: "6",
+      label: <a href="/dh">Đồng hồ</a>,
+    },
+    {
+      key: "7",
+      label: <a href="/kg">Kiềng</a>,
+    },
+    {
+      key: "8",
+      label: <a href="/lac">Lắc</a>,
+    },
   ];
 
   return (
@@ -52,7 +64,9 @@ function Header() {
             </Link>
 
             <Dropdown menu={{ items, selectable: true }}>
-              <Space className="font-semibold cursor-pointer hover:text-amber-700 dark:text-white">Sản phẩm</Space>
+              <Space className="font-semibold cursor-pointer hover:text-amber-700 dark:text-white">
+                Sản phẩm
+              </Space>
             </Dropdown>
           </div>
 
