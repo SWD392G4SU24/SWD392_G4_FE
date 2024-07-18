@@ -50,7 +50,6 @@ import {
 } from "./route/protectedRoute";
 import ReOrder from "./Page/staff/re-order";
 import LayoutStaff from "./component/layout/index3";
-
 function App() {
   const router = createBrowserRouter([
     {
