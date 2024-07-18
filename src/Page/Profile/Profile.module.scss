@@ -1,8 +1,21 @@
 @import url('https://fonts.googleapis.com/css?family=Flamenco');
 
+
+.anticon svg {
+    width: 50px;
+    height: 50px;
+}
+.heartIcon{
+    color: #B18165;
+    cursor: pointer;
+    width: 200px;
+}
+.hearIcon:hover{
+    color: #ccc;
+}
 .container {
     // font-family: 'Flamenco', sans-serif;
-    padding-top: 50px;
+    padding-top: 20px;
     padding-left: 100px;
     margin-bottom: 80px;
 }
@@ -15,7 +28,7 @@
     font-weight: 400;
     text-shadow: 1px 0 0 #000, 0 1px 0 #000, -1px 0 0 #000, 0 -1px 0 #000;
     margin-left: 50px;
-    margin-bottom: 50px;
+    margin-bottom: 35px;
     padding-top: 5px;
 }
 
@@ -31,7 +44,7 @@
     list-style: none;
     padding: 0;
     text-align: center;
-
+    margin-top: 50px;
    
 }
 
@@ -66,9 +79,49 @@
     flex: 3;
 }
 
-.infoSection, .favoritesSection {
+.headerFavorites{
+ font-size: 30px;
+ margin-left: 60px;
+ margin-bottom: 40px;
+ margin-top: -30px;
+}
+.headerPromotion{
+    font-size: 30px;
+    margin-left: 60px;
+    margin-bottom: 40px;
+    margin-top: -30px;
+   }
+   
+
+.infoSection{
     padding: 20px;
     margin-left: 50px;
+}
+.point {
+    font-size: 37px;
+    margin-top: -50px;
+    margin-bottom: 20px
+}
+
+.point1 {
+    margin-left: 10px;
+    color: #B18165;
+    font-size: 35px;
+}
+
+.containerFormEdit{
+    position: fixed;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); /* Dịch container ngược lại 50% của kích thước của chính nó */
+    background-color: white; /* Màu nền của container */
+    padding: 20px; /* Khoảng cách nội dung với biên của container */
+    z-index: 1000; /* Chỉ số z để đảm bảo nó nằm trên các phần tử khác */
+    max-width: 80%; 
+    width: 600px; 
+    border: 1px solid #ccc; 
+    border-radius: 10px;
+
 }
 
 .infoItem {
@@ -76,6 +129,28 @@
     margin-bottom: 25px;
     margin-left: 50px;
 }
+.editItem{
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;  
+    align-items: center;  
+    height: 50vh;  
+    margin-top: 4%;
+    margin-bottom: 25px;
+}
+
+.infoItemEditItem{
+  margin-bottom: 15px;
+  
+}
+
+.customInputEdit {
+    width: 500px; 
+    font-size: 20px;
+    margin-top: 5px;
+    
+}
+
 
 .infoItem_p{
     border-bottom: 1px solid;
@@ -100,9 +175,19 @@
 
 .buttonPosition {
     display: flex;
-    justify-content: center;  /* Center the button horizontally */
-    align-items: center;  /* Center the button vertically (if necessary) */
-    margin-top: 20px;  /* Optional: Add margin to the top for spacing */
+    justify-content: center; 
+    align-items: center;  
+    margin-top: 50px;  
+
+}
+
+.buttonPositionEdit {
+    display: flex;
+    justify-content: space-between;  
+    align-items: center; 
+    width: 100%;  
+    max-width: 600px;  
+    margin: 40px auto 0;  
 }
 
 .editButton {
@@ -113,26 +198,26 @@
   border: none;
   padding: 10px 20px;
   cursor: pointer;
-  border-radius: 10px; /* Round the button */
-  transition: background-color 0.3s ease; /* Smooth background color transition */
+  border-radius: 10px; 
+  transition: background-color 0.3s ease; 
   margin-right: 10px;
 }
 
 .editButton:hover {
-  background-color: #8B4513; /* Darker shade for hover state */
-  cursor: pointer; /* Change cursor to pointer on hover */
+  background-color: #8B4513; 
+  cursor: pointer; 
 }
 
 
 .editButton:hover {
-    background-color: #9e8478; /* Change background color on hover */
-    cursor: pointer; /* Change cursor to pointer on hover */
+    background-color: #9e8478; 
+    cursor: pointer; 
 }
 
 .cancelButton {
     font-family: none;
     font-size: 20px;
-    background-color: #8B0000; /* Màu đỏ đậm hơn và trầm */
+    background-color: #8B0000;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -144,50 +229,74 @@
 
 .cancelButton:hover {
     background-color: #9e8478;
-    color: #8B0000; /* Màu chữ là màu đỏ đậm hơn và trầm hơn */
+    color: #8B0000; 
 }
-.favoriteItem {
-    margin-top: 20px;
+
+.favoritesSection {
+    border: solid 1px #cccaca;
+    border-radius: 8px; 
+    box-shadow: 3px 5px 8px rgba(0, 0, 0, 0.1); 
+    background-color: #fff;
+    width: 80%; 
+    height: 150px;
     display: flex;
     align-items: center;
-    justify-content: space-between // cách đều 2 bên màn hình nhe
-}
-.favoriteItem_Img {
-    
-}
-.favoriteItem_Name_Item{
-    // margin-top: 145px;
-    // margin-right: 300px;
-    // margin-bottom: 10px;
-  justify-content: space-between;
-  align-items: center;
-  margin-right: 400px;
+    margin-bottom: 15px; 
+    margin-left: 100px;
+    padding: 10px; 
+    justify-content: space-between;
+    animation: fadeIn 0.5s ease-out;
+  }
+  
 
-}
-.favoriteItem_Name_Item_P{
-    display: flex;
+.favoritesSection:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.favoriteItem_Info{
-    margin-right: 90px;
+.favoriteInfor {
+  display: flex;
+  flex-direction: column; 
+  margin-left: -40%; 
+  margin-top: 20px;
+  
 }
+
+.favoriteInfor h2 {
+    margin-top: 60px;
+    color: #666;
+    font-size: 25px;
+    margin: 5px 0;
+    line-height: 1.4;
+    font-weight: bold;
+}
+
+.favoriteInfor p {
+    color: #666;
+    font-size: 20px;
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
 
 .favoriteButton {
-    background-color: #B18165;
-    color: white;
-    border: none;
-    padding: 5px 10px;
+    background-color: transparent;
+    color: #B18165;
+    border: 2px solid #B18165;
     cursor: pointer;
-    border-radius: 10px; /* Round the button */
-    transition: background-color 0.3s ease; /* Smooth background color transition */
-    margin-top: 100px;
-}
+    height: 40px;
+    width: 200px;
+    margin-top: 10px; /* Space above button */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-weight: bold;
+  }
 
-.favoriteButton:hover {
-    background-color: #9e8478; /* Change background color on hover */
-    cursor: pointer; /* Change cursor to pointer on hover */
-}
-
+  .favoriteButton:hover {
+    background-color: #B18165;
+    color: #fff;
+    cursor: pointer; 
+  }
+  
 
 .likeIcon {
     cursor: pointer;
@@ -195,7 +304,7 @@
 
 
 .orderHistorySection {
-    background-color: #f9f9f9;
+    background-color: white; //#f9f9f9
     padding: 20px;
     border-radius: 5px;
     justify-content: center;
@@ -207,10 +316,12 @@
     margin-bottom: 40px;
     justify-content: center;
     align-items: center;
+    margin-bottom: 40px;
+    margin-top: -80px; 
 }
 
 .orderFilter button {
-    background-color: #fff;
+    background-color: #f0f0f0;
     border: 1px solid #ccc;
     padding: 10px 20px;
     cursor: pointer;
@@ -222,26 +333,490 @@
     background-color: #dac4b7;
     font-weight: bold; 
     font-size: 20px;
-}
-.orderFilter .active  {
-    background-color: #B18165;
-    color: white;
-    
+    transition-duration: 0.2s;
 }
 
+.orderFilter .active {
+    background-color: #b18165;
+    color: white;
+}
 
 .ordersList {
     display: flex;
     flex-direction: column;
+    border-color: #000;
+
 }
 
 .orderDetails {
     display: flex;
+    align-items: center;
     margin-bottom: 20px;
+    padding: 4px;
+    position: relative; 
+    border: solid 0.02px;
+    border-radius: 5px;
+    box-shadow: 5px 7px 5px 5px #cccaca;
+    background-color: #f9f9f9;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 0.5s ease-out;
+}
+.orderDetails:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+  
+.orderInfo {
+    flex: 2;
+    padding-bottom: 30px;
 }
 
-.orderImage {
-    width: 200px;
-    height: 170px;
-    margin-right: 20px;
+
+.containerOrder{
+    border: 10px;
 }
+.orderImage {
+    width: 120px; 
+    height: 138px;
+    margin-right: 20px;
+    object-fit: cover; 
+    border-radius: 5px; 
+   
+}
+
+.orderName{
+    font-weight:600;
+    font-size: 20px;
+   margin-top: -10px;
+}
+.orderDate{
+    font-size: 16px;
+    color: #000000; 
+    margin-bottom: 60px;
+    margin-right: 10px;
+    font-weight: bold;
+}  
+.orderQuantity{
+    font-weight:400;
+}
+.orderPrice{
+    font-weight:400;
+}
+.orderTotalPrice{
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: -35px;
+    margin-top: 20px;
+}
+
+.containerDateAndStatus{
+    display: flex;
+    justify-content: flex-end; /* Canh phải các phần tử bên trong */
+    align-items: center;
+    gap: 50px; /* Khoảng cách giữa ngày và trạng thái */
+    padding-right: 20px;
+    margin-top: 10px;
+}
+
+.statusContainer {
+    position: absolute;
+    display: inline-block; /* Chỉ bao quanh nội dung */
+    padding: 5px 10px; /* Thêm padding xung quanh văn bản */
+    border-radius: 5px;
+}
+
+
+.status {
+    font-size: 14px;
+    font-weight:500;;
+    color: #FFFFFF; 
+}
+
+.statusContainer.completed {
+    background-color: #28a745; 
+   
+}
+
+.statusContainer.processing {
+    background-color: #ffc107; 
+}
+
+.statusContainer.cancelled {
+    background-color: #dc3545; /* Màu nền cho trạng thái "Cancelled" */
+}
+
+.notFoundStatusHistory {
+    font-weight: bold;
+    text-align: center;
+    justify-content: center;
+    font-size: 30px;
+    color: #333;
+    margin-top: 80px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 45px;
+}
+
+.pagination button {
+    margin: 0 5px;
+    padding: 8px 16px;
+    border: 1px solid #B18165;
+    background-color: #fff;
+    color: #B18165;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.pagination button:hover, .pagination button.active {
+    background-color: #B18165;
+    color: #fff;
+}
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.pagination button.active {
+    background-color: #b18165;
+    color: #fff;
+    border-color: transparent;
+}
+
+.pagination button:disabled {
+    cursor: default;
+    opacity: 0.6;
+}
+
+
+  .loader {
+    --w: 10ch;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 30px;
+    line-height: 1.4em;
+    letter-spacing: var(--w);
+    width: var(--w);
+    overflow: hidden;
+    white-space: nowrap;
+    color: #0000;
+    text-shadow: 
+          calc( 0*var(--w)) 0 #000, calc(-1*var(--w)) 0 #000, calc(-2*var(--w)) 0 #000, calc(-3*var(--w)) 0 #000, calc(-4*var(--w)) 0 #000, 
+          calc(-5*var(--w)) 0 #000, calc(-6*var(--w)) 0 #000, calc(-7*var(--w)) 0 #000, calc(-8*var(--w)) 0 #000, calc(-9*var(--w)) 0 #000;
+    animation: l20 2s infinite linear;
+}
+
+.loader:before {
+    content: "Đang tải...";
+}
+
+@keyframes l20 {
+    9.09% { text-shadow: 
+          calc( 0*var(--w)) -10px #000, calc(-1*var(--w)) 0 #000, calc(-2*var(--w)) 0 #000, calc(-3*var(--w)) 0 #000, calc(-4*var(--w)) 0 #000, 
+          calc(-5*var(--w)) 0 #000, calc(-6*var(--w)) 0 #000, calc(-7*var(--w)) 0 #000, calc(-8*var(--w)) 0 #000, calc(-9*var(--w)) 0 #000 }
+    18.18% { text-shadow: 
+          calc( 0*var(--w)) 0 #000, calc(-1*var(--w)) -10px #000, calc(-2*var(--w)) 0 #000, calc(-3*var(--w)) 0 #000, calc(-4*var(--w)) 0 #000, 
+          calc(-5*var(--w)) 0 #000, calc(-6*var(--w)) 0 #000, calc(-7*var(--w)) 0 #000, calc(-8*var(--w)) 0 #000, calc(-9*var(--w)) 0 #000 }
+    27.27% { text-shadow: 
+          calc( 0*var(--w)) 0 #000, calc(-1*var(--w)) 0 #000, calc(-2*var(--w)) -10px #000, calc(-3*var(--w)) 0 #000, calc(-4*var(--w)) 0 #000, 
+          calc(-5*var(--w)) 0 #000, calc(-6*var(--w)) 0 #000, calc(-7*var(--w)) 0 #000, calc(-8*var(--w)) 0 #000, calc(-9*var(--w)) 0 #000 }
+    36.36% { text-shadow: 
+          calc( 0*var(--w)) 0 #000, calc(-1*var(--w)) 0 #000, calc(-2*var(--w)) 0 #000, calc(-3*var(--w)) -10px #000, calc(-4*var(--w)) 0 #000, 
+          calc(-5*var(--w)) 0 #000, calc(-6*var(--w)) 0 #000, calc(-7*var(--w)) 0 #000, calc(-8*var(--w)) 0 #000, calc(-9*var(--w)) 0 #000 }
+    45.45% { text-shadow: 
+          calc( 0*var(--w)) 0 #000, calc(-1*var(--w)) 0 #000, calc(-2*var(--w)) 0 #000, calc(-3*var(--w)) 0 #000, calc(-4*var(--w)) -10px #000, 
+          calc(-5*var(--w)) 0 #000, calc(-6*var(--w)) 0 #000, calc(-7*var(--w)) 0 #000, calc(-8*var(--w)) 0 #000, calc(-9*var(--w)) 0 #000 }
+    54.54% { text-shadow: 
+          calc( 0*var(--w)) 0 #000, calc(-1*var(--w)) 0 #000, calc(-2*var(--w)) 0 #000, calc(-3*var(--w)) 0 #000, calc(-4*var(--w)) 0 #000, 
+          calc(-5*var(--w)) -10px #000, calc(-6*var(--w)) 0 #000, calc(-7*var(--w)) 0 #000, calc(-8*var(--w)) 0 #000, calc(-9*var(--w)) 0 #000 }
+    63.63% { text-shadow: 
+          calc( 0*var(--w)) 0 #000, calc(-1*var(--w)) 0 #000, calc(-2*var(--w)) 0 #000, calc(-3*var(--w)) 0 #000, calc(-4*var(--w)) 0 #000, 
+          calc(-5*var(--w)) 0 #000, calc(-6*var(--w)) -10px #000, calc(-7*var(--w)) 0 #000, calc(-8*var(--w)) 0 #000, calc(-9*var(--w)) 0 #000 }
+    72.72% { text-shadow: 
+          calc( 0*var(--w)) 0 #000, calc(-1*var(--w)) 0 #000, calc(-2*var(--w)) 0 #000, calc(-3*var(--w)) 0 #000, calc(-4*var(--w)) 0 #000, 
+          calc(-5*var(--w)) 0 #000, calc(-6*var(--w)) 0 #000, calc(-7*var(--w)) -10px #000, calc(-8*var(--w)) 0 #000, calc(-9*var(--w)) 0 #000 }
+    81.81% { text-shadow: 
+          calc( 0*var(--w)) 0 #000, calc(-1*var(--w)) 0 #000, calc(-2*var(--w)) 0 #000, calc(-3*var(--w)) 0 #000, calc(-4*var(--w)) 0 #000, 
+          calc(-5*var(--w)) 0 #000, calc(-6*var(--w)) 0 #000, calc(-7*var(--w)) 0 #000, calc(-8*var(--w)) -10px #000, calc(-9*var(--w)) 0 #000 }
+    90.90% { text-shadow: 
+          calc( 0*var(--w)) 0 #000, calc(-1*var(--w)) 0 #000, calc(-2*var(--w)) 0 #000, calc(-3*var(--w)) 0 #000, calc(-4*var(--w)) 0 #000, 
+          calc(-5*var(--w)) 0 #000, calc(-6*var(--w)) 0 #000, calc(-7*var(--w)) 0 #000, calc(-8*var(--w)) 0 #000, calc(-9*var(--w)) -10px #000 }
+          
+}
+
+
+.promotionSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 768px) {
+    .promotionCard, .favoritesSection, .orderDetails {
+        width: 90%;
+        flex-direction: column;
+    }
+
+    .promotionLogo, .promotionDetails, .promotionCodeSection {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+.promotionCard {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
+    flex-direction: row;
+    width: 70%;
+    justify-content: space-between;
+    margin-right: 50px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 0.5s ease-out;
+}
+.promotionCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+.promotionLogo {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}   
+.promotionIcon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+}
+.promotionLogoFont {
+    flex: 1;
+    margin-right: 15px;
+    font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    text-align: center;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+.promotionDetails {
+    text-align: Center;
+    padding: 10px 15px;
+    border-radius: 8px;
+
+}
+
+.promotionDetails h2 {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.promotionDetails p {
+    color: #666;
+    font-size: 14px;
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+.promotionDetails .conditionText {
+    color: #B18165;
+    font-weight: 600;
+}
+
+.promotionDetails .expiryDate {
+    font-style: italic;
+    color: #888;
+}
+.promotionCodeSection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+.codeContainer {
+    display: flex;
+    align-items: center;
+}
+
+.applyButton {
+    background-color: #B18165;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 10px;
+}
+.applyButton:hover {
+    background-color: #9e8478;
+}
+
+.applyButton, .loctionCart {
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 8px 15px;
+    border-radius: 15px;
+    font-weight: bold;
+}
+.copyInput {
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+    width: 200px;
+    filter: blur(2px);
+    transition: all 0.3s ease;
+}
+
+.copyInput.focused {
+    filter: none;
+    box-shadow: 0 0 0 2px #B18165;
+}
+.applyButton.copied {
+    background-color: #d1b1a1; 
+}
+
+.loctionCart {
+    margin-left: 10px;
+    background-color: transparent;
+    color: #B18165;
+    border: 2px solid #B18165;
+}
+
+.loctionCart:hover {
+    background-color: #B18165;
+    color: #fff;
+}
+
+
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px  black;
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #B18165;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -150px;
+    font-weight: bold;
+  }
+  
+  .tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #B18165 transparent transparent transparent;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+
+
+
+
+
+  .containerPassword {
+    max-width: 500px;
+    margin: 0 auto;
+    margin-top: 100px;
+    margin-bottom: 50px;
+
+  }
+  
+  .antInputPassword {
+    border-radius: 5px;
+    border: 1px solid #d9d9d9;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
+  
+  .antInputPassword:focus {
+    border-color: #40a9ff;
+    box-shadow: 0 0 0 2px rgba(28, 134, 237, 0.2);
+  }
+  
+  .antBtnPrimary {
+    width: 100%;
+    height: 50px;
+    border-radius: 5px;
+    background-color: #40a9ff;
+    color: #fff;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .antBtnPrimary:hover {
+    background-color: #2d94f2;
+  }
+  
+  .antBtnPrimary:focus {
+    box-shadow: 0 0 0 2px rgba(28, 134, 237, 0.2);
+  }
+  
+  .antBtnPrimary:disabled {
+    background-color: #b8c6cd;
+    border-color: #b8c6cd;
+    color: #fff;
+    cursor: not-allowed;
+  }
+  
+  .antFormItem-explain-error {
+    margin-top: 5px;
+  }
+  
+  .antFormItem-explain-error-content {
+    color: #ff4d4f;
+  }
+  
+  .antFormItem-rtl {
+    text-align: left;
+  }
+  
+  .antFormItem-label {
+    text-align: left;
+  }
+  
+  .antFormItem-required::before {
+    display: none;
+  }
+  
+  .ant-form-item {
+    margin-bottom: 20px;
+  }
+
+
+  .ant-form-item-label .ant-form-item-required:before {
+    font-size: 20px;
+    margin-right: 4px;
+  }
+  
+  .ant-form-item-label label {
+    font-size: 20px;
+  }

@@ -12,10 +12,13 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Col, Row } from "antd";
+import "./index.scss";
+import api from "../../config/axios";
 
 function Carousel({ numOfSlide, isUseNavigate }) {
   const [pics, setPics] = useState([]);
   const [cates, setCates] = useState([]);
+  const [products, setProducts] = useState([]);
 
   const fetchPic = async () => {
     const response = await axios.get(
@@ -26,29 +29,53 @@ function Carousel({ numOfSlide, isUseNavigate }) {
   };
 
   const fetchCate = async () => {
+    const response = await api.get(
+      // "https://665aa0df003609eda45e5ea3.mockapi.io/category"
+      "/category"
+    );
+    const { value } = response.data;
+    setCates(value);
+  };
+
+  const fetchProduct = async () => {
     const response = await axios.get(
-      "https://665aa0df003609eda45e5ea3.mockapi.io/category"
+      "https://6663df16932baf9032a93456.mockapi.io/SP_BanChay"
     );
     console.log(response.data);
-    setCates(response.data);
+    setProducts(response.data);
   };
 
   useEffect(() => {
     fetchPic();
     fetchCate();
+    fetchProduct();
   }, []);
+
+  const handleOnClickCate = (id) => {
+    id === "7"
+      ? (window.location.href = `/dc`)
+      : id === "9"
+      ? (window.location.href = `/ht`)
+      : id === "10"
+      ? (window.location.href = `/vt`)
+      : (window.location.href = `/n`);
+  };
+
+  const handleOnClickDetail = (id) => {
+    window.location.href = `/prodetail/${id}`;
+  };
 
   return (
     <>
       <Swiper
         slidesPerView={numOfSlide}
-        spaceBetween={10}
+        spaceBetween={15}
         mousewheel={true}
         keyboard={true}
         navigation={isUseNavigate}
         pagination={true}
         autoplay={{
-          delay: 2500,
+          delay: 3500,
           disableOnInteraction: false,
         }}
         modules={[Pagination, Navigation, Autoplay, Mousewheel, Keyboard]}
@@ -63,16 +90,44 @@ function Carousel({ numOfSlide, isUseNavigate }) {
               <img
                 src={pic.poster_path}
                 alt=""
-                className="absolute bottom-10 w-full left-48 scale-125"
+                className="absolute bottom-10 w-full left-44 scale-125"
               />
               <div className="relative left-24">
-                <h1 className="text-5xl py-5 text-white font-serif mt-40">
+                <h1 className="text-5xl py-5 text-white mt-40">
                   {pic.content}
                 </h1>
                 <h3>{pic.description}</h3>
-                <button className="py-1 border-2 border-black rounded-md px-3 mt-5 shadow-md shadow-black/30 ">
-                  {pic.bt_name ? "Xem thêm" : {}}
-                </button>
+                {/* <button className="py-1 border-2 border-black rounded-md px-3 mt-5 shadow-md shadow-black/30 ">
+                  {pic.bt_name}
+                </button> */}
+                {pic.id === "3" ? (
+                  <button
+                    className="py-1 border-2 border-black rounded-md px-3 mt-5 shadow-md shadow-black/30"
+                    onClick={() => {
+                      window.location.href = "/GoldPrice";
+                    }}
+                  >
+                    {pic.bt_name}
+                  </button>
+                ) : pic.id === "2" ? (
+                  <button
+                    className="py-1 border-2 border-black rounded-md px-3 mt-5 shadow-md shadow-black/30"
+                    onClick={() => {
+                      window.location.href = "/proall";
+                    }}
+                  >
+                    {pic.bt_name}
+                  </button>
+                ) : (
+                  <button
+                    className="py-1 border-2 border-black rounded-md px-3 mt-5 shadow-md shadow-black/30"
+                    onClick={() => {
+                      window.location.href = "/aboutus";
+                    }}
+                  >
+                    {pic.bt_name}
+                  </button>
+                )}
               </div>
             </div>
           </SwiperSlide>
@@ -80,21 +135,74 @@ function Carousel({ numOfSlide, isUseNavigate }) {
       </Swiper>
 
       <>
-        {/* <div className=""> */}
-        <h1 className="text-3xl text-center mt-10 font-serif">
-          Shop by categories
+        <h1 className="text-3xl text-center mt-20 font-serif">
+          Phân loại sản phẩm
         </h1>
         <h3 className="text-center mt-2 mb-10">
           Xin hãy thưởng thức những gì chúng tôi có
         </h3>
-        {/* </div> */}
         <Row justify="space-evenly">
           {cates.map((cate) => (
-            <Col span={4} key={cate.id}>
-              <img src={cate.pic_path} alt="" />
+            <Col
+              span={4}
+              key={cate.id}
+              onClick={() => {
+                handleOnClickCate(cate.id);
+              }}
+            >
+              <a className="cateLink">
+                {cate.id === "7" ? (
+                  <img src="https://i.imgur.com/RNxL7JQ.png" />
+                ) : cate.id === "8" ? (
+                  <img src="https://i.imgur.com/BLPmNge.png" />
+                ) : cate.id === "9" ? (
+                  <img src="https://i.imgur.com/cdocnbx.png" />
+                ) : (
+                  <img src="https://i.imgur.com/laou9su.png" />
+                )}
+                {/* <img src={cate.pic_path} alt="" /> */}
+                <h2 className="font-medium text-center text-xl font-serif">
+                  {cate.name}
+                </h2>
+              </a>
             </Col>
           ))}
         </Row>
+      </>
+
+      <>
+        <h1 className="text-center text-3xl mt-20 font-serif">
+          Sản phẩm bán chạy
+        </h1>
+        <h3 className="text-center mt-2 mb-5">
+          Sản phẩm bán chạy trong mùa xuân
+        </h3>
+        <Swiper
+          slidesPerView={4}
+          spaceBetween={10}
+          freeMode={true}
+          navigation={true}
+          autoplay={{
+            delay: 3500,
+          }}
+          modules={[Navigation, Pagination, Autoplay]}
+        >
+          {products.map((prd) => (
+            <SwiperSlide
+              key={prd.id}
+              onClick={() => {
+                handleOnClickDetail(prd.id);
+                console.log(prd.id);
+              }}
+            >
+              <div className="ml-20 pb-16 pt-2 swiper-img-container cursor-pointer">
+                <img src={prd.jw_image} />
+                <h3 className="font-medium">{prd.jw_name}</h3>
+                <h4>{prd.price}</h4>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </>
     </>
   );

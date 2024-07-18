@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Bona+Nova+SC:ital,wght@0,400;0,700;1,400&family=Montserrat:ital,wght@0,600;1,600&display=swap');
+
+
+h1{
+    font-family: "Bona Nova SC", serif;
+}
+
+
+
+.gp_tb{
+    .ant-table-thead .ant-table-cell{
+        background-color: #971517 !important;
+        text-align: center;
+    }
+
+    .ant-table-cell:hover{
+        text-align: center;
+        color: chocolate;
+    }
+
+    th.ant-table-cell{
+        text-align: center !important;
+        font-size: 20px;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        color: #e9a71d !important;
+    }
+
+    .gp_tb{
+        .ant-table-thead .ant-table-cell{
+            background-color: #971517 !important;
+            text-align: center;
+        }
+
+        .ant-table-cell:hover{
+            text-align: center;
+            color: chocolate;
+        }
+
+        th.ant-table-cell{
+            text-align: center !important;
+            font-size: 20px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            color: #e9a71d !important;
+        }
+    }
+}
