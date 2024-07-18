@@ -54,7 +54,6 @@ function OrderReview() {
           quantity: product.quantity,
         })),
       });
-      toast.success("Cập nhật đơn hàng thành công!");
       console.log("res.data");
     } else {
       const response = await api.post("/order/customer-create", {
@@ -164,18 +163,21 @@ function OrderReview() {
         </div>
         <div className="mr-28 mt-24">
           <div className="rounded-sm border-black bg-white/70 shadow-md w-full">
-            <div className="py-7 flex flex-col justify-center items-start">
-              <div className="mx-32 mb-7">
+            <div className="py-7 flex flex-col justify-center items-center ">
+              <div className=" mb-7">
                 <h1 className="text-2xl font-serif">Tổng đơn mua</h1>
               </div>
-              <div className="mx-14">
+              <div className="mx-20">
                 <hr />
                 {selectedProduct?.map((product) => (
                   <div key={product.id}>
-                    <div className="flex justify-between py-3 gap-7">
-                      <h1 className="">
-                        {product.name} x {product.quantity}
-                      </h1>
+                    <div className="flex justify-between py-4 gap-5 w-full">
+                      <div>
+                        <h1 className="">{product.name}</h1>
+                        <h1 className="text-sm text-gray-500">
+                          Số lượng: {product.quantity}
+                        </h1>
+                      </div>
                       <h1>
                         {(
                           parseFloat(
@@ -195,24 +197,22 @@ function OrderReview() {
                 <hr />
                 <hr />
                 <div className="pt-5 pb-12">
-                  {promotions.length > 0 && (
-                    <div>
-                      <h2 className="pb-2">Mã khuyến mãi (nếu có)</h2>
-                      <select
-                        value={selectedPromotion}
-                        onChange={handlePromotionSelection}
-                        className="border border-gray-300 py-2 px-2"
-                        style={{ width: "100%" }}
-                      >
-                        <option value="">Chọn mã khuyến mãi</option>
-                        {promotions.map((promo) => (
-                          <option key={promo.id} value={promo.id}>
-                            {promo.id}-{promo.description}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  )}
+                  <div>
+                    <h2 className="pb-2">Mã khuyến mãi (nếu có)</h2>
+                    <select
+                      value={selectedPromotion}
+                      onChange={handlePromotionSelection}
+                      className="border border-gray-300 py-2 px-2"
+                      style={{ width: "100%" }}
+                    >
+                      <option value="">Chọn mã khuyến mãi</option>
+                      {promotions.map((promo) => (
+                        <option key={promo.id} value={promo.id}>
+                          {promo.id}-{promo.description}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
                 <div className="flex justify-between py-3 font-bold">
                   <h1>Tổng tiền: </h1>

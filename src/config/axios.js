@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// const baseUrl = "https://rich-utterly-clam.ngrok-free.app";
 const baseUrl = "https://happily-ultimate-mustang.ngrok-free.app";
 const config = {
   baseUrl,

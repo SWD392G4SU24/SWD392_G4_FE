@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import api from "../../config/axios";
 import { toast } from "react-toastify";
 import { Button, Form, Modal, Input } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useDispatch } from "react-redux";
 import { setSelectedCustomer } from "../../redux/features/customerSlice";
+import { useNavigate } from "react-router-dom";
 
 const UserSearch = () => {
   const [form] = useForm();
@@ -12,7 +13,9 @@ const UserSearch = () => {
   const [fullName, setFullName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [searchResults, setSearchResults] = useState(null);
+  const [userCurrent, setUserCurrent] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSearch = async (event) => {
     event.preventDefault();
@@ -25,6 +28,11 @@ const UserSearch = () => {
       toast.error(error.response.data.detail);
     }
   };
+
+  async function fetchCurrentUser() {
+    const response = await api.get("/user-current");
+    setUserCurrent(response.data);
+  }
 
   async function handleSubmit(values) {
     try {
@@ -54,10 +62,17 @@ const UserSearch = () => {
     dispatch(setSelectedCustomer(user));
   };
 
+  useEffect(() => {
+    fetchCurrentUser();
+  }, []);
+
   return (
     <div className="container mx-auto p-4">
+      <div className="mb-5 text-2xl text-orange-300 font-semibold">
+        <h1>{userCurrent.counter}</h1>
+      </div>
       <div className="flex ">
-        <h1 className="text-2xl font-bold mb-4">
+        <h1 className="text-2xl font-medium mb-4">
           Tìm kiếm thông tin khách hàng
         </h1>
         <div>
@@ -171,7 +186,7 @@ const UserSearch = () => {
               name="fullName"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="px-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="px-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm"
             />
           </div>
           <div>
@@ -187,7 +202,7 @@ const UserSearch = () => {
               name="phoneNumber"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-              className="px-1 mt-1 block w-full border-gray-500 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="px-1 mt-1 block w-full border-gray-500 rounded-md shadow-sm sm:text-sm"
             />
           </div>
           <button
@@ -231,7 +246,7 @@ const UserSearch = () => {
                     className="mt-2 border rounded-lg p-3 bg-green-500 text-white"
                     onClick={() => {
                       handleBuyClick(user);
-                      window.location.href = "/stafforder";
+                      navigate("/stafforder");
                     }}
                   >
                     Mua hàng

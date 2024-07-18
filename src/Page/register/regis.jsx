@@ -11,7 +11,6 @@ function Register() {
     email: "",
     phoneNumber: "",
     address: "",
-    roleID: 3,
   });
   const [confirmPassword, setConfirmPassword] = useState("");
   const handleConfirmPasswordChange = (e) => {
@@ -29,10 +28,7 @@ function Register() {
       return;
     }
     try {
-      const response = await api.post(
-        "https://dassie-living-bonefish.ngrok-free.app/register",
-        userData
-      );
+      const response = await api.post("/register", userData);
       console.log(response.data);
     } catch (error) {
       console.log(error);

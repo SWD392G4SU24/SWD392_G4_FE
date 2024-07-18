@@ -51,12 +51,11 @@ import {
   ValidRouteManager,
   ValidRouteStaff,
 } from "./route/protectedRoute";
-
-
-
+import ReOrder from "./Page/staff/re-order";
+import LayoutStaff from "./component/layout/index3";
+import CheckReceiveOrder from "./Page/staff/checkreceiveorder";
 
 function App() {
-  //const user = useSelector(selectUser);
   const router = createBrowserRouter([
     {
       path: "/",
@@ -203,15 +202,29 @@ function App() {
           path: "/crudproduct",
           element: <ValidRouteManager element={<ManageProducts />} />,
         },
+      ],
+    },
+    {
+      element: <LayoutStaff />,
+      children: [
         {
           path: "/staffsearch",
           element: <ValidRouteStaff element={<UserSearch />} />,
         },
-        {
-          path: "/stafforder",
-          element: <ValidRouteStaff element={<StaffOrder />} />,
-        },
       ],
+    },
+
+    {
+      path: "/stafforder",
+      element: <ValidRouteStaff element={<StaffOrder />} />,
+    },
+    {
+      path: "/reorder",
+      element: <ValidRouteStaff element={<ReOrder />} />,
+    },
+    {
+      path: "/checkreceive",
+      element: <ValidRouteStaff element={<CheckReceiveOrder />} />,
     },
   ]);
 

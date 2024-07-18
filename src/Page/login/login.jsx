@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../config/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { login, logout, selectUser } from "../../redux/features/counterSlice";
-import { UnlockOutlined, UserOutlined } from "@ant-design/icons";
+import { UserOutlined } from "@ant-design/icons";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../config/firebase";
 import { toast } from "react-toastify";
@@ -13,6 +13,8 @@ function Login1() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const user = useSelector(selectUser);
+  const urlParams = new URLSearchParams(location.search);
+  const [verifyMailData, setVerifyMailData] = useState(null);
   const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -63,7 +65,32 @@ function Login1() {
       toast.error(error.response.data.detail);
     }
   };
-  console.log(user);
+  // console.log(user);
+
+  useEffect(() => {
+    const fetchUrlData = async () => {
+      const verifyMailInfo = {
+        token: urlParams.get("token"),
+        userid: urlParams.get("userid"),
+      };
+      console.log(verifyMailInfo);
+      setVerifyMailData(verifyMailInfo);
+      await handleVerifyEmail(verifyMailInfo);
+    };
+    fetchUrlData();
+  }, [location.search]);
+
+  async function handleVerifyEmail(verifyMailData) {
+    try {
+      const response = await api.post("/user/verify-email", {
+        userID: verifyMailData.userid,
+        token: verifyMailData.token,
+      });
+      toast.success(response.data.value);
+    } catch (e) {
+      toast.error(e.response.data.value);
+    }
+  }
   return (
     <div>
       <div

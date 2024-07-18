@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addProduct,
   clearAll,
+  clearCart,
   decreaseQuantity,
   increaseQuantity,
   removeProduct,
@@ -29,6 +30,7 @@ const StaffOrder = () => {
   const [paymentUrl, setPaymentUrl] = useState("");
   const [paymentCompleted, setPaymentCompleted] = useState(false);
   const [disableIncrease, setDisableIncrease] = useState(false);
+
   function toggleCart() {
     setShowCart(!showCart);
   }
@@ -39,7 +41,6 @@ const StaffOrder = () => {
         `/Product/filter-product?PageNumber=1&PageSize=10&Name=${name}&CategoryID=${category}`
       );
       setProducts(response.data.data);
-      console.log(response.data.data);
     } catch (error) {
       toast.error(error.response.data.detail);
     }
@@ -71,7 +72,8 @@ const StaffOrder = () => {
       const response = await api.post("/order/staff-create", payload);
       const { value } = response.data;
       toast.success("Mua thành công!");
-      if (selectedPaymentMethod === "vnPayMethodIdHere") {
+      dispatch(clearAll());
+      if (selectedPaymentMethod === "VnPay") {
         setPaymentUrl(value);
         setPaymentCompleted(true);
       }
@@ -83,7 +85,6 @@ const StaffOrder = () => {
   async function fetchPaymentMethod() {
     const response = await api.get("/paymentMethod");
     const { value } = response.data;
-    console.log(value);
     setPaymentMethods(value);
   }
 
@@ -122,8 +123,8 @@ const StaffOrder = () => {
 
   async function increaseItemQuantity(id) {
     const product = carts.find((item) => item.id === id);
-    const product2 = products.filter((item) => item.id === id);
-    if (product && product.quantity < product2[0].quantity) {
+    const product2 = products.find((item) => item.id === id);
+    if (product && product.quantity < product2.quantity) {
       dispatch(increaseQuantity(id));
     } else {
       toast.warn(`Số lượng sản phẩm "${product.name}" đã đạt đến giới hạn.`);
@@ -138,15 +139,13 @@ const StaffOrder = () => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
-    })
-      .format(price)
-      .replace(/,/g, ".");
+    }).format(price);
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col relative">
       <div className="container mx-auto p-4 flex-1">
-        <div className="flex ">
+        <div className="flex">
           <h1 className="text-3xl font-semibold mb-4">Tìm kiếm sản phẩm</h1>
           <Popconfirm
             title="Hủy quá trình mua hàng"
@@ -216,31 +215,45 @@ const StaffOrder = () => {
               <p className="text-black font-normal">
                 Số lượng: {product.quantity}
               </p>
-              <button onClick={() => addToCart(product)}>
-                <FaCartPlus className="mr-2 text-2xl text-orange-300" />
+              <button
+                onClick={() => addToCart(product)}
+                className="flex justify-center border rounded-md bg-black/80 py-1 px-3 "
+              >
+                <FaCartPlus className="mr-2 text-2xl text-orange-200" />
+                <h1 className="text-white">Thêm vào giỏ hàng</h1>
               </button>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Cart Section */}
-      <div className="bg-gray-100 py-4 px-4 fixed bottom-0 left-0 right-0 z-50">
-        <div className="container mx-auto">
-          <div className="flex justify-between items-center mb-4">
-            <Badge count={carts ? carts.length : 0}>
-              <h2 className="text-xl font-semibold">Giỏ hàng</h2>
-            </Badge>
-            {/* Toggle Cart Visibility Button */}
-            <button
-              onClick={toggleCart}
-              className="mb-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md focus:outline-none"
-            >
-              {showCart ? "Ẩn giỏ hàng v" : "Hiển thị giỏ hàng ^"}
-            </button>
-          </div>
-          {/* Cart Items */}
-          {showCart && (
+      {/* Cart Button */}
+      <div
+        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full fixed bottom-4 right-4 cursor-pointer flex items-center"
+        onClick={toggleCart}
+      >
+        <span className="mr-2">Giỏ hàng</span>
+        {showCart ? (
+          <FaTimes className="text-xl" />
+        ) : (
+          <Badge count={carts ? carts.length : 0}>
+            <div className="m-3">
+              <FaCartPlus className="text-xl" />
+            </div>
+          </Badge>
+        )}
+      </div>
+
+      {/* Cart Content */}
+      {showCart && (
+        <div className="bg-gray-100 py-4 px-4 fixed bottom-16 left-0 right-0 z-50">
+          <div className="container mx-auto">
+            <div className="flex justify-between items-center mb-4">
+              <Badge count={carts ? carts.length : 0}>
+                <h2 className="text-xl font-semibold">Giỏ hàng</h2>
+              </Badge>
+            </div>
+            {/* Cart Items */}
             <div className="grid grid-cols-1 gap-4 max-h-80 overflow-y-auto">
               {carts.length === 0 ? (
                 <p className="text-gray-600">Giỏ hàng của bạn đang trống.</p>
@@ -333,10 +346,11 @@ const StaffOrder = () => {
                 </div>
               )}
             </div>
-          )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
+
 export default StaffOrder;
