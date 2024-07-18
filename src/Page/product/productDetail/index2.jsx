@@ -159,11 +159,17 @@ function ProductDetail2() {
                 )}
               </div>
 
-              <Space className="heart_icon text-xl" onClick={toggleIcon}>
+              <Space className="heart_icon text-xl ml-5" onClick={toggleIcon}>
                 {isFavor ? (
+                  <div class="tooltip">
                   <HeartFilled style={{ color: "#B18165" }} />
+                  <span class="tooltiptext"> Bỏ Thích</span>
+                  </div>
                 ) : (
+                  <div class="tooltip">
                   <HeartOutlined />
+                  <span class="tooltiptext"> Yêu thích</span>
+                  </div>
                 )}
               </Space>
             </div>

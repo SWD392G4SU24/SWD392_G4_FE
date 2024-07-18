@@ -98,24 +98,29 @@
     margin-left: 50px;
 }
 .point {
-    color: #B18165;
-    font-size: 30px;
+    font-size: 37px;
     margin-top: -50px;
-    margin-bottom: 20px;
+    margin-bottom: 20px
+}
+
+.point1 {
+    margin-left: 10px;
+    color: #B18165;
+    font-size: 35px;
 }
 
 .containerFormEdit{
     position: fixed;
-    top: 50%; /* Đưa container lên trên 50% của viewport */
-    left: 50%; /* Đưa container sang bên trái 50% của viewport */
+    top: 50%; 
+    left: 50%; 
     transform: translate(-50%, -50%); /* Dịch container ngược lại 50% của kích thước của chính nó */
     background-color: white; /* Màu nền của container */
     padding: 20px; /* Khoảng cách nội dung với biên của container */
     z-index: 1000; /* Chỉ số z để đảm bảo nó nằm trên các phần tử khác */
-    max-width: 80%; /* Độ rộng tối đa của container */
-    width: 600px; /* Độ rộng cố định của container */
-    border: 1px solid #ccc; /* Viền của container */
-    border-radius: 10px; /* Bo tròn các góc của container */
+    max-width: 80%; 
+    width: 600px; 
+    border: 1px solid #ccc; 
+    border-radius: 10px;
 
 }
 
@@ -126,10 +131,10 @@
 }
 .editItem{
     display: flex;
-    flex-direction: column;  /* Ensure items are stacked vertically */
-    justify-content: center;  /* Center items vertically */
-    align-items: center;  /* Center items horizontally */
-    height: 50vh;  /* Full height of the viewport */
+    flex-direction: column; 
+    justify-content: center;  
+    align-items: center;  
+    height: 50vh;  
     margin-top: 4%;
     margin-bottom: 25px;
 }
@@ -140,7 +145,7 @@
 }
 
 .customInputEdit {
-    width: 500px;  /* Ensure input fields take up the full width of their container */
+    width: 500px; 
     font-size: 20px;
     margin-top: 5px;
     
@@ -170,19 +175,19 @@
 
 .buttonPosition {
     display: flex;
-    justify-content: center;  /* Center the button horizontally */
-    align-items: center;  /* Center the button vertically (if necessary) */
-    margin-top: 50px;  /* Optional: Add margin to the top for spacing */
+    justify-content: center; 
+    align-items: center;  
+    margin-top: 50px;  
 
 }
 
 .buttonPositionEdit {
     display: flex;
-    justify-content: space-between;  /* Distribute space between the buttons */
-    align-items: center;  /* Center items vertically */
-    width: 100%;  /* Full width */
-    max-width: 600px;  /* Optional: max width of the button container */
-    margin: 40px auto 0;  /* Center horizontally and add top margin */
+    justify-content: space-between;  
+    align-items: center; 
+    width: 100%;  
+    max-width: 600px;  
+    margin: 40px auto 0;  
 }
 
 .editButton {
@@ -193,26 +198,26 @@
   border: none;
   padding: 10px 20px;
   cursor: pointer;
-  border-radius: 10px; /* Round the button */
-  transition: background-color 0.3s ease; /* Smooth background color transition */
+  border-radius: 10px; 
+  transition: background-color 0.3s ease; 
   margin-right: 10px;
 }
 
 .editButton:hover {
-  background-color: #8B4513; /* Darker shade for hover state */
-  cursor: pointer; /* Change cursor to pointer on hover */
+  background-color: #8B4513; 
+  cursor: pointer; 
 }
 
 
 .editButton:hover {
-    background-color: #9e8478; /* Change background color on hover */
-    cursor: pointer; /* Change cursor to pointer on hover */
+    background-color: #9e8478; 
+    cursor: pointer; 
 }
 
 .cancelButton {
     font-family: none;
     font-size: 20px;
-    background-color: #8B0000; /* Màu đỏ đậm hơn và trầm */
+    background-color: #8B0000;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -224,21 +229,21 @@
 
 .cancelButton:hover {
     background-color: #9e8478;
-    color: #8B0000; /* Màu chữ là màu đỏ đậm hơn và trầm hơn */
+    color: #8B0000; 
 }
 
 .favoritesSection {
-    border: solid 1px #cccaca; /* Thicker border */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 3px 5px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border: solid 1px #cccaca;
+    border-radius: 8px; 
+    box-shadow: 3px 5px 8px rgba(0, 0, 0, 0.1); 
     background-color: #fff;
-    width: 80%; /* Adjust width as needed */
-    height: 150px; /* Adjust height as needed */
+    width: 80%; 
+    height: 150px;
     display: flex;
     align-items: center;
-    margin-bottom: 15px; /* More spacing between items */
+    margin-bottom: 15px; 
     margin-left: 100px;
-    padding: 10px; /* Add padding for better spacing */
+    padding: 10px; 
     justify-content: space-between;
     animation: fadeIn 0.5s ease-out;
   }
@@ -251,8 +256,8 @@
 
 .favoriteInfor {
   display: flex;
-  flex-direction: column; /* Stack elements vertically */
-  margin-left: -40%; /* Space between image and info */
+  flex-direction: column; 
+  margin-left: -40%; 
   margin-top: 20px;
   
 }
@@ -289,7 +294,7 @@
   .favoriteButton:hover {
     background-color: #B18165;
     color: #fff;
-    cursor: pointer; /* Change cursor to pointer on hover */
+    cursor: pointer; 
   }
   
 
@@ -348,7 +353,7 @@
     align-items: center;
     margin-bottom: 20px;
     padding: 4px;
-    position: relative; /* Ensure positioning context for absolute positioning */
+    position: relative; 
     border: solid 0.02px;
     border-radius: 5px;
     box-shadow: 5px 7px 5px 5px #cccaca;
@@ -371,11 +376,11 @@
     border: 10px;
 }
 .orderImage {
-    width: 120px; /* Adjust the width as per your design */
-    height: 138px; /* Adjust the height as per your design */
+    width: 120px; 
+    height: 138px;
     margin-right: 20px;
-    object-fit: cover; /* Ensure the image covers the specified dimensions */
-    border-radius: 5px; /* Optional: Add rounded corners */
+    object-fit: cover; 
+    border-radius: 5px; 
    
 }
 
@@ -386,7 +391,7 @@
 }
 .orderDate{
     font-size: 16px;
-    color: #000000; /* Màu chữ cho ngày */
+    color: #000000; 
     margin-bottom: 60px;
     margin-right: 10px;
     font-weight: bold;
@@ -407,7 +412,7 @@
 .containerDateAndStatus{
     display: flex;
     justify-content: flex-end; /* Canh phải các phần tử bên trong */
-    align-items: center; /* Canh giữa theo chiều dọc */
+    align-items: center;
     gap: 50px; /* Khoảng cách giữa ngày và trạng thái */
     padding-right: 20px;
     margin-top: 10px;
@@ -424,16 +429,16 @@
 .status {
     font-size: 14px;
     font-weight:500;;
-    color: #FFFFFF; /* Default color for status text */
+    color: #FFFFFF; 
 }
 
 .statusContainer.completed {
-    background-color: #28a745; /* Green for completed */
+    background-color: #28a745; 
    
 }
 
 .statusContainer.processing {
-    background-color: #ffc107; /* Yellow for processing */
+    background-color: #ffc107; 
 }
 
 .statusContainer.cancelled {
@@ -457,10 +462,6 @@
 
 .pagination button {
     margin: 0 5px;
-    // padding: 8px 16px;
-    // background-color: #f0f0f0;
-    // border: 1px solid #ccc;
-    // cursor: pointer;
     padding: 8px 16px;
     border: 1px solid #B18165;
     background-color: #fff;
@@ -605,9 +606,6 @@
     padding-top: 10px;
 }
 
-// .promotionDetails {
-//     text-align: center;
-// }
 .promotionDetails {
     text-align: Center;
     padding: 10px 15px;
@@ -681,18 +679,8 @@
     box-shadow: 0 0 0 2px #B18165;
 }
 .applyButton.copied {
-    background-color: #d1b1a1; // Màu nhạt hơn khi đã sao chép
+    background-color: #d1b1a1; 
 }
-// .loctionCart {
-//     padding-left: 10px;
-//     display: inline-block;
-//     font-weight: bold;
-// }
-// .loctionCart:hover {
-//     font-weight: bold;
-//     color: #3498db;
-//     text-decoration: underline;
-// }
 
 .loctionCart {
     margin-left: 10px;
@@ -727,6 +715,7 @@
     bottom: 150%;
     left: 50%;
     margin-left: -150px;
+    font-weight: bold;
   }
   
   .tooltip .tooltiptext::after {

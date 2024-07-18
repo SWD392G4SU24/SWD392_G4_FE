@@ -43,7 +43,6 @@ import Form from "./Page/form";
 import UserSearch from "./Page/staff/index2";
 import StaffOrder from "./Page/staff/order";
 import { selectUser } from "./redux/features/counterSlice";
-import Profile1 from "./Page/Profile/Profile1";
 
 function App() {
   //const user = useSelector(selectUser);
@@ -63,10 +62,6 @@ function App() {
         {
           path: "/profile",
           element: <Profile />,
-        },
-        {
-          path: "/profile1",
-          element: <Profile1 />,
         },
         {
           path: "/",
