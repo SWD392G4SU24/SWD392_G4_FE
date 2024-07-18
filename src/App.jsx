@@ -50,6 +50,7 @@ import {
 } from "./route/protectedRoute";
 import ReOrder from "./Page/staff/re-order";
 import LayoutStaff from "./component/layout/index3";
+import CheckReceiveOrder from "./Page/staff/checkreceiveorder";
 
 function App() {
   const router = createBrowserRouter([
@@ -205,6 +206,10 @@ function App() {
     {
       path: "/reorder",
       element: <ValidRouteStaff element={<ReOrder />} />,
+    },
+    {
+      path: "/checkreceive",
+      element: <ValidRouteStaff element={<CheckReceiveOrder />} />,
     },
   ]);
 

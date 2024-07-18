@@ -42,6 +42,7 @@ function HeaderStaff() {
     <div className="flex justify-between border py-3 px-10 mb-7 shadow-md dark:bg-black dark:text-white ">
       <h2 className="font-bold text-xl">Trang quầy nhân viên JeWellry</h2>
       <div className="flex gap-3">
+        <a href="/checkreceive">Xác nhận đơn hàng</a>
         <a href="/reorder">Mua lại hàng</a>
         <div className="flex gap-1">
           <Dropdown menu={{ items }} trigger={["click"]}>

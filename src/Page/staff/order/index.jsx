@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addProduct,
   clearAll,
+  clearCart,
   decreaseQuantity,
   increaseQuantity,
   removeProduct,
@@ -71,6 +72,7 @@ const StaffOrder = () => {
       const response = await api.post("/order/staff-create", payload);
       const { value } = response.data;
       toast.success("Mua thành công!");
+      dispatch(clearAll());
       if (selectedPaymentMethod === "VnPay") {
         setPaymentUrl(value);
         setPaymentCompleted(true);
