@@ -58,6 +58,7 @@ function Login1() {
       }
       if (res.data.role === "Customer") {
         navigate("/");
+        
       }
     } catch (error) {
       toast.error(error.response.data.detail);

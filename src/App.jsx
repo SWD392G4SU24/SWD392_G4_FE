@@ -47,6 +47,9 @@ import {
   ValidRouteManager,
   ValidRouteStaff,
 } from "./route/protectedRoute";
+import ReOrder from "./Page/staff/re-order";
+import HeaderStaff from "./component/header/headerstaff";
+import LayoutStaff from "./component/layout/index3";
 
 function App() {
   //const user = useSelector(selectUser);
@@ -180,6 +183,11 @@ function App() {
           path: "/crudproduct",
           element: <ValidRouteManager element={<ManageProducts />} />,
         },
+      ],
+    },
+    {
+      element: <LayoutStaff />,
+      children: [
         {
           path: "/staffsearch",
           element: <ValidRouteStaff element={<UserSearch />} />,
@@ -187,6 +195,10 @@ function App() {
         {
           path: "/stafforder",
           element: <ValidRouteStaff element={<StaffOrder />} />,
+        },
+        {
+          path: "/reorder",
+          element: <ValidRouteStaff element={<ReOrder />} />,
         },
       ],
     },
