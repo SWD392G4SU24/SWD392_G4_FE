@@ -180,7 +180,7 @@ function App() {
         },
         {
           path: "/form",
-          element: <ManageForm />,
+          element: <ValidRouteManager element={<ManageForm />} />,
         },
         {
           path: "/crudproduct",
@@ -195,15 +195,16 @@ function App() {
           path: "/staffsearch",
           element: <ValidRouteStaff element={<UserSearch />} />,
         },
-        {
-          path: "/stafforder",
-          element: <ValidRouteStaff element={<StaffOrder />} />,
-        },
-        {
-          path: "/reorder",
-          element: <ValidRouteStaff element={<ReOrder />} />,
-        },
       ],
+    },
+
+    {
+      path: "/stafforder",
+      element: <ValidRouteStaff element={<StaffOrder />} />,
+    },
+    {
+      path: "/reorder",
+      element: <ValidRouteStaff element={<ReOrder />} />,
     },
   ]);
 

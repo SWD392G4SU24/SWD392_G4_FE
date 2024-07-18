@@ -28,9 +28,7 @@ function ManageProducts() {
   const [cates, setCates] = useState([]);
   const handleDeleteProduct = async (id) => {
     console.log("delete product", id);
-    const response = await api.delete(
-      `/Product/delete/${id}`
-    );
+    const response = await api.delete(`/Product/delete/${id}`);
 
     console.log(response);
     const listAfterDelete = dataSource.filter((product) => product.id !== id);
@@ -134,8 +132,7 @@ function ManageProducts() {
   async function fetchProducts() {
     try {
       const response = await api.get("/Product");
-      const { value } = response.data;
-      setDataSource(value);
+      setDataSource(response.data);
     } catch (e) {
       console.log(e);
     }
@@ -195,19 +192,17 @@ function ManageProducts() {
       const url = await uploadFile(values.imageURL.file.originFileObj);
       values.imageURL = url;
       console.log(values);
-      const response = await api.post("/Product/create", {
-        name: values.name,
-        goldWeight: values.goldWeight,
-        goldType: values.goldType,
-        diamondType: values.diamondType,
-        imageURL: values.imageURL,
-        quantity: values.quantity,
-        description: values.description,
-        categoryID: values.categoryID,
-      });
+      if (!values.goldType) {
+        values.goldType = "";
+      }
+      if (!values.diamondType) {
+        values.diamondType = "";
+      }
+      const response = await api.post("/Product/create", values);
       toast.success("Tạo thành công!");
       console.log(response.data);
       setDataSource([...dataSource, response.data]);
+      fetchProducts();
 
       handleHideModal();
 
