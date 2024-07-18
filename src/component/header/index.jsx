@@ -5,12 +5,14 @@ import {
 } from "@ant-design/icons";
 import DarkMode from "./darkmode";
 import { Link } from "react-router-dom";
-import { Badge, Dropdown, Menu, Space } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../redux/features/counterSlice";
+import { Badge, Dropdown, Space } from "antd";
+import { useSelector } from "react-redux";
+import { store } from "../../redux/store";
+import { selectUser } from "../../redux/features/counterSlice";
+
 function Header() {
   const carts = useSelector((store) => store.cart.products);
-  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
   const items = [
     {
       key: "1",
@@ -77,7 +79,9 @@ function Header() {
             </Link>
 
             <Dropdown menu={{ items, selectable: true }}>
-              <Space className="font-semibold cursor-pointer hover:text-amber-700 dark:text-white">Sản phẩm</Space>
+              <Space className="font-semibold cursor-pointer hover:text-amber-700 dark:text-white">
+                Sản phẩm
+              </Space>
             </Dropdown>
           </div>
 
@@ -103,23 +107,15 @@ function Header() {
                 />
               </button>
             </Badge>
-            {/* <div className="flex items-center justify-center w-7 h-7 bg-gradient-to-r from-orange-200 to-orange-400 dark:from-gray-600 dark:text-white dark:bg-orange-300 text-white rounded-full cursor-pointer hover:bg-gray-600 transition-colors duration-300">
-              <UserOutlined />
-            </div> */}
-             {userIsAuthenticated ? (
-              <Dropdown overlay={<Menu items={userMenuItems} />}>
-              <div
-                className="flex items-center justify-center w-7 h-7 bg-gradient-to-r from-orange-200 to-orange-400 dark:from-gray-600 dark:text-white dark:bg-orange-300 text-white rounded-full cursor-pointer hover:bg-gray-600 transition-colors duration-300"
-                onClick={handleUserIconClick}
-              >
-                <UserOutlined />
-              </div>
-              </Dropdown>
-            ) : (
-              <Link to="/login1" className="px-4 py-2 bg-gradient-to-r from-orange-200 to-orange-400 dark:from-gray-600 dark:text-white dark:bg-orange-300 text-white rounded-md cursor-pointer hover:bg-gray-600 transition-colors duration-300">
-                Đăng nhập
-              </Link>
-            )}
+            <div className="">
+              {user?.token ? (
+                <div className="flex items-center justify-center w-7 h-7 bg-gradient-to-r from-orange-200 to-orange-400 dark:from-gray-600 dark:text-white dark:bg-orange-300 text-white rounded-full cursor-pointer hover:bg-gray-600 transition-colors duration-300">
+                  <UserOutlined />
+                </div>
+              ) : (
+                <Link to={"/login1"}>Đăng nhập</Link>
+              )}
+            </div>
             <div>
               <DarkMode />
             </div>
