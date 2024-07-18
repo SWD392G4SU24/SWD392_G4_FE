@@ -52,13 +52,19 @@ function Carousel({ numOfSlide, isUseNavigate }) {
   }, []);
 
   const handleOnClickCate = (id) => {
-    id === "7"
+    id === "1"
       ? (window.location.href = `/dc`)
-      : id === "9"
+      : id === "5"
       ? (window.location.href = `/ht`)
-      : id === "10"
+      : id === "2"
       ? (window.location.href = `/vt`)
-      : (window.location.href = `/n`);
+      : id === "3"
+      ? (window.location.href = `/n`)
+      : id === "4"
+      ? (window.location.href = `/dh`)
+      : id === "6"
+      ? (window.location.href = `/kg`)
+      : (window.location.href = `/lac`);
   };
 
   const handleOnClickDetail = (id) => {
@@ -141,33 +147,48 @@ function Carousel({ numOfSlide, isUseNavigate }) {
         <h3 className="text-center mt-2 mb-10">
           Xin hãy thưởng thức những gì chúng tôi có
         </h3>
-        <Row justify="space-evenly">
+
+        <Swiper
+          slidesPerView={4}
+          spaceBetween={10}
+          freeMode={true}
+          navigation={true}
+          modules={[Navigation, Pagination]}
+        >
           {cates.map((cate) => (
-            <Col
-              span={4}
+            <SwiperSlide
               key={cate.id}
               onClick={() => {
                 handleOnClickCate(cate.id);
+                console.log(cate.id);
               }}
             >
-              <a className="cateLink">
-                {cate.id === "7" ? (
-                  <img src="https://i.imgur.com/RNxL7JQ.png" />
-                ) : cate.id === "8" ? (
-                  <img src="https://i.imgur.com/BLPmNge.png" />
-                ) : cate.id === "9" ? (
-                  <img src="https://i.imgur.com/cdocnbx.png" />
-                ) : (
-                  <img src="https://i.imgur.com/laou9su.png" />
-                )}
-                {/* <img src={cate.pic_path} alt="" /> */}
-                <h2 className="font-medium text-center text-xl font-serif">
-                  {cate.name}
-                </h2>
-              </a>
-            </Col>
+              <div className="ml-20 pb-16 pt-2 swiper-img-container cursor-pointer">
+                <a className="cateLink">
+                  {cate.id === "1" ? (
+                    <img src="https://i.imgur.com/RNxL7JQ.png" />
+                  ) : cate.id === "3" ? (
+                    <img src="https://i.imgur.com/BLPmNge.png" />
+                  ) : cate.id === "4" ? (
+                    <img src="https://i.pinimg.com/564x/a2/33/4a/a2334a2ce4bfd9d582ec959906a1cff3.jpg" />
+                  ) : cate.id === "5" ? (
+                    <img src="https://i.imgur.com/cdocnbx.png" />
+                  ) : cate.id === "6" ? (
+                    <img src="https://i.pinimg.com/564x/1b/57/77/1b5777410ab602fadcf8c0e8d567ab54.jpg" />
+                  ) : cate.id === "7" ? (
+                    <img src="https://i.pinimg.com/564x/1c/07/fa/1c07fa0ea62e3e02b09e3b7f94c1b8f7.jpg" />
+                  ) : (
+                    <img src="https://i.imgur.com/laou9su.png" />
+                  )}
+                  {/* <img src={cate.pic_path} alt="" /> */}
+                  <h2 className="flex justify-center w-48 font-medium text-center text-xl font-serif">
+                    {cate.name}
+                  </h2>
+                </a>
+              </div>
+            </SwiperSlide>
           ))}
-        </Row>
+        </Swiper>
       </>
 
       <>

@@ -45,6 +45,18 @@ function Header() {
       key: "5",
       label: <a href="/ht">Hoa tai</a>,
     },
+    {
+      key: "6",
+      label: <a href="/dh">Đồng hồ</a>,
+    },
+    {
+      key: "7",
+      label: <a href="/kg">Kiềng</a>,
+    },
+    {
+      key: "8",
+      label: <a href="/lac">Lắc</a>,
+    },
   ];
   const userMenuItems = [
     {
