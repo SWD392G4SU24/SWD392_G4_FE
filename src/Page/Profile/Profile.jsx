@@ -11,9 +11,9 @@ import {
   CopyOutlined,
   CheckCircleOutlined,
 } from "@ant-design/icons";
-import { Input, Space, Card } from "antd";
+import { Input, Space,Button,Form } from "antd";
 // Formik này là để lấy dữ liệu từ ô mình nhập
-import { withFormik, Form } from "formik";
+import { withFormik } from "formik";
 // Check validation
 import * as Yup from "yup";
 import { display } from "@mui/system";
@@ -48,6 +48,11 @@ function Profile(props) {
   const productsPerPage = 3;
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const userId = useSelector(selectId); // Lấy user ID từ Redux store
 
@@ -84,6 +89,13 @@ function Profile(props) {
     if (contentRef.current) {
       contentRef.current.scrollIntoView({ behavior: "smooth" });
     }
+  };
+   
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
   };
 
   //  Api get infor user
@@ -171,6 +183,40 @@ function Profile(props) {
       e.preventDefault();
     }
     updateUserProfile();
+  };
+
+  //Api changePassword
+  const changePassword = async (oldPassword, newPassword) => {
+    try {
+      const response = await api.put('/change-password', {
+        oldPassword, // Mật khẩu cũ
+        newPassword // Mật khẩu mới
+      });
+      return response.data; 
+    } catch (error) {
+      console.error('Error changing password:', error); 
+      throw error; 
+    }
+  };
+
+  const handleSubmitPassword = async (values) => {
+    const { oldPassword, newPassword, confirmPassword } = values;
+    if (newPassword !== confirmPassword) {
+      alert('Mật khẩu mới và xác nhận mật khẩu không khớp.');
+      return;
+    }
+    setLoading(true);
+    try {
+      await changePassword(oldPassword, newPassword);
+      alert('Thay đổi mật khẩu thành công');
+      setOldPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    } catch (error) {
+      alert('Có lỗi xảy ra khi thay đổi mật khẩu');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const renderContent = () => {
@@ -273,6 +319,13 @@ function Profile(props) {
             {renderPromotion()}
           </div>
         );
+        case "Đặt lại mật khẩu":
+        return (
+          <div>
+            <h1 className={styles.headerPromotion}>Đặt lại mật khẩu</h1>
+            {renderChangePassword()}
+          </div>
+        ); 
       default:
         return null;
     }
@@ -467,7 +520,7 @@ function Profile(props) {
                     )}
                   </Space>
                   <h2>{product.name}</h2>
-                  <p>Giá: {product.productCost}</p>
+                  <p>Giá: {formatPrice(product.productCost)}</p>
                 </div>
                 <div>
                   <button
@@ -553,10 +606,10 @@ function Profile(props) {
                       Số Lượng: {order.orderDetailsDto[0].quantity}
                     </p>
                     <p className={styles.orderPrice}>
-                      Giá: {order.orderDetailsDto[0].productCost}
+                      Giá: {formatPrice(order.orderDetailsDto[0].productCost)}
                     </p>
                     <p className={styles.orderTotalPrice}>
-                      Tổng tiền: {order.totalCost}
+                      Tổng tiền: {formatPrice(order.totalCost)}
                     </p>
                   </div>
                 </div>
@@ -748,6 +801,67 @@ function Profile(props) {
     );
   };
 
+  const renderChangePassword = () => {
+    return (
+      <Form onFinish={handleSubmitPassword} className={styles.containerPassword}>
+        <Form.Item
+          label="Mật khẩu cũ"
+          name="oldPassword"
+          rules={[
+            { required: true, message: 'Vui lòng nhập mật khẩu cũ' },
+          ]}
+        >
+          <Input.Password
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+            className={styles.antInputPassword} 
+          />
+        </Form.Item>
+        <Form.Item
+          label="Mật khẩu mới"
+          name="newPassword"
+          rules={[
+            { required: true, message: 'Vui lòng nhập mật khẩu mới' },
+            { min: 6, message: 'Mật khẩu mới phải có ít nhất 6 ký tự' },
+          ]}
+        >
+          <Input.Password
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            className={styles.antInputPassword} 
+          />
+        </Form.Item>
+        <Form.Item
+          label="Xác nhận mật khẩu mới"
+          name="confirmPassword"
+          dependencies={['newPassword']}
+          rules={[
+            { required: true, message: 'Vui lòng xác nhận mật khẩu mới' },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('newPassword') === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));
+              },
+            }),
+          ]}
+        >
+          <Input.Password
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            className={styles.antInputPassword} 
+          />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" loading={loading} className={styles.antBtnPrimary}>
+            Thay đổi mật khẩu
+          </Button>
+        </Form.Item>
+      </Form>
+    );
+  };
+  
   return (
     <div className={styles.container}>
       <button
@@ -771,7 +885,7 @@ function Profile(props) {
           style={{ display: isSidebarHidden ? "none" : "block" }}
         >
           <ul className={styles.listGroup}>
-            {["Tài Khoản", "Yêu Thích", "Đơn hàng", "Khuyến mãi"].map((tab) => (
+            {["Tài Khoản", "Yêu Thích", "Đơn hàng", "Khuyến mãi","Đặt lại mật khẩu"].map((tab) => (
               <li
                 key={tab}
                 className={`${styles.listHover} ${styles.customList} ${

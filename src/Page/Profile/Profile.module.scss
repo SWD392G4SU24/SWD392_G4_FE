@@ -732,3 +732,91 @@
   .tooltip:hover .tooltiptext {
     visibility: visible;
   }
+
+
+
+
+
+  .containerPassword {
+    max-width: 500px;
+    margin: 0 auto;
+    margin-top: 100px;
+    margin-bottom: 50px;
+
+  }
+  
+  .antInputPassword {
+    border-radius: 5px;
+    border: 1px solid #d9d9d9;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
+  
+  .antInputPassword:focus {
+    border-color: #40a9ff;
+    box-shadow: 0 0 0 2px rgba(28, 134, 237, 0.2);
+  }
+  
+  .antBtnPrimary {
+    width: 100%;
+    height: 50px;
+    border-radius: 5px;
+    background-color: #40a9ff;
+    color: #fff;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .antBtnPrimary:hover {
+    background-color: #2d94f2;
+  }
+  
+  .antBtnPrimary:focus {
+    box-shadow: 0 0 0 2px rgba(28, 134, 237, 0.2);
+  }
+  
+  .antBtnPrimary:disabled {
+    background-color: #b8c6cd;
+    border-color: #b8c6cd;
+    color: #fff;
+    cursor: not-allowed;
+  }
+  
+  .antFormItem-explain-error {
+    margin-top: 5px;
+  }
+  
+  .antFormItem-explain-error-content {
+    color: #ff4d4f;
+  }
+  
+  .antFormItem-rtl {
+    text-align: left;
+  }
+  
+  .antFormItem-label {
+    text-align: left;
+  }
+  
+  .antFormItem-required::before {
+    display: none;
+  }
+  
+  .ant-form-item {
+    margin-bottom: 20px;
+  }
+
+
+  .ant-form-item-label .ant-form-item-required:before {
+    font-size: 20px;
+    margin-right: 4px;
+  }
+  
+  .ant-form-item-label label {
+    font-size: 20px;
+  }
