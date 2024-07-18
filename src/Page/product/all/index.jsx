@@ -20,9 +20,7 @@ function ProductAll() {
   };
 
   const fetchProductAll = async () => {
-    const rs = await api.get(
-      `/Product`
-    );
+    const rs = await api.get(`/Product`);
     setProduct(rs.data);
     console.log(rs.data);
   };
@@ -37,7 +35,7 @@ function ProductAll() {
   const filterHT = products.filter((prod) => prod.categoryID == "9");
   console.log(filterHT.map((ht) => ht.name));
 
-  const filterVT = products.filter((prod) => prod.categoryID == "10");
+  const filterVT = products.filter((prod) => prod.categoryID == "2");
   console.log(filterVT.map((ht) => ht.name));
 
   const filterDC = products.filter((prod) => prod.categoryID == "7");

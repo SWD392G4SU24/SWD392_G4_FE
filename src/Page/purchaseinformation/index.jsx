@@ -128,18 +128,40 @@ function FillInformationForPurchase() {
         <div className="px-28 w-5/12 mt-14">
           <div className="border border-gray-400 shadow-md py-4 px-10">
             <h1 className="px-16 pb-7 font-serif text-2xl">Đơn mua hàng</h1>
-            <hr className="py-3" />
-            <div className="flex justify-between py-3 font-bold text-xl">
+            <hr className="" />
+            {selectedProduct?.map((product) => (
+              <div key={product.id}>
+                <div className="flex justify-between py-3 gap-5 w-full">
+                  <div>
+                    <h1 className="">{product.name}</h1>
+                    <h1 className="text-sm text-gray-500">
+                      Số lượng: {product.quantity}
+                    </h1>
+                  </div>
+                  <h1>
+                    {(
+                      parseFloat(
+                        product.productCost
+                          .toString()
+                          .replace(/\./g, "")
+                          .replace(",", ".")
+                      ) * product.quantity
+                    ).toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}{" "}
+                  </h1>
+                </div>
+              </div>
+            ))}
+            <hr />
+            <div className="flex justify-between mt-5 font-bold text-xl">
               <h2>Tổng:</h2>
               <h2>{formattedSubtotal2}</h2>
             </div>
             <div className="py-5">
               <div className="flex flex-col border bg-black text-white font-serif">
-                <button
-                  className="py-2 px-10"
-                  onClick={handlePayment}
-                  // onChange={handleCreateOrder}
-                >
+                <button className="py-2 px-10" onClick={handlePayment}>
                   Thanh Toán
                 </button>
               </div>
