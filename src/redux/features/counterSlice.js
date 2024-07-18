@@ -1,3 +1,5 @@
+
+
 import { createSlice } from "@reduxjs/toolkit";
 
 export const counterSlice = createSlice({
@@ -6,6 +8,9 @@ export const counterSlice = createSlice({
   reducers: {
     login: (state, actions) => {
       state = actions.payload;
+      state.user = actions.payload.user;
+      state.token = actions.payload.token;
+      state.id = actions.payload.id;
       return state;
     },
     logout: () => {
@@ -16,4 +21,12 @@ export const counterSlice = createSlice({
 });
 export const { login, logout } = counterSlice.actions;
 export const selectUser = (store) => store.user;
+export const selectToken = (store) => store.user.token;
+export const selectId = (store) => store.user?.id;
+export const selectUserName = (store) => store.user.username;
 export default counterSlice.reducer;
+
+
+
+
+

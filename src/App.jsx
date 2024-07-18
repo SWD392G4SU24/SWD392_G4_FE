@@ -46,8 +46,17 @@ import ManagePromotion from "./Page/promotion";
 import DongHo from "./Page/product/eachProduct/DongHo";
 import Kieng from "./Page/product/eachProduct/Kieng";
 import Lac from "./Page/product/eachProduct/Lac";
+import {
+  ValidRouteAdmin,
+  ValidRouteManager,
+  ValidRouteStaff,
+} from "./route/protectedRoute";
+
+
+
 
 function App() {
+  //const user = useSelector(selectUser);
   const router = createBrowserRouter([
     {
       path: "/",
@@ -125,7 +134,6 @@ function App() {
           path: "/dh",
           element: <DongHo />,
         },
-
         {
           path: "/kg",
           element: <Kieng />,
@@ -181,27 +189,27 @@ function App() {
       children: [
         {
           path: "/manager",
-          element: <Manager />,
+          element: <ValidRouteManager element={<Manager />} />,
         },
         {
           path: "/dashboard",
-          element: <AdminPage2 />,
+          element: <ValidRouteAdmin element={<AdminPage2 />} />,
         },
         {
           path: "/form",
-          element: <ManageForm />,
+          element: <ValidRouteManager element={<ManageForm />} />,
         },
         {
           path: "/crudproduct",
-          element: <ManageProducts />,
+          element: <ValidRouteManager element={<ManageProducts />} />,
         },
         {
           path: "/staffsearch",
-          element: <UserSearch />,
+          element: <ValidRouteStaff element={<UserSearch />} />,
         },
         {
           path: "/stafforder",
-          element: <StaffOrder />,
+          element: <ValidRouteStaff element={<StaffOrder />} />,
         },
       ],
     },
