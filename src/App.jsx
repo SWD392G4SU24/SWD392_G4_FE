@@ -49,6 +49,7 @@ import {
 } from "./route/protectedRoute";
 
 function App() {
+  //const user = useSelector(selectUser);
   const router = createBrowserRouter([
     {
       path: "/",
