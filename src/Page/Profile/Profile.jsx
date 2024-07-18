@@ -71,6 +71,13 @@ function Profile(props) {
       contentRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+   
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(amount);
+  };
 
 
   //  Api get infor user
@@ -412,7 +419,7 @@ function Profile(props) {
                     )}
                   </Space>
                   <h2>{product.name}</h2>
-                  <p>Giá: {product.productCost}</p>
+                  <p>Giá: {formatCurrency(product.productCost)}</p>
                 </div>
                 <div>
                   <button className={styles.favoriteButton} onClick={() => {
