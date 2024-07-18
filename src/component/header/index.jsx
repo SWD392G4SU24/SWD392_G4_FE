@@ -136,7 +136,10 @@ function Header() {
                   </div>
                 </Dropdown>
               ) : (
-                <Link to={"/login1"}  className="px-4 py-2 bg-gradient-to-r from-orange-200 to-orange-400 dark:from-gray-600 dark:text-white dark:bg-orange-300 text-white rounded-md cursor-pointer hover:bg-gray-600 transition-colors duration-300">
+                <Link
+                  to={"/login1"}
+                  className="px-4 py-2 bg-gradient-to-r from-orange-200 to-orange-400 dark:from-gray-600 dark:text-white dark:bg-orange-300 text-white rounded-md cursor-pointer hover:bg-gray-600 transition-colors duration-300"
+                >
                   Đăng nhập
                 </Link>
               )}
