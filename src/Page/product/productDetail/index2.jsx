@@ -4,17 +4,17 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "./index.scss";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addProduct, clearAll } from "../../../redux/features/cartSlice";
 import api from "../../../config/axios";
-
+import { selectId } from "../../../redux/features/counterSlice";
 function ProductDetail2() {
   const [prodetail, setProdDetail] = useState([]);
   const { id } = useParams();
   const [isFavor, setIsFavor] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
   const dispatch = useDispatch();
-
+  const userId = useSelector(selectId);
   const fetchProductDetail = () => {
     api 
       .get(`/Product/${id}`)
@@ -26,12 +26,41 @@ function ProductDetail2() {
 
   useEffect(() => {
     fetchProductDetail();
-  }, [id]);
+    checkFavoriteStatus();
+  }, [id, userId]);
   
-
-  const toggleIcon = () => {
-    setIsFavor((prevFavor) => !prevFavor);
+  const checkFavoriteStatus = () => {
+    const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
+    const isFavorite = favorites.some(favorite => favorite.id === id);
+    setIsFavor(isFavorite);
   };
+  
+  const toggleIcon = () => {
+    const favorites = JSON.parse(localStorage.getItem(`favorites_${userId}`)) || [];
+    const itemIndex = favorites.findIndex(favorite => favorite.id === id);
+  
+    if (itemIndex !== -1) {
+      // Remove the item if it's already in the favorites
+      favorites.splice(itemIndex, 1);
+      setIsFavor(false);
+    } else {
+      // Add the item to the favorites
+      const newItem = {
+        id: id,
+        name: prodetail.name,
+        productCost: prodetail.productCost,
+        imageURL: prodetail.imageURL
+      };
+      favorites.push(newItem);
+      setIsFavor(true);
+    }
+  
+    localStorage.setItem(`favorites_${userId}`, JSON.stringify(favorites));
+  };
+  
+  // const toggleIcon = () => {
+  //   setIsFavor((prevFavor) => !prevFavor);
+  // };
   
   
   const toggleCart = () => {
@@ -130,11 +159,17 @@ function ProductDetail2() {
                 )}
               </div>
 
-              <Space className="heart_icon text-xl" onClick={toggleIcon}>
+              <Space className="heart_icon text-xl ml-5" onClick={toggleIcon}>
                 {isFavor ? (
+                  <div class="tooltip">
                   <HeartFilled style={{ color: "#B18165" }} />
+                  <span class="tooltiptext"> Bỏ Thích</span>
+                  </div>
                 ) : (
+                  <div class="tooltip">
                   <HeartOutlined />
+                  <span class="tooltiptext"> Yêu thích</span>
+                  </div>
                 )}
               </Space>
             </div>
