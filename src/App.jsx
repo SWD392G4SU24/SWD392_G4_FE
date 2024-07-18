@@ -43,6 +43,9 @@ import UserSearch from "./Page/staff/index2";
 import StaffOrder from "./Page/staff/order";
 import ManageForm from "./Page/form";
 import ManagePromotion from "./Page/promotion";
+import DongHo from "./Page/product/eachProduct/DongHo";
+import Kieng from "./Page/product/eachProduct/Kieng";
+import Lac from "./Page/product/eachProduct/Lac";
 import {
   ValidRouteAdmin,
   ValidRouteManager,
@@ -125,6 +128,18 @@ function App() {
         {
           path: "/n",
           element: <Nhan />,
+        },
+        {
+          path: "/dh",
+          element: <DongHo />,
+        },
+        {
+          path: "/kg",
+          element: <Kieng />,
+        },
+        {
+          path: "/lac",
+          element: <Lac />,
         },
         {
           path: "/vt",

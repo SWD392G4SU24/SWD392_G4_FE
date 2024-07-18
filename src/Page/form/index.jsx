@@ -43,6 +43,10 @@ function ManageForm() {
   const fetchCurrentForm = async () => {
     try {
       const response = await api.get(`/Form/${currentID}`);
+      form.setFieldsValue({
+        ...response.data,
+        
+      })
       setCurrentForm(response.data);
     } catch (error) {
       console.log("Error fetching form data:", error);
