@@ -26,6 +26,7 @@
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
     "date-fns": "^3.6.0",
+    "dayjs": "^1.11.11",
     "firebase": "^10.12.2",
     "formik": "^2.4.6",
     "fortawesome": "^0.0.1-security",

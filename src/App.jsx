@@ -40,11 +40,11 @@ import ReturnWarranty from "./Page/rule/returns";
 import BuyTutorial from "./Page/rule/tutorial/buyProduct";
 import SecurityInfo from "./Page/rule/security";
 import { selectUser } from "./redux/features/counterSlice";
-import Form from "./Page/form";
-
+import ManageForm from "./Page/form";
+import ManagePromotion from "./Page/promotion";
 
 function App() {
-  const user = useSelector(selectUser);
+  // const user = useSelector(selectUser);
   const router = createBrowserRouter([
     {
       path: "/",
@@ -154,6 +154,10 @@ function App() {
           path: "/securityinfo",
           element: <SecurityInfo />,
         },
+        {
+          path: "/promotion",
+          element: <ManagePromotion />,
+        },
       ],
     },
     {
@@ -169,7 +173,7 @@ function App() {
         },
         {
           path: "/form",
-          element: <Form />,
+          element: <ManageForm />,
         },
         {
           path: "/crudproduct",
