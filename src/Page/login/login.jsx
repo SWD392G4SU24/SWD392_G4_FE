@@ -44,12 +44,21 @@ function Login1() {
           password: password,
         },
       });
-
       toast.success("Đăng nhập thành công!");
       dispatch(login(res.data));
       localStorage.setItem("token", res.data.token);
-      navigate("/");
-      window.location.reload(); // Reload trang sau khi đăng nhập thành công để thay đổi dc icon đăng nhập trên header
+      if (res.data.role === "Manager") {
+        navigate("/manager");
+      }
+      if (res.data.role === "Staff") {
+        navigate("/staffsearch");
+      }
+      if (res.data.role === "Admin") {
+        navigate("/dashboard");
+      }
+      if (res.data.role === "Customer") {
+        navigate("/");
+      }
     } catch (error) {
       toast.error(error.response.data.detail);
     }

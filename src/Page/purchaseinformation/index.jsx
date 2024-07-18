@@ -3,23 +3,33 @@ import { useSelector } from "react-redux";
 import api from "../../config/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
+import { selectUser } from "../../redux/features/counterSlice";
+import { Tooltip } from "antd";
 
 function FillInformationForPurchase() {
-  const [userCurrent, setUserCurrent] = useState([]);
+  const [userCurrent, setUserCurrent] = useState("");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const selectedProduct = useSelector((store) => store.cart.selectedItems);
+  const user = useSelector(selectUser);
+  const orderID = useSelector((store) => store.order.orderID);
+  console.log(orderID);
+  console.log(user);
   console.log(selectedProduct);
-  const subtotal = selectedProduct.reduce((acc, item) => {
-    const cost = item.Cost.replace(/\./g, "").replace(",", ".");
+
+  const subtotal = selectedProduct?.reduce((acc, item) => {
+    const cost = item.productCost
+      .toString()
+      .replace(/\./g, "")
+      .replace(",", ".");
     const itemPrice = parseFloat(cost) * item.quantity;
     return acc + itemPrice;
   }, 0);
 
-  const formattedSubtotal1 = subtotal.toFixed(0);
+  const formattedSubtotal1 = subtotal?.toFixed(0);
 
-  const formattedSubtotal2 = subtotal.toLocaleString("vi-VN", {
+  const formattedSubtotal2 = subtotal?.toLocaleString("vi-VN", {
     style: "currency",
     currency: "VND",
   });
@@ -27,29 +37,14 @@ function FillInformationForPurchase() {
   const handlePayment = async () => {
     try {
       const response = await api.post("/create-payment-url", {
-        orderType: "VNPay",
+        orderType: orderID,
         amount: formattedSubtotal1,
-        orderDescription: "string",
-        name: "string",
       });
       window.location.href = response.data;
     } catch (e) {
       console.log(e);
     }
   };
-
-  // const handleCreateOrder = async () => {
-  //   const orderDetails = selectedProduct.map((item) => ({
-  //     productID: item.id,
-  //     quantity: item.quantity,
-  //   }));
-  //   const orderResponse = await api.post("/customer-create", {
-  //     orderDetails: orderDetails,
-  //     promotionID: "",
-  //     paymentMethodID: 1,
-  //   });
-  //   console.log(orderResponse);
-  // };
 
   async function fetchCurrentUser() {
     try {
@@ -132,20 +127,10 @@ function FillInformationForPurchase() {
         </div>
         <div className="px-28 w-5/12 mt-14">
           <div className="border border-gray-400 shadow-md py-4 px-10">
-            <h1 className="px-20 pb-7 font-serif text-2xl">Order Total</h1>
-            <hr />
-            <div className="pt-5 pb-12">
-              <h2 className="pb-2">Mã khuyến mãi (nếu có)</h2>
-              <input
-                type="text"
-                placeholder="Nhập mã khuyến mãi"
-                className="border border-gray-300 py-2 px-2"
-                style={{ width: "100%" }}
-              ></input>
-            </div>
+            <h1 className="px-16 pb-7 font-serif text-2xl">Đơn mua hàng</h1>
             <hr className="py-3" />
             <div className="flex justify-between py-3 font-bold text-xl">
-              <h2>Total</h2>
+              <h2>Tổng:</h2>
               <h2>{formattedSubtotal2}</h2>
             </div>
             <div className="py-5">
