@@ -578,66 +578,71 @@ function Profile(props) {
     );
   };
 
-    const renderOrderContent = () => {
+  const renderOrderContent = () => {
     const filtered = orderHistory.filter(
       (order) => orderFilter === "All" || order.status === orderFilter
     );
-
+  
     // Calculate total pages
     const totalPages = Math.ceil(filtered.length / ordersPerPage);
-
+  
     // Get current orders
     const indexOfLastOrder = currentPage * ordersPerPage;
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
     const currentOrders = filtered.slice(indexOfFirstOrder, indexOfLastOrder);
-
+  
     return (
       <div>
         <div className={styles.ordersList}>
           {currentOrders.length > 0 ? (
             currentOrders.map((order) => (
               <div key={order.id} className={styles.orderDetails}>
-                <img
-                  src={order.orderDetailsDto[0].productImgUrl}
-                  alt={order.orderDetailsDto[0].product}
-                  className={styles.orderImage}
-                />
-                <div className={styles.orderInfo}>
-                  <div>
-                    <h2 className={styles.orderName}>
-                      {order.orderDetailsDto[0].product}
-                    </h2>
-                    <p className={styles.orderQuantity}>
-                      Số Lượng: {order.orderDetailsDto[0].quantity}
-                    </p>
-                    <p className={styles.orderPrice}>
-                      Giá: {formatPrice(order.orderDetailsDto[0].productCost)}
-                    </p>
-                    <p className={styles.orderTotalPrice}>
-                      Tổng tiền: {formatPrice(order.totalCost)}
-                    </p>
+                {order.orderDetailsDto.map((item) => (
+                  <div key={item.id} className={styles.orderItem}>
+                    <img
+                      src={item.productImgUrl}
+                      alt={item.product}
+                      className={styles.orderImage}
+                    />
+                    <div className={styles.orderInfo}>
+                      <h2 className={styles.orderName}>{item.product}</h2>
+                      <p className={styles.orderQuantity}>
+                        Số Lượng: {item.quantity}
+                      </p>
+                      <p className={styles.orderPrice}>
+                        Giá: {formatPrice(item.productCost)}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className={styles.containerDateAndStatus}>
-                  <p className={styles.orderDate}>
-                    Ngày: {new Date(order.pickupDate).toLocaleDateString()}
+                ))}
+                <div className={styles.orderSummary}>
+                  <p className={styles.orderTotalPrice}>
+                    Tổng tiền: {formatPrice(order.totalCost)}
                   </p>
-                  <div
-                    className={`${styles.statusContainer} ${
-                      order.status === "COMPLETED" ? styles.completed : ""
-                    } ${order.status === "PAID" ? styles.processing : ""} ${
-                      order.status === "REFUNDED" ? styles.cancelled : ""
-                    }`}
-                  >
-                    <p className={styles.status}>
-                      {order.status === "COMPLETED"
-                        ? "ĐÃ HOÀN THÀNH"
-                        : order.status === "PAID"
-                        ? "ĐÃ THANH TOÁN"
-                        : order.status === "REFUNDED"
-                        ? "ĐÃ HOÀN TRẢ"
-                        : order.status}
-                    </p>
+                  <div className={styles.containerDateAndStatus}>
+                    <div className={styles.orderMeta}>
+                      <p className={styles.orderId}>Mã giao dịch: {order.id}</p>
+                      <p className={styles.orderDate}>
+                        Ngày: {new Date(order.pickupDate).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div
+                      className={`${styles.statusContainer} ${
+                        order.status === "COMPLETED" ? styles.completed : ""
+                      } ${order.status === "PAID" ? styles.processing : ""} ${
+                        order.status === "REFUNDED" ? styles.cancelled : ""
+                      }`}
+                    >
+                      <p className={styles.status}>
+                        {order.status === "COMPLETED"
+                          ? "ĐÃ HOÀN THÀNH"
+                          : order.status === "PAID"
+                          ? "ĐÃ THANH TOÁN"
+                          : order.status === "REFUNDED"
+                          ? "ĐÃ HOÀN TRẢ"
+                          : order.status}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -648,7 +653,7 @@ function Profile(props) {
             </p>
           )}
         </div>
-
+  
         {currentOrders.length > 0 && (
           <div className={styles.pagination}>
             <button
@@ -681,6 +686,7 @@ function Profile(props) {
       </div>
     );
   };
+  
 
   const renderPromotion = () => {
     const totalPages = Math.ceil(promotions.length / promotionsPerPage);

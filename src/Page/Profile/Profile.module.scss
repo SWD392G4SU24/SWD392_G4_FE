@@ -304,7 +304,7 @@
 
 
 .orderHistorySection {
-    background-color: white; //#f9f9f9
+    background-color: white;
     padding: 20px;
     border-radius: 5px;
     justify-content: center;
@@ -316,7 +316,6 @@
     margin-bottom: 40px;
     justify-content: center;
     align-items: center;
-    margin-bottom: 40px;
     margin-top: -80px; 
 }
 
@@ -345,14 +344,14 @@
     display: flex;
     flex-direction: column;
     border-color: #000;
-
 }
 
 .orderDetails {
     display: flex;
+    flex-direction: column; /* Đảm bảo các sản phẩm hiển thị theo cột */
     align-items: center;
     margin-bottom: 20px;
-    padding: 4px;
+    padding: 10px; /* Tăng padding để có khoảng trống cho các sản phẩm */
     position: relative; 
     border: solid 0.02px;
     border-radius: 5px;
@@ -361,76 +360,103 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     animation: fadeIn 0.5s ease-out;
 }
+
 .orderDetails:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
-  
+
+.orderItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Tạo khoảng trống giữa các sản phẩm */
+    width: 100%;
+}
+
 .orderInfo {
     flex: 2;
-    padding-bottom: 30px;
+    padding: 10px 0; /* Điều chỉnh padding cho từng sản phẩm */
 }
 
-
-.containerOrder{
-    border: 10px;
-}
 .orderImage {
     width: 120px; 
     height: 138px;
     margin-right: 20px;
     object-fit: cover; 
-    border-radius: 5px; 
-   
-}
-
-.orderName{
-    font-weight:600;
-    font-size: 20px;
-   margin-top: -10px;
-}
-.orderDate{
-    font-size: 16px;
-    color: #000000; 
-    margin-bottom: 60px;
-    margin-right: 10px;
-    font-weight: bold;
-}  
-.orderQuantity{
-    font-weight:400;
-}
-.orderPrice{
-    font-weight:400;
-}
-.orderTotalPrice{
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: -35px;
-    margin-top: 20px;
-}
-
-.containerDateAndStatus{
-    display: flex;
-    justify-content: flex-end; /* Canh phải các phần tử bên trong */
-    align-items: center;
-    gap: 50px; /* Khoảng cách giữa ngày và trạng thái */
-    padding-right: 20px;
-    margin-top: 10px;
-}
-
-.statusContainer {
-    position: absolute;
-    display: inline-block; /* Chỉ bao quanh nội dung */
-    padding: 5px 10px; /* Thêm padding xung quanh văn bản */
     border-radius: 5px;
 }
 
+.orderName {
+    font-weight: 600;
+    font-size: 20px;
+    margin-top: -10px;
+}
+
+.orderQuantity {
+    font-weight: 400;
+}
+
+.orderPrice {
+    font-weight: 400;
+}
+
+.orderSummary {
+    width: 100%; /* Đảm bảo chiều rộng cho phần tóm tắt */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Canh phải phần tóm tắt */
+    padding: 10px 0;
+    margin-top: -60px;
+}
+
+.orderTotalPrice {
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 20px; /* Điều chỉnh khoảng cách từ các sản phẩm */
+}
+
+.containerDateAndStatus {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 20px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.orderMeta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Canh phải phần ID và ngày */
+    gap: 5px; /* Khoảng cách giữa ID và ngày */
+}
+
+.orderId {
+    font-size: 16px;
+    color: #000000; 
+    font-weight: bold;
+}
+
+.orderDate {
+    font-size: 16px;
+    color: #000000;
+    font-weight: bold;
+   margin-right: 100px;
+}
+
+.statusContainer {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
 
 .status {
     font-size: 14px;
-    font-weight:500;;
+    font-weight: 500;
     color: #FFFFFF; 
 }
+
+
 
 .statusContainer.completed {
     background-color: #28a745; 
