@@ -507,7 +507,7 @@ function Profile(props) {
             {currentProducts.map((product) => (
               <div className={styles.favoritesSection} key={product.id}>
                 <div>
-                  <img src={product.imageURL} alt={product.name} width="110" />
+                  <img src={product.imageURL} alt={product.name} width="70" height="80" />
                 </div>
 
                 <div className={styles.favoriteInfor}>
@@ -578,7 +578,7 @@ function Profile(props) {
     );
   };
 
-  const renderOrderContent = () => {
+    const renderOrderContent = () => {
     const filtered = orderHistory.filter(
       (order) => orderFilter === "All" || order.status === orderFilter
     );
