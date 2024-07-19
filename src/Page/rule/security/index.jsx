@@ -99,7 +99,7 @@ function SecurityInfo() {
       <h3>Điều 6. Bảo mật thông tin khách hàng</h3>
       <p>
         1. Thông tin cá nhân của khách hàng trên website
-        <a href="/">https://baotinmanhhai.vn</a> được ban quản trị cam kết bảo
+        <a href="/">https://JeWellry.vn</a> được ban quản trị cam kết bảo
         mật tuyệt đối theo chính sách bảo mật thông tin đã được đăng tải. Việc
         thu thập và sử dụng thông tin khách hàng chỉ được thực hiện khi có sự
         đồng ý của chính khách hàng trừ những trường hợp pháp luật có quy định

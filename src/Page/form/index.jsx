@@ -45,8 +45,7 @@ function ManageForm() {
       const response = await api.get(`/Form/${currentID}`);
       form.setFieldsValue({
         ...response.data,
-        
-      })
+      });
       setCurrentForm(response.data);
     } catch (error) {
       console.log("Error fetching form data:", error);
@@ -132,44 +131,6 @@ function ManageForm() {
     },
   };
 
-  // const columns = [
-  //   {
-  //     title: "Loại đơn",
-  //     dataIndex: "type",
-  //     key: "type",
-  //   },
-  //   {
-  //     title: "Nội dung đơn",
-  //     dataIndex: "content",
-  //     key: "content",
-  //   },
-  //   {
-  //     title: "Trạng thái",
-  //     dataIndex: "status",
-  //     key: "status",
-
-  //     render: (text, record) => {
-  //       return <Tag color="blue">{record.status}</Tag>;
-  //     },
-  //   },
-  //   {
-  //     title: "Ngày hẹn",
-  //     dataIndex: "appoinmentDate",
-  //     key: "appoinmentDate",
-  //     render: (date) => {
-  //       const formattedDay = date ? dayjs(date).format("DD-MM-YYYY") : "";
-  //       return date && <span>{formattedDay}</span>;
-  //     },
-  //   },
-  //   {
-  //     title: "Action",
-  //     key: "action",
-  //     render: (record) => (
-  //       <Button onClick={() => showModal(record.id)}>Chỉnh sửa</Button>
-  //     ),
-  //   },
-  // ];
-
   const handleChange = (value) => {
     console.log(value);
   };
@@ -177,7 +138,6 @@ function ManageForm() {
   return (
     <div className=" dark:bg-black/85 dark:text-orange-500 h-screen">
       <h1 className="text-4xl text-amber-700 py-7 pl-5">Quản lý đơn</h1>
-      {/* <Table columns={columns} dataSource={forms} /> */}
       <Table
         columns={[
           {
