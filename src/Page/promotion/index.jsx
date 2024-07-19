@@ -17,8 +17,10 @@ import en from "antd/es/date-picker/locale/en_US";
 import { toast } from "react-toastify"; // Import toast for notifications
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
+import { useNavigate } from "react-router-dom";
 
 function ManagePromotion() {
+  const navigate = useNavigate();
   const [form] = useForm();
   const [promotions, setPromotions] = useState([]);
   const [day, setDay] = useState(null);
@@ -47,7 +49,6 @@ function ManagePromotion() {
     if (currentID && currentID !== 0) {
       api.get(`/Promotion/${currentID}`).then((response) => {
         setCurrentPro(response.data.value);
-        // form.setFieldsValue(response.data);
         console.log(response.data.value);
       });
     } else {
@@ -76,26 +77,38 @@ function ManagePromotion() {
   };
 
   const handleSubmit = async (values) => {
-    console.log("Form values:", values);
     try {
-      const response = await api.post(`/Promotion/create`, {
-        description: values.description,
-        conditionsOfUse: values.conditionsOfUse,
-        reducedPercent: values.reducedPercent,
-        maximumReduce: values.maximumReduce,
-        exchangePoint: values.exchangePoint,
-        expiresTime: day,
-        userID: user.id,
-      });
-      console.log("Create promotion response:", response.data);
-      toast.success("Tạo thành công!");
+      let response;
+      if (currentID === 0) {
+        response = await api.post(`/Promotion/create`, {
+          description: values.description,
+          conditionsOfUse: values.conditionsOfUse,
+          reducedPercent: values.reducedPercent,
+          maximumReduce: values.maximumReduce,
+          exchangePoint: values.exchangePoint,
+          expiresTime: day,
+          userID: user.id,
+        });
+      } else {
+        response = await api.put(`/Promotion/${currentID}`, {
+          description: values.description,
+          conditionsOfUse: values.conditionsOfUse,
+          reducedPercent: values.reducedPercent,
+          maximumReduce: values.maximumReduce,
+          exchangePoint: values.exchangePoint,
+          expiresTime: day,
+          userID: user.id,
+        });
+      }
+      console.log("Update promotion response:", response.data);
+      toast.success("Cập nhật thành công!");
       fetchPromotions();
       handleCancel();
       form.resetFields();
       setRender(render + 1);
     } catch (error) {
-      console.error("Error creating promotion:", error);
-      toast.error("Đã xảy ra lỗi khi tạo mã khuyến mãi.");
+      console.error("Error updating promotion:", error);
+      toast.error("Đã xảy ra lỗi khi cập nhật mã khuyến mãi.");
     }
   };
 
@@ -124,6 +137,7 @@ function ManagePromotion() {
 
   return (
     <div>
+      <Button onClick={() => navigate("/manager")}>Quay ve</Button>
       <Button
         type="primary"
         onClick={() => {

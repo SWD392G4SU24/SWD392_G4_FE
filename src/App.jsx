@@ -26,7 +26,6 @@ import Nhan from "./Page/product/eachProduct/Nhan";
 import VongTay from "./Page/product/eachProduct/VongTay";
 import ProductDetail2 from "./Page/product/productDetail/index2";
 import DiamondPrice from "./Page/diamondPrice";
-import ManageProducts from "./Page/manage products";
 import Accounts from "./Page/admin/accounts";
 import Chart from "./component/chart/Chart";
 import Manager from "./Page/manager";
@@ -54,6 +53,7 @@ import {
 import ReOrder from "./Page/staff/re-order";
 import LayoutStaff from "./component/layout/index3";
 import CheckReceiveOrder from "./Page/staff/checkreceiveorder";
+import ManageProducts from "./Page/manage products";
 
 function App() {
   const router = createBrowserRouter([
@@ -177,10 +177,6 @@ function App() {
           path: "/securityinfo",
           element: <SecurityInfo />,
         },
-        {
-          path: "/promotion",
-          element: <ManagePromotion />,
-        },
       ],
     },
     {
@@ -197,10 +193,6 @@ function App() {
         {
           path: "/form",
           element: <ValidRouteManager element={<ManageForm />} />,
-        },
-        {
-          path: "/crudproduct",
-          element: <ValidRouteManager element={<ManageProducts />} />,
         },
       ],
     },
@@ -225,6 +217,14 @@ function App() {
     {
       path: "/checkreceive",
       element: <ValidRouteStaff element={<CheckReceiveOrder />} />,
+    },
+    {
+      path: "/promotion",
+      element: <ValidRouteManager element={<ManagePromotion />} />,
+    },
+    {
+      path: "/crudproduct",
+      element: <ValidRouteManager element={<ManageProducts />} />,
     },
   ]);
 

@@ -17,9 +17,11 @@ import buddhistEra from "dayjs/plugin/buddhistEra";
 import en from "antd/es/date-picker/locale/en_US";
 import enUS from "antd/es/locale/en_US";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 dayjs.extend(buddhistEra);
 
 function ManageForm() {
+  const navigate = useNavigate();
   const [form] = Form.useForm();
   const [forms, setForms] = useState([]);
   const [currentForm, setCurrentForm] = useState({});
@@ -45,8 +47,7 @@ function ManageForm() {
       const response = await api.get(`/Form/${currentID}`);
       form.setFieldsValue({
         ...response.data,
-        
-      })
+      });
       setCurrentForm(response.data);
     } catch (error) {
       console.log("Error fetching form data:", error);
@@ -176,6 +177,7 @@ function ManageForm() {
 
   return (
     <div className=" dark:bg-black/85 dark:text-orange-500 h-screen">
+      <Button onClick={() => navigate("/manager")}>Quay ve</Button>
       <h1 className="text-4xl text-amber-700 py-7 pl-5">Quản lý đơn</h1>
       {/* <Table columns={columns} dataSource={forms} /> */}
       <Table
