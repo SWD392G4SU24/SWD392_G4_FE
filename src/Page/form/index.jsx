@@ -87,10 +87,20 @@ function ManageForm() {
 
       console.log(data);
 
-      await api.patch(
-        `/Form/update?FormID=${currentID}&Content=${currentForm.content}&AppointmentDate=${values.appoinmentDate}`,
-        data
-      );
+      // await api.patch(
+      //   `/Form/update?FormID=${currentID}&Content=${currentForm.content}&AppointmentDate=${values.appoinmentDate}`,
+      //   data
+      // );
+
+      const formData = new FormData();
+      formData.append("FormID", currentID);
+      formData.append("Content", currentForm.content);
+      formData.append("AppointmentDate", values.appoinmentDate);
+      const response = await api.patch("/Form/update", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       await api.put(`/form/update-status`, {
         formID: currentID,
@@ -133,44 +143,6 @@ function ManageForm() {
     },
   };
 
-  // const columns = [
-  //   {
-  //     title: "Loại đơn",
-  //     dataIndex: "type",
-  //     key: "type",
-  //   },
-  //   {
-  //     title: "Nội dung đơn",
-  //     dataIndex: "content",
-  //     key: "content",
-  //   },
-  //   {
-  //     title: "Trạng thái",
-  //     dataIndex: "status",
-  //     key: "status",
-
-  //     render: (text, record) => {
-  //       return <Tag color="blue">{record.status}</Tag>;
-  //     },
-  //   },
-  //   {
-  //     title: "Ngày hẹn",
-  //     dataIndex: "appoinmentDate",
-  //     key: "appoinmentDate",
-  //     render: (date) => {
-  //       const formattedDay = date ? dayjs(date).format("DD-MM-YYYY") : "";
-  //       return date && <span>{formattedDay}</span>;
-  //     },
-  //   },
-  //   {
-  //     title: "Action",
-  //     key: "action",
-  //     render: (record) => (
-  //       <Button onClick={() => showModal(record.id)}>Chỉnh sửa</Button>
-  //     ),
-  //   },
-  // ];
-
   const handleChange = (value) => {
     console.log(value);
   };
@@ -179,7 +151,6 @@ function ManageForm() {
     <div className=" dark:bg-black/85 dark:text-orange-500 h-screen">
       <Button onClick={() => navigate("/manager")}>Quay ve</Button>
       <h1 className="text-4xl text-amber-700 py-7 pl-5">Quản lý đơn</h1>
-      {/* <Table columns={columns} dataSource={forms} /> */}
       <Table
         columns={[
           {

@@ -21,7 +21,7 @@ function BuyTutorial() {
         Bước 1: Khách hàng truy cập vào website của Bảo Tín Mạnh Hải theo đường
         link:{" "}
         <a className="text-blue-600" href="/">
-          https://baotinmanhhai.vn/
+          https://JeWellry.vn/
         </a>
         <br />
         <br />
