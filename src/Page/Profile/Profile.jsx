@@ -507,7 +507,7 @@ function Profile(props) {
             {currentProducts.map((product) => (
               <div className={styles.favoritesSection} key={product.id}>
                 <div>
-                  <img src={product.imageURL} alt={product.name} width="110" />
+                  <img src={product.imageURL} alt={product.name} width="70" height="80" />
                 </div>
 
                 <div className={styles.favoriteInfor}>
@@ -578,7 +578,7 @@ function Profile(props) {
     );
   };
 
-  const renderOrderContent = () => {
+    const renderOrderContent = () => {
     const filtered = orderHistory.filter(
       (order) => orderFilter === "All" || order.status === orderFilter
     );
@@ -725,7 +725,7 @@ function Profile(props) {
                   </div>
                   <div className={styles.promotionDetails}>
                     <h2>{promotion.description}</h2>
-                    <h3>Cho đơn từ {promotion.conditionsOfUse}K</h3>
+                    <h3>Cho đơn từ {formatConditionsOfUse(promotion.conditionsOfUse)}</h3>
                     <p>
                       Ngày hết hạn:{" "}
                       {new Date(promotion.expiresTime).toLocaleDateString()}
@@ -899,6 +899,14 @@ function Profile(props) {
     getUserPromotionExchange();
   }, []);
 
+
+  const formatConditionsOfUse = (value) => {
+    if (value >= 1000) {
+      return `${value / 1000} triệu`;
+    }
+    return `${value}K`;
+  };
+
   const renderPromotionExchange = () => {
     const totalPages = Math.ceil(promotionsExchange.length / promotionsExchangePerPage);
     const indexOfLastPromotion = currentPage * promotionsExchangePerPage;
@@ -925,7 +933,7 @@ function Profile(props) {
                   </div>
                   <div className={styles.promotionDetails}>
                     <h2>{promotion.description}</h2>
-                    <h3>Cho đơn từ {promotion.conditionsOfUse}K</h3>
+                    <h3>Cho đơn từ {formatConditionsOfUse(promotion.conditionsOfUse)}</h3>
                     <p>Ngày hết hạn: {new Date(promotion.expiresTime).toLocaleDateString()}</p>
                     <p>Điểm đổi: {promotion.exchangePoint}</p> 
                   </div>
