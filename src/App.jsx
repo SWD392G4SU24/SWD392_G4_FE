@@ -190,10 +190,6 @@ function App() {
           path: "/dashboard",
           element: <ValidRouteAdmin element={<AdminPage2 />} />,
         },
-        {
-          path: "/form",
-          element: <ValidRouteManager element={<ManageForm />} />,
-        },
       ],
     },
     {
@@ -225,6 +221,10 @@ function App() {
     {
       path: "/crudproduct",
       element: <ValidRouteManager element={<ManageProducts />} />,
+    },
+    {
+      path: "/form",
+      element: <ValidRouteManager element={<ManageForm />} />,
     },
   ]);
 

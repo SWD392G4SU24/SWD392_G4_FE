@@ -28,6 +28,9 @@ function ManageProducts() {
   const [diamonds, setDiamonds] = useState([]);
   const [golds, setGolds] = useState([]);
   const [cates, setCates] = useState([]);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [currentProduct, setCurrentProduct] = useState(null);
+  const [formInitialValues, setFormInitialValues] = useState({});
   const handleDeleteProduct = async (id) => {
     console.log("delete product", id);
     const response = await api.delete(`/Product/delete/${id}`);
@@ -82,16 +85,19 @@ function ManageProducts() {
       title: "Actions",
       dataIndex: "id",
       key: "id",
-      render: (id) => (
-        <Popconfirm
-          title="Delete the task"
-          description="Are you sure to delete this task?"
-          onConfirm={() => handleDeleteProduct(id)}
-          okText="Yes"
-          cancelText="No"
-        >
-          <Button danger>Delete</Button>
-        </Popconfirm>
+      render: (id, record) => (
+        <div className="flex">
+          <Button onClick={() => handleEditProduct(record)}>Chỉnh sửa</Button>
+          <Popconfirm
+            title="Delete the task"
+            description="Are you sure to delete this task?"
+            onConfirm={() => handleDeleteProduct(id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button danger>Delete</Button>
+          </Popconfirm>
+        </div>
       ),
     },
   ];
@@ -131,6 +137,50 @@ function ManageProducts() {
       </div>
     </button>
   );
+
+  const handleEditProduct = (product) => {
+    setCurrentProduct(product);
+    setFormInitialValues(product); // Set initial form values
+    setIsEditModalVisible(true);
+    setFileList([
+      {
+        uid: product.id,
+        name: "image.png",
+        status: "done",
+        url: product.imageURL,
+      },
+    ]);
+  };
+
+  const handleUpdateProduct = async (values) => {
+    try {
+      if (!values.goldType) {
+        values.goldType = "";
+      }
+      if (!values.diamondType) {
+        values.diamondType = "";
+      }
+      const response = await api.patch(`/Product/update`, values);
+      console.log(response);
+      const updatedProducts = dataSource.map((product) =>
+        product.id === values.id ? response.data : product
+      );
+      setDataSource(updatedProducts);
+      setIsEditModalVisible(false);
+      toast.success("Cập nhật sản phẩm thành công!");
+      fetchProducts();
+    } catch (error) {
+      console.log(error);
+      toast.error("Cập nhật sản phẩm không thành công. Vui lòng thử lại sau!");
+    }
+  };
+
+  // Modal close handler
+  const handleModalCancel = () => {
+    setIsEditModalVisible(false);
+    setCurrentProduct(null);
+    form.resetFields();
+  };
   async function fetchProducts() {
     try {
       const response = await api.get("/Product");
@@ -312,6 +362,92 @@ function ManageProducts() {
             rules={[{ required: true }]}
           >
             <InputNumber />
+          </Form.Item>
+        </Form>
+      </Modal>
+      <Modal
+        title="Chỉnh sửa sản phẩm"
+        visible={isEditModalVisible}
+        onCancel={handleModalCancel}
+        footer={null} // No footer for simplicity
+      >
+        <Form
+          form={form}
+          initialValues={formInitialValues}
+          onFinish={handleUpdateProduct}
+        >
+          <Form.Item name="id" hidden>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Tên sản phẩm"
+            name="name"
+            rules={[{ required: true, message: "Vui lòng nhập tên sản phẩm!" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Mô tả"
+            name="description"
+            rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
+          >
+            <Input.TextArea rows={4} />
+          </Form.Item>
+          <Form.Item
+            label="Hình ảnh"
+            name="imageURL"
+            rules={[{ required: true, message: "Vui lòng chọn hình ảnh!" }]}
+          >
+            <Upload
+              listType="picture-card"
+              fileList={fileList}
+              onPreview={handlePreview}
+              onChange={handleChange}
+            >
+              {fileList.length >= 1 ? null : uploadButton}
+            </Upload>
+          </Form.Item>
+
+          <Form.Item
+            label="Category"
+            name="categoryID"
+            rules={[{ required: true }]}
+          >
+            <Select>
+              {cates.map((cate) => (
+                <Option key={cate.id} value={cate.id}>
+                  {cate.name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item label="Gold Type" name="goldType">
+            <Select>
+              {golds.map((gold) => (
+                <Option key={gold.name} value={gold.name}>
+                  {gold.name}-{gold.karaContent}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item label="Khối lượng vàng" name="goldWeight">
+            <InputNumber />
+          </Form.Item>
+          <Form.Item label="Loại kim cương" name="diamondType">
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Số lượng"
+            name="quantity"
+            rules={[{ required: true, message: "Vui lòng nhập số lượng!" }]}
+          >
+            <InputNumber />
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Cập nhật
+            </Button>
           </Form.Item>
         </Form>
       </Modal>
