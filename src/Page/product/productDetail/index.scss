@@ -1,31 +1,30 @@
-.btn_cart:hover{
-    .ant-btn:hover{
-        color: #000;
-        background-color: #B18165;
-        border: 0;
-    }
+.btn_cart:hover {
+  .ant-btn:hover {
+    color: #000;
+    background-color: #b18165;
+    border: 0;
+  }
 
-    .heart_icon:hover{
-        color: #B18165;
-    }
+  .heart_icon:hover {
+    color: #b18165;
+  }
 }
 
-.btn_cart{
-    .ant-btn{
-        border: 0;
-    }
+.btn_cart {
+  .ant-btn {
+    border: 0;
+  }
 }
 
-.img_pd{
-    img{
-        height: 450px;
-        width: 100%;
-    }
+.img_pd {
+  img {
+    height: 450px;
+    width: 100%;
+  }
 }
 
-
-h1.title_3{
-    font-family: "Fraunces", serif;;
+h1.title_3 {
+  font-family: "Fraunces", serif;
 }
 
 // .content_fix{
@@ -40,38 +39,38 @@ h1.title_3{
 
 // tool for heart
 .tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px  black;
-  }
-  
-  .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: #B18165;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 1;
-    bottom: 150%;
-    left: 50%;
-    margin-left: -60px;
-    font-weight: bold;
-  }
-  
-  .tooltip .tooltiptext::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #B18165 transparent transparent transparent;
-  }
-  
-  .tooltip:hover .tooltiptext {
-    visibility: visible;
-  }
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #b18165;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -60px;
+  font-weight: bold;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #b18165 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}

@@ -26,7 +26,7 @@ function Cart() {
 
   const carts = useSelector((store) => store.cart.products);
   console.log(carts);
-  console.log(carts);
+  console.log(carts.length);
 
   async function fetchProducts() {
     const response = await api.get("/Product");
@@ -89,7 +89,7 @@ function Cart() {
       key: "quantity",
       align: "center",
       render: (quantity, record) => (
-        <div>
+        <div className="flex">
           <Button
             shape="circle"
             icon="-"
@@ -125,8 +125,8 @@ function Cart() {
     },
   ];
   const count = checked.reduce((total, id) => total + id.quantity, 0);
-
   console.log(count);
+
   return (
     <div className="">
       <div className="rounded-xl shadow-md duration-200 relative z-40 bg-white/50 bottom-1 w-full">

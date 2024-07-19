@@ -14,7 +14,7 @@ function DayChuyen() {
   const fetchProductAll = async (pageNumber = 1, pageSize = 10) => {
     try {
       const response = await api.get(
-        `/Product/filter-product?PageNumber=${pageNumber}&PageSize=${pageSize}&CategoryID=${7}`
+        `/Product/filter-product?PageNumber=${pageNumber}&PageSize=${pageSize}&CategoryID=${1}`
       );
 
       setPagination({
