@@ -26,7 +26,6 @@ import Nhan from "./Page/product/eachProduct/Nhan";
 import VongTay from "./Page/product/eachProduct/VongTay";
 import ProductDetail2 from "./Page/product/productDetail/index2";
 import DiamondPrice from "./Page/diamondPrice";
-import ManageProducts from "./Page/manage products";
 import Accounts from "./Page/admin/accounts";
 import Chart from "./component/chart/Chart";
 import Manager from "./Page/manager";
@@ -43,6 +42,9 @@ import UserSearch from "./Page/staff/index2";
 import StaffOrder from "./Page/staff/order";
 import ManageForm from "./Page/form";
 import ManagePromotion from "./Page/promotion";
+import DongHo from "./Page/product/eachProduct/DongHo";
+import Kieng from "./Page/product/eachProduct/Kieng";
+import Lac from "./Page/product/eachProduct/Lac";
 import {
   ValidRouteAdmin,
   ValidRouteManager,
@@ -51,6 +53,7 @@ import {
 import ReOrder from "./Page/staff/re-order";
 import LayoutStaff from "./component/layout/index3";
 import CheckReceiveOrder from "./Page/staff/checkreceiveorder";
+import ManageProducts from "./Page/manage products";
 
 function App() {
   const router = createBrowserRouter([
@@ -127,6 +130,18 @@ function App() {
           element: <Nhan />,
         },
         {
+          path: "/dh",
+          element: <DongHo />,
+        },
+        {
+          path: "/kg",
+          element: <Kieng />,
+        },
+        {
+          path: "/lac",
+          element: <Lac />,
+        },
+        {
           path: "/vt",
           element: <VongTay />,
         },
@@ -162,10 +177,6 @@ function App() {
           path: "/securityinfo",
           element: <SecurityInfo />,
         },
-        {
-          path: "/promotion",
-          element: <ManagePromotion />,
-        },
       ],
     },
     {
@@ -186,6 +197,10 @@ function App() {
         {
           path: "/crudproduct",
           element: <ValidRouteManager element={<ManageProducts />} />,
+        },
+        {
+          path: "/promotion",
+          element: <ValidRouteManager element={<ManagePromotion />} />,
         },
       ],
     },
@@ -210,6 +225,14 @@ function App() {
     {
       path: "/checkreceive",
       element: <ValidRouteStaff element={<CheckReceiveOrder />} />,
+    },
+    {
+      path: "/promotion",
+      element: <ValidRouteManager element={<ManagePromotion />} />,
+    },
+    {
+      path: "/crudproduct",
+      element: <ValidRouteManager element={<ManageProducts />} />,
     },
   ]);
 

@@ -15,9 +15,14 @@ import {
 import { Badge, Button, Popconfirm, Radio, Tooltip } from "antd";
 import { resetSelectedCustomer } from "../../../redux/features/customerSlice";
 import QRCode from "qrcode.react";
+import { clearOrderID, setOrderID } from "../../../redux/features/orderSlice";
+import { useNavigate } from "react-router-dom";
 
 const StaffOrder = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
+  const [promotions, setPromotions] = useState([]);
+  const [selectedPromotion, setSelectedPromotion] = useState("");
   const [category, setCategory] = useState("");
   const [products, setProducts] = useState([]);
   const [cates, setCates] = useState([]);
@@ -29,7 +34,11 @@ const StaffOrder = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const [paymentUrl, setPaymentUrl] = useState("");
   const [paymentCompleted, setPaymentCompleted] = useState(false);
-  const [disableIncrease, setDisableIncrease] = useState(false);
+  const [showPaymentQR, setShowPaymentQR] = useState(false);
+  const [paymentQRUrl, setPaymentQRUrl] = useState("");
+  const orderID = useSelector((store) => store.order.orderID);
+
+  console.log(paymentUrl);
 
   function toggleCart() {
     setShowCart(!showCart);
@@ -66,20 +75,28 @@ const StaffOrder = () => {
       const payload = {
         buyerID: customer.id,
         orderDetails: orderDetails,
-        promotionID: "",
+        promotionID: selectedPromotion,
         paymentMethodID: selectedPaymentMethod,
       };
       const response = await api.post("/order/staff-create", payload);
       const { value } = response.data;
-      toast.success("Mua thành công!");
-      dispatch(clearAll());
-      if (selectedPaymentMethod === "VnPay") {
+      toast.success("Đã tạo đơn hàng mới thành công!");
+      if (selectedPaymentMethod === 1) {
         setPaymentUrl(value);
         setPaymentCompleted(true);
+        setShowPaymentQR(true);
+        setPaymentQRUrl(value);
+        const orderInfo = extractOrderInfo(value);
+        dispatch(setOrderID(orderInfo));
       }
     } catch (e) {
-      toast.error(e.response.data.detail);
+      toast.error(e.response.data.value);
     }
+  }
+
+  async function handleDelete() {
+    await api.delete(`/Order/delete/${orderID}`);
+    toast.error("Thanh toán không thành công!");
   }
 
   async function fetchPaymentMethod() {
@@ -88,9 +105,19 @@ const StaffOrder = () => {
     setPaymentMethods(value);
   }
 
+  async function fetchPromotionByUserId() {
+    const response = await api.get(
+      `/Promotion/get-by-userID?PageNumber=1&PageSize=5&UserId=${customer.id}`
+    );
+    const { value } = response.data;
+    setPromotions(value.data);
+    console.log(value.data);
+  }
+
   useEffect(() => {
     fetchCates();
     fetchPaymentMethod();
+    fetchPromotionByUserId();
   }, []);
 
   function addToCart(product) {
@@ -107,6 +134,15 @@ const StaffOrder = () => {
         toast.success(`${product.name} đã được thêm vào giỏ hàng.`);
       }
     }
+  }
+
+  function extractOrderInfo(url) {
+    const regex = /vnp_OrderType=([^&]*)/;
+    const match = url.match(regex);
+    if (match && match.length > 1) {
+      return match[1];
+    }
+    return null;
   }
 
   function removeFromCart(product) {
@@ -142,6 +178,10 @@ const StaffOrder = () => {
     }).format(price);
   }
 
+  const handlePromotionSelection = (event) => {
+    setSelectedPromotion(event.target.value);
+  };
+
   return (
     <div className="min-h-screen flex flex-col relative">
       <div className="container mx-auto p-4 flex-1">
@@ -153,7 +193,8 @@ const StaffOrder = () => {
             onConfirm={() => {
               dispatch(resetSelectedCustomer());
               dispatch(clearAll());
-              window.location.href = "/staffsearch";
+              dispatch(clearOrderID());
+              navigate("/staffsearch");
             }}
             okText="Yes"
             cancelText="No"
@@ -288,7 +329,6 @@ const StaffOrder = () => {
                       <span>{item.quantity}</span>
 
                       <button
-                        disabled={disableIncrease}
                         onClick={() => increaseItemQuantity(item.id)}
                         className="text-green-500 hover:text-green-600 focus:outline-none"
                       >
@@ -332,23 +372,71 @@ const StaffOrder = () => {
                       </Radio>
                     ))}
                   </div>
+                  <div>
+                    <h2 className="pb-2">Mã khuyến mãi (nếu có)</h2>
+                    <select
+                      value={selectedPromotion}
+                      onChange={handlePromotionSelection}
+                      className="border border-gray-300 py-2 px-2"
+                      style={{ width: "100%" }}
+                    >
+                      <option value="">Chọn mã khuyến mãi</option>
+                      {promotions.map((promo) => (
+                        <option key={promo.id} value={promo.id}>
+                          {promo.id}-{promo.description}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                   <button
                     onClick={handlePayment}
                     className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md focus:outline-none"
                   >
                     Thanh toán
                   </button>
-                  {paymentCompleted && (
-                    <div className="flex justify-center mt-4">
-                      <QRCode value={paymentUrl} size={200} />
-                    </div>
-                  )}
                 </div>
               )}
             </div>
           </div>
         </div>
       )}
+
+      {/* QR Code Section */}
+      {showPaymentQR && (
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 shadow-lg rounded-lg z-50">
+          <h2 className="text-xl font-semibold mb-4">QR Code Thanh toán</h2>
+          <div className="flex justify-center">
+            <QRCode value={paymentQRUrl} size={200} />
+          </div>
+          <Button
+            className="mt-4"
+            onClick={() => {
+              handleDelete();
+              dispatch(clearAll());
+              setShowPaymentQR(false);
+            }}
+          >
+            Đóng QR Code
+          </Button>
+        </div>
+      )}
+
+      {/* Cart Button */}
+      <div
+        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full fixed bottom-4 right-4 cursor-pointer flex items-center"
+        onClick={toggleCart}
+      >
+        <span className="mr-2">Giỏ hàng</span>
+        {showCart ? (
+          <FaTimes className="text-xl" />
+        ) : (
+          <Badge count={carts ? carts.length : 0}>
+            <div className="m-3">
+              <FaCartPlus className="text-xl" />
+            </div>
+          </Badge>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React from "react";
 import { HiUserGroup } from "react-icons/hi";
 import { RiPieChartFill } from "react-icons/ri";
+import { Navigate } from "react-router-dom";
 
 function Admin() {
   return (
@@ -8,7 +9,7 @@ function Admin() {
       <div className="pb-10">
         <button
           onClick={() => {
-            window.location.href = "/revenue";
+            <Navigate to="/revenue" />;
           }}
           className="border shadow-md border-white bg-gradient-to-r dark:from-gray-600 dark:text-white dark:bg-orange-300 dark:border-none"
         >

@@ -18,8 +18,10 @@ import { useForm } from "antd/es/form/Form";
 import api from "../../config/axios";
 import { Option } from "antd/es/mentions";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function ManageProducts() {
+  const navigate = useNavigate();
   const [form] = useForm();
   const [dataSource, setDataSource] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -223,12 +225,13 @@ function ManageProducts() {
 
   return (
     <div className="product-management py-5 px-20">
+      <Button onClick={() => navigate("/manager")}>Quay ve</Button>
       <Button
         type="primary"
         onClick={handleShowModal}
         className="bg-gradient-to-r from-orange-300 to-orange-400 text-white"
       >
-        Add new product
+        Tạo sản phẩm
       </Button>
 
       <Table columns={columns} dataSource={dataSource} />
