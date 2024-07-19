@@ -23,7 +23,12 @@ function Manager() {
         </button>
       </div>
       <div>
-        <button className="border shadow-md border-white bg-gradient-to-r dark:from-gray-600 dark:text-white dark:bg-orange-300 dark:border-none">
+        <button
+          className="border shadow-md border-white bg-gradient-to-r dark:from-gray-600 dark:text-white dark:bg-orange-300 dark:border-none"
+          onClick={() => {
+            window.location.href = "/promotion";
+          }}
+        >
           <div className="px-7 py-4 flex gap-3">
             <div className="text-3xl">
               <IoTicket />
