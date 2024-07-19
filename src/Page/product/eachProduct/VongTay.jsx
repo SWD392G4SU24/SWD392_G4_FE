@@ -8,13 +8,13 @@ function VongTay() {
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
-    total: 0
+    total: 0,
   });
 
   const fetchProductAll = async (pageNumber = 1, pageSize = 10) => {
     try {
       const response = await api.get(
-        `/Product/filter-product?PageNumber=${pageNumber}&PageSize=${pageSize}&CategoryID=${10}`
+        `/Product/filter-product?PageNumber=${pageNumber}&PageSize=${pageSize}&CategoryID=${2}`
       );
 
       setPagination({
@@ -26,7 +26,7 @@ function VongTay() {
 
       setProducts(response.data.data);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
     }
   };
 

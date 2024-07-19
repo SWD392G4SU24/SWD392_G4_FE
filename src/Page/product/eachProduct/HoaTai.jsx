@@ -14,7 +14,7 @@ function HoaTai() {
   const fetchProductAll = async (pageNumber = 1, pageSize = 10) => {
     try {
       const response = await api.get(
-        `/Product/filter-product?PageNumber=${pageNumber}&PageSize=${pageSize}&CategoryID=${9}`
+        `/Product/filter-product?PageNumber=${pageNumber}&PageSize=${pageSize}&CategoryID=${5}`
       );
 
       setPagination({

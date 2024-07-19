@@ -1,26 +1,29 @@
-// @import url("https://unpkg.com/papercss@1.9.2/dist/paper.css") 
+// @import url("https://unpkg.com/papercss@1.9.2/dist/paper.css")
 // layer(csspaper);
 
-
-
-h1.title_2{
-    font-family: Playwrite MX, cursive;
+h1.title_2 {
+  font-family: Playwrite MX, cursive;
 }
 
-h1.title{
-    font-family: Montserrat;
+h1.title {
+  font-family: Montserrat;
 }
 
-h1.title_3{
-    font-family: "Fraunces", serif;;
+h1.title_3 {
+  font-family: "Fraunces", serif;
 }
 
 .card-list:has(.ant-col:hover) .ant-col:not(:hover) {
-    filter: blur(3px)
+  filter: blur(3px);
 }
 
 .paper {
-    padding: 30px;
+  padding: 30px;
+
+  img {
+    width: 250px;
+    height: 300px;
+  }
 }
 
 // .align_name{
