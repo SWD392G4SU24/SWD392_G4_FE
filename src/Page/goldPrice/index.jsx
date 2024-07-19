@@ -9,7 +9,7 @@ function GoldPrice() {
   const fetchPrices = async () => {
     try {
       const resp = await api.get(
-        "https://dassie-living-bonefish.ngrok-free.app/goldBtmc/get-price"
+        "/goldBtmc/get-price"
       );
       setPrices(resp.data);
       console.log(resp.data);

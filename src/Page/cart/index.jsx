@@ -66,6 +66,9 @@ function Cart() {
       title: "San Pham",
       dataIndex: "name",
       key: "name",
+      render: (value) => {
+        return <p className="w-12">{value}</p>;
+      },
     },
     {
       title: "Hinh anh mo ta",
@@ -110,8 +113,8 @@ function Cart() {
       align: "center",
       render: (id) => (
         <Popconfirm
-          title="Delete the task"
-          description="Are you sure to delete this task?"
+          title="Xóa sản phẩm"
+          description="Bạn muốn xóa sản phẩm này ra khỏi giỏ hàng?"
           onConfirm={() => handleDeleteProduct(id)}
           okText="Yes"
           cancelText="No"
@@ -150,7 +153,7 @@ function Cart() {
         />
       </div>
       <div className="flex justify-between w-full px-40 py-20">
-        <h1>Tong So Luong Mua: </h1>
+        <h1>Tổng Số Lượng Mua: </h1>
         <button
           className="rounded-lg bg-black text-white py-1 px-10"
           onClick={() => {

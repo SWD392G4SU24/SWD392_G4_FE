@@ -194,6 +194,14 @@ function App() {
           path: "/form",
           element: <ValidRouteManager element={<ManageForm />} />,
         },
+        {
+          path: "/crudproduct",
+          element: <ValidRouteManager element={<ManageProducts />} />,
+        },
+        {
+          path: "/promotion",
+          element: <ValidRouteManager element={<ManagePromotion />} />,
+        },
       ],
     },
     {

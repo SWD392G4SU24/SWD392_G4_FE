@@ -18,6 +18,8 @@ import { toast } from "react-toastify"; // Import toast for notifications
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
+
 
 function ManagePromotion() {
   const navigate = useNavigate();
@@ -49,6 +51,14 @@ function ManagePromotion() {
     if (currentID && currentID !== 0) {
       api.get(`/Promotion/${currentID}`).then((response) => {
         setCurrentPro(response.data.value);
+        form.setFieldsValue({
+          description: response.data.value.description,
+          conditionsOfUse: response.data.value.conditionsOfUse,
+          reducedPercent: response.data.value.reducedPercent,
+          maximumReduce: response.data.value.maximumReduce,
+          exchangePoint: response.data.value.exchangePoint,
+          expiresTime: moment(response.data.value.expiresTime),
+        });
         console.log(response.data.value);
       });
     } else {
@@ -89,20 +99,26 @@ function ManagePromotion() {
           expiresTime: day,
           userID: user.id,
         });
+        toast.success("Tạo mã thành công!");
       } else {
-        response = await api.put(`/Promotion/${currentID}`, {
-          description: values.description,
-          conditionsOfUse: values.conditionsOfUse,
-          reducedPercent: values.reducedPercent,
-          maximumReduce: values.maximumReduce,
-          exchangePoint: values.exchangePoint,
-          expiresTime: day,
-          userID: user.id,
+        const formData = new FormData();
+        formData.append("id", currentPro.id);
+        formData.append("description", values.description);
+        formData.append("conditionsOfUse", values.conditionsOfUse);
+        formData.append("reducedPercent", values.reducedPercent);
+        formData.append("maximumReduce", values.maximumReduce);
+        formData.append("exchangePoint", values.exchangePoint);
+        formData.append(
+          "expiresTime",
+          day === null ? currentPro.expiresTime : day
+        );
+        const response = await api.patch("/Promotion/update", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         });
+        toast.success("Cập nhật thành công!");
       }
-      console.log("Update promotion response:", response.data);
-      toast.success("Cập nhật thành công!");
-      fetchPromotions();
       handleCancel();
       form.resetFields();
       setRender(render + 1);
@@ -112,20 +128,13 @@ function ManagePromotion() {
     }
   };
 
-  const buddhistLocale = {
-    ...en,
-    lang: {
-      ...en.lang,
-      fieldDateFormat: "YYYY-MM-DD",
-      fieldDateTimeFormat: "YYYY-MM-DDTHH:mm:ss.SSSZ",
-      yearFormat: "YYYY",
-      cellYearFormat: "YYYY",
-    },
-  };
-
   const onChange = (_, dateString) => {
     console.log("Selected date:", dateString);
-    setDay(dateString);
+    if (dataString === "") {
+      setDay(currentPro.expiresTime);
+    } else {
+      setDay(dateString);
+    }
   };
 
   const formatCurrency = (amount) => {
@@ -227,7 +236,7 @@ function ManagePromotion() {
         >
           <Form.Item
             label="Mô tả"
-            name={"description"}
+            name="description"
             rules={[{ required: true, message: "Mô tả không được để trống" }]}
           >
             <Input.TextArea
@@ -237,7 +246,7 @@ function ManagePromotion() {
           </Form.Item>
           <Form.Item
             label="Số lượng mã khuyến mãi"
-            name={"conditionsOfUse"}
+            name="conditionsOfUse"
             rules={[
               {
                 required: true,
@@ -251,12 +260,12 @@ function ManagePromotion() {
               }}
               defaultValue={currentID !== 0 ? currentPro?.conditionsOfUse : ""}
               min={0}
-              max={10000}
+              max={1000000}
             />
           </Form.Item>
           <Form.Item
             label="Phần trăm được giảm"
-            name={"reducedPercent"}
+            name="reducedPercent"
             rules={[
               {
                 required: true,
@@ -278,7 +287,7 @@ function ManagePromotion() {
           </Form.Item>
           <Form.Item
             label="Giảm tối đa"
-            name={"maximumReduce"}
+            name="maximumReduce"
             rules={[
               { required: true, message: "Giảm tối đa không được để trống" },
             ]}
@@ -294,7 +303,7 @@ function ManagePromotion() {
           </Form.Item>
           <Form.Item
             label="Điểm quy đổi"
-            name={"exchangePoint"}
+            name="exchangePoint"
             rules={[
               { required: true, message: "Điểm quy đổi không được để trống" },
             ]}
@@ -308,17 +317,12 @@ function ManagePromotion() {
           </Form.Item>
           <Form.Item
             label="Có hiệu lực đến"
-            name={"expiresTime"}
+            name="expiresTime"
             rules={[
               { required: true, message: "Ngày hiệu lực không được để trống" },
             ]}
           >
-            <DatePicker
-              showTime
-              locale={buddhistLocale}
-              onChange={onChange}
-              format={"YYYY-MM-DDHH:mm:ss"}
-            />
+            <DatePicker onChange={onChange} form="YYYY-MM-DD" />
           </Form.Item>
         </Form>
       </Modal>
