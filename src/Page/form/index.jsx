@@ -85,10 +85,20 @@ function ManageForm() {
 
       console.log(data);
 
-      await api.patch(
-        `/Form/update?FormID=${currentID}&Content=${currentForm.content}&AppointmentDate=${values.appoinmentDate}`,
-        data
-      );
+      // await api.patch(
+      //   `/Form/update?FormID=${currentID}&Content=${currentForm.content}&AppointmentDate=${values.appoinmentDate}`,
+      //   data
+      // );
+
+      const formData = new FormData();
+      formData.append("FormID", currentID);
+      formData.append("Content", currentForm.content);
+      formData.append("AppointmentDate", values.appoinmentDate);
+      const response = await api.patch("/Form/update", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       await api.put(`/form/update-status`, {
         formID: currentID,

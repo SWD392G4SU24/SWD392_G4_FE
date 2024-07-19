@@ -177,10 +177,6 @@ function App() {
           path: "/securityinfo",
           element: <SecurityInfo />,
         },
-        {
-          path: "/promotion",
-          element: <ManagePromotion />,
-        },
       ],
     },
     {
@@ -201,6 +197,10 @@ function App() {
         {
           path: "/crudproduct",
           element: <ValidRouteManager element={<ManageProducts />} />,
+        },
+        {
+          path: "/promotion",
+          element: <ValidRouteManager element={<ManagePromotion />} />,
         },
       ],
     },

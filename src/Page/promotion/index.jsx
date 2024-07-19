@@ -100,19 +100,24 @@ function ManagePromotion() {
         });
         toast.success("Tạo mã thành công!");
       } else {
-        response = await api.patch(`/Promotion/update`, {
-          id: currentPro.id,
-          description: values.description,
-          conditionsOfUse: values.conditionsOfUse,
-          reducedPercent: values.reducedPercent,
-          maximumReduce: values.maximumReduce,
-          exchangePoint: values.exchangePoint,
-          expiresTime: day === null ? currentPro.expiresTime : day,
-          // userID: user.id,
+        const formData = new FormData();
+        formData.append("id", currentPro.id);
+        formData.append("description", values.description);
+        formData.append("conditionsOfUse", values.conditionsOfUse);
+        formData.append("reducedPercent", values.reducedPercent);
+        formData.append("maximumReduce", values.maximumReduce);
+        formData.append("exchangePoint", values.exchangePoint);
+        formData.append(
+          "expiresTime",
+          day === null ? currentPro.expiresTime : day
+        );
+        const response = await api.patch("/Promotion/update", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         });
         toast.success("Cập nhật thành công!");
       }
-      console.log("Update promotion response:", response.data);
       handleCancel();
       form.resetFields();
       setRender(render + 1);
