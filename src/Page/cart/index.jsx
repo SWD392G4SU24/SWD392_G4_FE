@@ -3,6 +3,7 @@ import { Button, Image, Popconfirm, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  clearAll,
   decreaseQuantity,
   increaseQuantity,
   removeProduct,
@@ -10,10 +11,14 @@ import {
 } from "../../redux/features/cartSlice";
 import api from "../../config/axios";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { selectUser } from "../../redux/features/counterSlice";
 function Cart() {
+  const navigate = useNavigate();
   const [checked, setChecked] = useState([]);
   const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
   const handleDeleteProduct = async (id) => {
     console.log(id);
     dispatch(removeProduct(id));
@@ -45,6 +50,17 @@ function Cart() {
   async function decreaseItemQuantity(id) {
     dispatch(decreaseQuantity(id));
   }
+
+  const handleBuyButtonClick = () => {
+    if (user === null) {
+      navigate("/login1");
+      dispatch(clearAll());
+      toast.warn("Bạn phải đăng nhập để tiếp tục mua hàng!");
+    } else {
+      dispatch(selectProduct(checked));
+      navigate("/orderreview");
+    }
+  };
   const columns = [
     {
       title: "San Pham",
@@ -141,8 +157,9 @@ function Cart() {
         <button
           className="rounded-lg bg-black text-white py-1 px-10"
           onClick={() => {
-            dispatch(selectProduct(checked));
-            window.location.href = "/orderreview";
+            // dispatch(selectProduct(checked));
+            // navigate("/orderreview");
+            handleBuyButtonClick();
           }}
         >
           Mua hàng ({count})

@@ -17,9 +17,12 @@ import en from "antd/es/date-picker/locale/en_US";
 import { toast } from "react-toastify"; // Import toast for notifications
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
+import { useNavigate } from "react-router-dom";
 import moment from "moment";
 
+
 function ManagePromotion() {
+  const navigate = useNavigate();
   const [form] = useForm();
   const [promotions, setPromotions] = useState([]);
   const [day, setDay] = useState(null);
@@ -86,8 +89,6 @@ function ManagePromotion() {
   const handleSubmit = async (values) => {
     try {
       let response;
-      console.log(currentPro.expiresTime);
-
       if (currentID === 0) {
         response = await api.post(`/Promotion/create`, {
           description: values.description,
@@ -145,6 +146,7 @@ function ManagePromotion() {
 
   return (
     <div>
+      <Button onClick={() => navigate("/manager")}>Quay ve</Button>
       <Button
         type="primary"
         onClick={() => {

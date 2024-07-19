@@ -128,7 +128,7 @@ function ProductDetail2() {
               <Button
                 className="bg-black text-white"
                 onClick={() => {
-                  window.location.href = "/cart";
+                  dispatch(addProduct(prodetail));
                 }}
               >
                 Mua ngay

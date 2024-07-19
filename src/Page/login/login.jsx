@@ -65,7 +65,6 @@ function Login1() {
       toast.error(error.response.data.detail);
     }
   };
-  // console.log(user);
 
   useEffect(() => {
     const fetchUrlData = async () => {
@@ -101,24 +100,8 @@ function Login1() {
       >
         <div className="bg-slate-800 border boder-slate-400 rounded-md p-8 shadow-lg backdrop-filter backdrop-blur-sm bg-opacity-30 relative">
           <h1 className="text-4xl text-black/75 font-bold text-center mb-6">
-            Login
+            Đăng nhập
           </h1>
-          <div className="pb-3">
-            <button
-              className="flex justify-center items-center transition-all gap-5 bg-black rounded-full px-14 py-2"
-              onClick={handleLoginGoogle}
-            >
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1024px-Google_%22G%22_logo.svg.png"
-                alt=""
-                width={30}
-              />
-              <span className="">Login with google</span>
-            </button>
-          </div>
-          <div className="px-32">
-            <h1>OR</h1>
-          </div>
           <form
             action=""
             className="flex flex-col justify-center items-center"
@@ -147,26 +130,17 @@ function Login1() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <div className="flex justify-between items-center">
-              <div className="flex gap-2 items-center">
-                <input type="checkbox" name="" id="" />
-                <label htmlFor="Remember Me">Remember Me</label>
-              </div>
-              <Link to={``} className="text-black">
-                Forgot Password?
-              </Link>
-            </div>
             <button
               type="submit"
               className="w-full mb-4 text-[18px] mt-6 rounded-full bg-white text-orange-200 hover:bg-orange-200 hover:text-white py-2 transition-colors duration-300"
             >
-              Login
+              Đăng nhập
             </button>
             <div>
-              <span className="mt-4 px-10">
-                New Here?
+              <span className="mt-4 px-10 flex justify-center gap-3">
+                <h1>Bạn chưa có ?</h1>
                 <Link to="/Register" className="text-black">
-                  Create an Account
+                  Tạo tài khoản
                 </Link>
               </span>
             </div>

@@ -53,8 +53,11 @@ function Profile(props) {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
-
+  
   const userId = useSelector(selectId); // Lấy user ID từ Redux store
+  
+  const [promotionsExchange, setPromotionsExchange] = useState([]); // setState Promotion
+  const promotionsExchangePerPage = 3;
 
   const {
     values,
@@ -89,13 +92,6 @@ function Profile(props) {
     if (contentRef.current) {
       contentRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  };
-   
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(amount);
   };
 
   //  Api get infor user
@@ -326,6 +322,15 @@ function Profile(props) {
             {renderChangePassword()}
           </div>
         ); 
+        case "Đổi điểm thưởng":
+        return (
+          <div>
+             <h1 className={styles.point}>
+              Điểm tích lũy: <span className={styles.point1}>{user.point}</span>
+            </h1>
+            {renderPromotionExchange()}
+          </div>
+        ); 
       default:
         return null;
     }
@@ -502,7 +507,7 @@ function Profile(props) {
             {currentProducts.map((product) => (
               <div className={styles.favoritesSection} key={product.id}>
                 <div>
-                  <img src={product.imageURL} alt={product.name} width="110" />
+                  <img src={product.imageURL} alt={product.name} width="70" height="80" />
                 </div>
 
                 <div className={styles.favoriteInfor}>
@@ -573,7 +578,7 @@ function Profile(props) {
     );
   };
 
-  const renderOrderContent = () => {
+    const renderOrderContent = () => {
     const filtered = orderHistory.filter(
       (order) => orderFilter === "All" || order.status === orderFilter
     );
@@ -720,7 +725,7 @@ function Profile(props) {
                   </div>
                   <div className={styles.promotionDetails}>
                     <h2>{promotion.description}</h2>
-                    <h3>Cho đơn từ {promotion.conditionsOfUse}K</h3>
+                    <h3>Cho đơn từ {formatConditionsOfUse(promotion.conditionsOfUse)}</h3>
                     <p>
                       Ngày hết hạn:{" "}
                       {new Date(promotion.expiresTime).toLocaleDateString()}
@@ -862,6 +867,120 @@ function Profile(props) {
     );
   };
   
+  const getUserPromotionExchange = async () => {
+    try {
+      const response = await api.get('/Promotion');
+      // Lọc chỉ những khuyến mãi có userID là null
+      const availablePromotions = response.data.value.filter(promotion => promotion.userID === null);
+      setPromotionsExchange(availablePromotions);
+      console.log(availablePromotions);
+    } catch (err) {
+      setError(err);
+    }
+  };
+
+  const exchangeVoucher = async (voucherCode) => {
+    try {
+      const response = await api.post('/Promotion/Exchange-points', {
+        customerID: userId,
+        voucherCode: voucherCode
+      });
+      toast.success("Đổi khuyến mãi thành công!");
+      console.log(response.data);
+      // Cập nhật danh sách khuyến mãi sau khi đổi voucher
+      getUserPromotionExchange();
+    } catch (err) {
+      toast.error("Đổi khuyến mãi thất bại!");
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    getUserPromotionExchange();
+  }, []);
+
+
+  const formatConditionsOfUse = (value) => {
+    if (value >= 1000) {
+      return `${value / 1000} triệu`;
+    }
+    return `${value}K`;
+  };
+
+  const renderPromotionExchange = () => {
+    const totalPages = Math.ceil(promotionsExchange.length / promotionsExchangePerPage);
+    const indexOfLastPromotion = currentPage * promotionsExchangePerPage;
+    const indexOfFirstPromotion = indexOfLastPromotion - promotionsExchangePerPage;
+    const currentPromotions = promotionsExchange.slice(indexOfFirstPromotion, indexOfLastPromotion);
+
+    return (
+      <div>
+        <div className={styles.promotionsExchangeList}>
+          {currentPromotions.length > 0 ? (
+            currentPromotions.map((promotion) => (
+              <div
+                key={promotion.id}
+                className={styles.promotionSection}
+              >
+                <div className={styles.promotionCard}>
+                  <div className={styles.promotionLogo}>
+                    <img
+                      src="https://logomaker.designfreelogoonline.com/media/productdesigner/logo/resized/00319_DIAMOND_Jewelry-03.png"
+                      alt="Promotion Icon"
+                      className={styles.promotionIcon}
+                    />
+                    <h2 className={styles.promotionLogoFont}>JeWellry</h2>
+                  </div>
+                  <div className={styles.promotionDetails}>
+                    <h2>{promotion.description}</h2>
+                    <h3>Cho đơn từ {formatConditionsOfUse(promotion.conditionsOfUse)}</h3>
+                    <p>Ngày hết hạn: {new Date(promotion.expiresTime).toLocaleDateString()}</p>
+                    <p>Điểm đổi: {promotion.exchangePoint}</p> 
+                  </div>
+                  <div className={styles.promotionCodeSection}>
+                    <button
+                      onClick={() => exchangeVoucher(promotion.id)}
+                      className={styles.loctionCart}
+                    >
+                      Đổi voucher
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className={styles.notFoundStatusHistory}>Không tìm thấy khuyến mãi.</p>
+          )}
+        </div>
+        {currentPromotions.length > 0 && (
+          <div className={styles.pagination}>
+            <button
+              onClick={() => setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))}
+              disabled={currentPage === 1}
+            >
+              Trước
+            </button>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => setCurrentPage(index + 1)}
+                className={currentPage === index + 1 ? styles.active : ""}
+              >
+                {index + 1}
+              </button>
+            ))}
+            <button
+              onClick={() => setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages))}
+              disabled={currentPage === totalPages}
+            >
+              Sau
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className={styles.container}>
       <button
@@ -885,7 +1004,7 @@ function Profile(props) {
           style={{ display: isSidebarHidden ? "none" : "block" }}
         >
           <ul className={styles.listGroup}>
-            {["Tài Khoản", "Yêu Thích", "Đơn hàng", "Khuyến mãi","Đặt lại mật khẩu"].map((tab) => (
+            {["Tài Khoản", "Yêu Thích", "Đơn hàng", "Khuyến mãi","Đặt lại mật khẩu","Đổi điểm thưởng"].map((tab) => (
               <li
                 key={tab}
                 className={`${styles.listHover} ${styles.customList} ${
