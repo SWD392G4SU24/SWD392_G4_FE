@@ -1,11 +1,21 @@
-import { Button, Form, Input, Select, Table, Modal } from "antd";
 import React, { useEffect, useState } from "react";
-import api from "../../../config/axios";
-import { toast } from "react-toastify";
-import { Option } from "antd/es/mentions";
+import {
+  Button,
+  Form,
+  Input,
+  Select,
+  Table,
+  Modal,
+  Typography,
+  Space,
+} from "antd";
 import { GrPrevious } from "react-icons/gr";
+import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import moment from "moment/moment";
+import { toast } from "react-toastify";
+import api from "../../../config/axios";
+
+const { Option } = Select;
 
 function ReOrder() {
   const [form] = Form.useForm();
@@ -64,7 +74,9 @@ function ReOrder() {
       key: "id",
       align: "center",
       render: (id, record) => (
-        <Button onClick={() => handleViewOrder(id)}>Xem đơn</Button>
+        <Button type="link" onClick={() => handleViewOrder(id)}>
+          Xem đơn
+        </Button>
       ),
     },
   ];
@@ -89,9 +101,7 @@ function ReOrder() {
         `/order/filter-order?PageNumber=${pageNumber}&PageSize=${pageSize}&Type=RE_ORDER`
       );
       setDataSource(response.data.data);
-      console.log(response.data.data);
       setPagination({
-        ...pagination,
         total: response.data.totalCount,
         pageSize: response.data.pageSize,
         current: pageNumber,
@@ -135,63 +145,81 @@ function ReOrder() {
   }
 
   return (
-    <div>
-      <div className="flex flex-row gap-4">
-        <div>
-          <Button
-            className="text-base"
-            onClick={() => navigate("/staffsearch")}
-          >
-            <div className="flex gap-2">
-              <div>
-                <GrPrevious />
-              </div>
-              <h1>Quay về</h1>
-            </div>
+    <div style={{ padding: "20px" }}>
+      <div style={{ marginBottom: "20px" }}>
+        <Space>
+          <Button type="text" onClick={() => navigate("/staffsearch")}>
+            <GrPrevious /> Quay về
           </Button>
-        </div>
-        <div>
           <Button type="primary" onClick={handleShowModal}>
             Tạo hóa đơn mua lại hàng
           </Button>
-        </div>
+        </Space>
       </div>
-      <Table columns={columns} dataSource={dataSource} />
+
+      <Table
+        columns={columns}
+        dataSource={dataSource}
+        rowKey={(record) => record.id}
+        pagination={pagination}
+        onChange={handleTableChange}
+      />
 
       <Modal
         title="Đơn hàng mua lại"
         visible={isOpen}
-        pagination={handleTableChange}
         onCancel={handleHideModal}
         onOk={handleOk}
+        destroyOnClose
       >
         <Form
-          labelCol={{
-            span: 24,
-          }}
           form={form}
           onFinish={handleReOrder}
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 18 }}
         >
-          <Form.Item label="Mã hóa đơn" name="orderDetailID">
+          <Form.Item
+            label="Mã hóa đơn"
+            name="orderDetailID"
+            rules={[{ required: true, message: "Vui lòng nhập mã hóa đơn!" }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label="Số lượng" name="quantity">
+          <Form.Item
+            label="Số lượng"
+            name="quantity"
+            rules={[{ required: true, message: "Vui lòng nhập số lượng!" }]}
+          >
+            <Input type="number" min={1} />
+          </Form.Item>
+          <Form.Item
+            label="Người bán lại"
+            name="customerID"
+            rules={[{ required: true, message: "Vui lòng nhập người bán!" }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label="Người bán lại" name="customerID">
-            <Input />
-          </Form.Item>
-          <Form.Item label="Gold Type" name="goldType">
+          <Form.Item
+            label="Loại vàng"
+            name="goldType"
+            rules={[{ required: true, message: "Vui lòng chọn loại vàng!" }]}
+          >
             <Select>
               {golds.map((gold) => (
                 <Option key={gold.name} value={gold.name}>
-                  {gold.name}-{gold.karaContent}
+                  {gold.name} - {gold.karaContent}
                 </Option>
               ))}
             </Select>
           </Form.Item>
-          <Form.Item label="Khối lượng vàng" name="goldWeight">
-            <Input />
+          <Form.Item
+            label="Khối lượng vàng"
+            name="goldWeight"
+            rules={[
+              { required: true, message: "Vui lòng nhập khối lượng vàng!" },
+            ]}
+          >
+            <Input type="number" min={0} step="0.01" />
           </Form.Item>
         </Form>
       </Modal>

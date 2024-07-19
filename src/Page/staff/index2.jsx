@@ -242,15 +242,29 @@ const UserSearch = () => {
                   </p>
                 </div>
                 <div>
-                  <button
-                    className="mt-2 border rounded-lg p-3 bg-green-500 text-white"
-                    onClick={() => {
-                      handleBuyClick(user);
-                      navigate("/stafforder");
-                    }}
-                  >
-                    Mua hàng
-                  </button>
+                  {" "}
+                  <div>
+                    <button
+                      className="mt-2 border rounded-lg p-3 bg-green-500 text-white"
+                      onClick={() => {
+                        handleBuyClick(user);
+                        navigate("/stafforder");
+                      }}
+                    >
+                      Mua hàng
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      className="mt-2 border rounded-lg py-3 px-4 bg-gray-300 text-black"
+                      onClick={() => {
+                        handleBuyClick(user);
+                        navigate("/checkreceive");
+                      }}
+                    >
+                      Xem đơn
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
